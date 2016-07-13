@@ -1,5 +1,5 @@
-import Editor from './editors/MyMegadraft.jsx';
-//import Editor from './editors/RichTextEditor.jsx';
+//import Editor from './editors/MyMegadraft.jsx';
+import Editor from './editors/RichTextEditor.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
@@ -41,8 +41,8 @@ export default class SmokeEditor extends React.Component {
         // Set state
         this.state = {
             editorState: editorState,
-            tndraftJson: JSON.stringify(editorState),
-            tndraftHtml: stateToHTML(editorState.getCurrentContent()),
+            smokeJson: JSON.stringify(editorState),
+            smokeHtml: stateToHTML(editorState.getCurrentContent()),
             name: name,
             id: this.props.targetElement.id
         };
@@ -50,8 +50,8 @@ export default class SmokeEditor extends React.Component {
 
     onUpdateContent = (editorState) => {
         this.setState({
-            tndraftJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
-            tndraftHtml: stateToHTML(editorState.getCurrentContent())
+            smokeJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+            smokeHtml: stateToHTML(editorState.getCurrentContent())
         });
     }
 
@@ -64,8 +64,8 @@ export default class SmokeEditor extends React.Component {
                     editorState={this.state.editorState}
                 />
 
-                <input type="text" name={"tndraft-" + this.state.id + "-json"} value={this.state.tndraftJson} />
-                <input type="text" name={this.state.name} id={this.state.id} value={this.state.tndraftHtml} />
+                <input type="text" name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
+                <input type="text" name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
 
             </div>
         )
