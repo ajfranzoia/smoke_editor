@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smoke Editor Example</title>
+    <link type="text/css" rel="stylesheet" href="dist/css/megadraft.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="dist/css/RichEditor.css" media="all" />
+    <style>
+        body {
+            margin: 100px !important;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="edit-body">
+    <textarea name="body"></textarea>
+</div>
+
+<script src="/dist/smokeeditor.js"></script>
+<script>
+    SmokeEditorRender(document.getElementById('edit-body'));
+</script>
+
+</body>
+</html>
