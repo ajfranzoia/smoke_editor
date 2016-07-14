@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {
     EditorState,
+    ContentState,
     convertFromRaw,
     convertToRaw
 } from 'draft-js';
@@ -32,8 +33,8 @@ export default class SmokeEditor extends React.Component {
 
         // Create the editorState
         if(props.defaultValue.length > 0) {
-            var contentState = stateFromHTML(props.defaultValue);
-            var editorState = EditorState.createWithContent(contentState);
+            //var contentState = stateFromHTML(props.defaultValue);
+            var editorState = EditorState.createWithContent(ContentState.createFromText(props.defaultValue));
         } else {
             var editorState = EditorState.createEmpty();
         }
@@ -49,9 +50,25 @@ export default class SmokeEditor extends React.Component {
     }
 
     onUpdateContent = (editorState) => {
+
+        let options = {
+            inlineStyles: {
+                // Override default element (`strong`).
+                BOLD: {element: 'b'},
+                ITALIC: {
+                    // Add custom attributes. You can also use React-style `className`.
+                    attributes: {class: 'foo'},
+                    // Use camel-case. Units (`px`) will be added where necessary.
+                    style: {fontSize: 12}
+                },
+                // Use a custom inline style. Default element is `span`.
+                RED: {style: {color: '#900'}},
+            },
+        };
+
         this.setState({
             smokeJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
-            smokeHtml: stateToHTML(editorState.getCurrentContent())
+            smokeHtml: stateToHTML(editorState.getCurrentContent(), options)
         });
     }
 
@@ -64,8 +81,8 @@ export default class SmokeEditor extends React.Component {
                     editorState={this.state.editorState}
                 />
 
-                <input type="text" name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
-                <input type="text" name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
+                <input type="hidden" name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
+                <input type="hidden" name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
 
             </div>
         )
