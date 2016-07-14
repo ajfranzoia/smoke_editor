@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname + '/public/dist'),
         publicPath: '/dist/',
-        filename: 'smokeeditor.js'
+        filename: 'smoke_editor.js'
     },
     module: {
         loaders: [
