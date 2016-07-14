@@ -8214,7 +8214,7 @@
 	                'div',
 	                null,
 	                _react2.default.createElement(_RichTextEditor2.default, {
-	                    mode: this.props.mode,
+	                    mode: this.props.config.mode,
 	                    updateContent: this.onUpdateContent,
 	                    editorState: this.state.editorState
 	                }),
@@ -8259,12 +8259,13 @@
 	};
 
 	exports.default = SmokeEditor;
-	function SmokeEditorRender(element) {
+	function SmokeEditorRender(element, config) {
 
 	    // @todo: validar ACA -> ver "playControls" (hudson/js/components)
 	    var textarea = element.querySelector('textarea');
 	    var defaultValue = typeof textarea.value === 'undefined' ? '' : textarea.value;
 	    _reactDom2.default.render(_react2.default.createElement(SmokeEditor, {
+	        config: config,
 	        targetElement: element,
 	        defaultValue: defaultValue
 	    }), element);
@@ -8381,10 +8382,12 @@
 	                'div',
 	                { className: 'RichEditor-root' },
 	                _react2.default.createElement(BlockStyleControls, {
+	                    mode: this.props.mode,
 	                    editorState: editorState,
 	                    onToggle: this.toggleBlockType
 	                }),
 	                _react2.default.createElement(InlineStyleControls, {
+	                    mode: this.props.mode,
 	                    editorState: editorState,
 	                    onToggle: this.toggleInlineStyle
 	                }),
@@ -8464,13 +8467,16 @@
 	    return StyleButton;
 	}(_react2.default.Component);
 
-	var BLOCK_TYPES = [{ label: 'H1', style: 'header-one' }, { label: 'H2', style: 'header-two' }, { label: 'H3', style: 'header-three' }, { label: 'H4', style: 'header-four' }, { label: 'H5', style: 'header-five' }, { label: 'H6', style: 'header-six' }, { label: 'Blockquote', style: 'blockquote' }, { label: 'UL', style: 'unordered-list-item' }, { label: 'OL', style: 'ordered-list-item' }, { label: 'Code Block', style: 'code-block' }];
+	var BASIC_BLOCK_TYPES = [];
+	var ADVANCED_BLOCK_TYPES = [{ label: 'H1', style: 'header-one' }, { label: 'H2', style: 'header-two' }, { label: 'H3', style: 'header-three' }, { label: 'H4', style: 'header-four' }, { label: 'H5', style: 'header-five' }, { label: 'H6', style: 'header-six' }, { label: 'Blockquote', style: 'blockquote' }, { label: 'UL', style: 'unordered-list-item' }, { label: 'OL', style: 'ordered-list-item' }, { label: 'Code Block', style: 'code-block' }];
 
 	var BlockStyleControls = function BlockStyleControls(props) {
 	    var editorState = props.editorState;
 
 	    var selection = editorState.getSelection();
 	    var blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
+
+	    var BLOCK_TYPES = props.mode == 'basic' ? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES;
 
 	    return _react2.default.createElement(
 	        'div',
@@ -8487,10 +8493,12 @@
 	    );
 	};
 
-	var INLINE_STYLES = [{ label: 'Bold', style: 'BOLD' }, { label: 'Italic', style: 'ITALIC' }, { label: 'Underline', style: 'UNDERLINE' }, { label: 'Monospace', style: 'CODE' }];
+	var BASIC_INLINE_STYLES = [{ label: 'Bold', style: 'BOLD' }, { label: 'Italic', style: 'ITALIC' }];
+	var ADVANCED_INLINE_STYLES = [{ label: 'Bold', style: 'BOLD' }, { label: 'Italic', style: 'ITALIC' }, { label: 'Underline', style: 'UNDERLINE' }, { label: 'Monospace', style: 'CODE' }];
 
 	var InlineStyleControls = function InlineStyleControls(props) {
 	    var currentStyle = props.editorState.getCurrentInlineStyle();
+	    var INLINE_STYLES = props.mode == 'basic' ? BASIC_INLINE_STYLES : ADVANCED_INLINE_STYLES;
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'RichEditor-controls' },

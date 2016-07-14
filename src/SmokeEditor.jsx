@@ -76,7 +76,7 @@ export default class SmokeEditor extends React.Component {
         return (
             <div>
                 <Editor
-                    mode={this.props.mode}
+                    mode={this.props.config.mode}
                     updateContent={this.onUpdateContent}
                     editorState={this.state.editorState}
                 />
@@ -91,13 +91,14 @@ export default class SmokeEditor extends React.Component {
 
 // Export component as function
 // @todo: move this function to another place
-function SmokeEditorRender(element) {
+function SmokeEditorRender(element, config) {
 
     // @todo: validar ACA -> ver "playControls" (hudson/js/components)
     var textarea = element.querySelector('textarea');
     var defaultValue = (typeof textarea.value === 'undefined') ? '' : textarea.value ;
     ReactDOM.render(
         <SmokeEditor
+            config={config}
             targetElement={element}
             defaultValue={defaultValue}
         />,

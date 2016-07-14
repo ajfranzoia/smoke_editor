@@ -18,9 +18,12 @@
     <textarea name="body">Hola mundo</textarea>
 </div>
 
-<script src="/dist/smokeeditor.js"></script>
+<script src="/dist/smoke_editor.js"></script>
 <script>
-    SmokeEditorRender(document.getElementById('edit-body'));
+    var config = {
+        mode: 'advanced',
+    }
+    SmokeEditorRender(document.getElementById('edit-body'), config);
 </script>
 
 </body>

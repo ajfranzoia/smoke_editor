@@ -82,10 +82,12 @@ class RichTextEditor extends React.Component {
         return (
             <div className="RichEditor-root">
                 <BlockStyleControls
+                    mode={this.props.mode}
                     editorState={editorState}
                     onToggle={this.toggleBlockType}
                 />
                 <InlineStyleControls
+                    mode={this.props.mode}
                     editorState={editorState}
                     onToggle={this.toggleInlineStyle}
                 />
@@ -146,7 +148,9 @@ class StyleButton extends React.Component {
     }
 }
 
-const BLOCK_TYPES = [
+const BASIC_BLOCK_TYPES = [
+];
+const ADVANCED_BLOCK_TYPES = [
     {label: 'H1', style: 'header-one'},
     {label: 'H2', style: 'header-two'},
     {label: 'H3', style: 'header-three'},
@@ -167,6 +171,8 @@ const BlockStyleControls = (props) => {
         .getBlockForKey(selection.getStartKey())
         .getType();
 
+    const BLOCK_TYPES = (props.mode == 'basic')? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES ;
+
     return (
         <div className="RichEditor-controls">
             {BLOCK_TYPES.map((type) =>
@@ -182,7 +188,11 @@ const BlockStyleControls = (props) => {
     );
 };
 
-var INLINE_STYLES = [
+var BASIC_INLINE_STYLES = [
+    {label: 'Bold', style: 'BOLD'},
+    {label: 'Italic', style: 'ITALIC'},
+];
+var ADVANCED_INLINE_STYLES = [
     {label: 'Bold', style: 'BOLD'},
     {label: 'Italic', style: 'ITALIC'},
     {label: 'Underline', style: 'UNDERLINE'},
@@ -191,6 +201,7 @@ var INLINE_STYLES = [
 
 const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
+    const INLINE_STYLES = (props.mode == 'basic')? BASIC_INLINE_STYLES : ADVANCED_INLINE_STYLES ;
     return (
         <div className="RichEditor-controls">
             {INLINE_STYLES.map(type =>
