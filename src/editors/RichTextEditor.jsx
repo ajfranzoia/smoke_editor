@@ -152,6 +152,7 @@ const customBlockRendering = Map({
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
 
 /*
+@ref: https://facebook.github.io/draft-js/docs/advanced-topics-block-components.html#content
 @todo: ver como funciona esto para mapear componentes a los blockTypes
 function myBlockRenderer(contentBlock) {
     const type = contentBlock.getType();
