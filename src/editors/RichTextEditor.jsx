@@ -7,10 +7,15 @@ import {
     RichUtils,
     DefaultDraftBlockRenderMap,
 } from 'draft-js';
+import SubtitleComponent from "../components/Subtitle.jsx";
+
 
 import {stateFromHTML} from 'draft-js-import-html';
 import {stateToHTML} from 'draft-js-export-html';
 
+import immutable from 'immutable';
+
+const {Map} = immutable;
 
 class RichTextEditor extends React.Component {
     constructor(props) {
@@ -79,34 +84,87 @@ class RichTextEditor extends React.Component {
             }
         }
 
-        return (
-            <div className="RichEditor-root">
-                <BlockStyleControls
-                    mode={this.props.mode}
-                    editorState={editorState}
-                    onToggle={this.toggleBlockType}
-                />
-                <InlineStyleControls
-                    mode={this.props.mode}
-                    editorState={editorState}
-                    onToggle={this.toggleInlineStyle}
-                />
-                <div className={className} onClick={this.focus}>
-                    <Editor
-                        blockStyleFn={getBlockStyle}
-                        customStyleMap={styleMap}
+        if(this.props.mode == 'export'){
+            return (
+                <Editor
+                blockRenderMap={customBlockRendering}
+                //blockRendererFn={myBlockRenderer}
+                blockStyleFn={getBlockStyle}
+                customStyleMap={styleMap}
+                editorState={editorState}
+                placeholder=""
+                ref="editor"
+                readOnly={true}
+            />
+            );
+        } else {
+
+
+            return (
+                <div className="RichEditor-root">
+                    <BlockStyleControls
+                        mode={this.props.mode}
                         editorState={editorState}
-                        handleKeyCommand={this.handleKeyCommand}
-                        onChange={this.onChange}
-                        placeholder=""
-                        ref="editor"
-                        spellCheck={true}
+                        onToggle={this.toggleBlockType}
                     />
+                    <InlineStyleControls
+                        mode={this.props.mode}
+                        editorState={editorState}
+                        onToggle={this.toggleInlineStyle}
+                    />
+                    <div className={className} onClick={this.focus}>
+                        <Editor
+                            blockRenderMap={extendedBlockRenderMap}
+                            //blockRendererFn={myBlockRenderer}
+                            blockStyleFn={getBlockStyle}
+                            customStyleMap={styleMap}
+                            editorState={editorState}
+                            handleKeyCommand={this.handleKeyCommand}
+                            onChange={this.onChange}
+                            placeholder=""
+                            ref="editor"
+                            spellCheck={true}
+                        />
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
+
+
+/**
+ * @ref: https://github.com/facebook/draft-js/pull/387
+ */
+
+const customBlockRendering = Map({
+    'paragraph': {
+        element: 'p',
+    },
+    'unstyled': {
+        element: 'p',
+    },
+    'subtitle': {
+        element: 'h2',
+    },
+});
+
+const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
+
+/*
+@todo: ver como funciona esto para mapear componentes a los blockTypes
+function myBlockRenderer(contentBlock) {
+    const type = contentBlock.getType();
+    if (type === 'subtitle') {
+        return {
+            component: SubtitleComponent,
+            editable: false,
+            props: {
+                foo: 'bar',
+            },
+        };
+    }
+}*/
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -116,11 +174,15 @@ const styleMap = {
         fontSize: 16,
         padding: 2,
     },
+    SUBTITLE: {
+        backgroundColor: 'red',
+    },
 };
 
 function getBlockStyle(block) {
     switch (block.getType()) {
         case 'blockquote': return 'RichEditor-blockquote';
+        case 'subtitle': return 'subtitle';
         default: return null;
     }
 }
@@ -161,6 +223,7 @@ const ADVANCED_BLOCK_TYPES = [
     {label: 'UL', style: 'unordered-list-item'},
     {label: 'OL', style: 'ordered-list-item'},
     {label: 'Code Block', style: 'code-block'},
+    {label: 'Subtitle', style: 'subtitle'},
 ];
 
 const BlockStyleControls = (props) => {

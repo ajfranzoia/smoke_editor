@@ -2,16 +2,16 @@
 import Editor from './editors/RichTextEditor.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server'
+
 import {
     EditorState,
     ContentState,
     convertFromRaw,
+    DraftEditorContents,
     convertToRaw
 } from 'draft-js';
 
-
-import {stateFromHTML} from 'draft-js-import-html';
-import {stateToHTML} from 'draft-js-export-html';
 
 export default class SmokeEditor extends React.Component {
     constructor(props) {
@@ -39,11 +39,18 @@ export default class SmokeEditor extends React.Component {
             var editorState = EditorState.createEmpty();
         }
 
+        // @ref: https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
+        var exportedContent = ReactDOMServer.renderToStaticMarkup(
+            <Editor
+                mode="export"
+                editorState={editorState}
+            />
+        );
         // Set state
         this.state = {
             editorState: editorState,
             smokeJson: JSON.stringify(editorState),
-            smokeHtml: stateToHTML(editorState.getCurrentContent()),
+            smokeHtml: exportedContent,
             name: name,
             id: this.props.targetElement.id
         };
@@ -51,38 +58,33 @@ export default class SmokeEditor extends React.Component {
 
     onUpdateContent = (editorState) => {
 
-        let options = {
-            inlineStyles: {
-                // Override default element (`strong`).
-                BOLD: {element: 'b'},
-                ITALIC: {
-                    // Add custom attributes. You can also use React-style `className`.
-                    attributes: {class: 'foo'},
-                    // Use camel-case. Units (`px`) will be added where necessary.
-                    style: {fontSize: 12}
-                },
-                // Use a custom inline style. Default element is `span`.
-                RED: {style: {color: '#900'}},
-            },
-        };
+        var exportedContent = ReactDOMServer.renderToStaticMarkup(
+            <Editor
+                mode="export"
+                editorState={editorState}
+            />
+        );
 
         this.setState({
             smokeJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
-            smokeHtml: stateToHTML(editorState.getCurrentContent(), options)
+            smokeHtml: exportedContent
         });
     }
 
     render() {
+
+
         return (
             <div>
                 <Editor
                     mode={this.props.config.mode}
                     updateContent={this.onUpdateContent}
                     editorState={this.state.editorState}
+                    readOnly={false}
                 />
 
-                <input type="hidden" name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
-                <input type="hidden" name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
+                <input type="text" name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
+                <input type="text" name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
 
             </div>
         )
