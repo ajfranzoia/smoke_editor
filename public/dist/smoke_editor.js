@@ -8149,11 +8149,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
+	var _server = __webpack_require__(612);
+
+	var _server2 = _interopRequireDefault(_server);
+
 	var _draftJs = __webpack_require__(332);
-
-	var _draftJsImportHtml = __webpack_require__(597);
-
-	var _draftJsExportHtml = __webpack_require__(610);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8196,11 +8196,16 @@
 	            var editorState = _draftJs.EditorState.createEmpty();
 	        }
 
+	        // @ref: https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
+	        var exportedContent = _server2.default.renderToStaticMarkup(_react2.default.createElement(_RichTextEditor2.default, {
+	            mode: 'export',
+	            editorState: editorState
+	        }));
 	        // Set state
 	        _this.state = {
 	            editorState: editorState,
 	            smokeJson: JSON.stringify(editorState),
-	            smokeHtml: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent()),
+	            smokeHtml: exportedContent,
 	            name: name,
 	            id: _this.props.targetElement.id
 	        };
@@ -8210,16 +8215,18 @@
 	    _createClass(SmokeEditor, [{
 	        key: 'render',
 	        value: function render() {
+
 	            return _react2.default.createElement(
 	                'div',
 	                null,
 	                _react2.default.createElement(_RichTextEditor2.default, {
 	                    mode: this.props.config.mode,
 	                    updateContent: this.onUpdateContent,
-	                    editorState: this.state.editorState
+	                    editorState: this.state.editorState,
+	                    readOnly: false
 	                }),
-	                _react2.default.createElement('input', { type: 'hidden', name: "smoke-" + this.state.id + "-json", value: this.state.smokeJson }),
-	                _react2.default.createElement('input', { type: 'hidden', name: this.state.name, id: this.state.id, value: this.state.smokeHtml })
+	                _react2.default.createElement('input', { type: 'text', name: "smoke-" + this.state.id + "-json", value: this.state.smokeJson }),
+	                _react2.default.createElement('input', { type: 'text', name: this.state.name, id: this.state.id, value: this.state.smokeHtml })
 	            );
 	        }
 	    }]);
@@ -8236,24 +8243,14 @@
 
 	    this.onUpdateContent = function (editorState) {
 
-	        var options = {
-	            inlineStyles: {
-	                // Override default element (`strong`).
-	                BOLD: { element: 'b' },
-	                ITALIC: {
-	                    // Add custom attributes. You can also use React-style `className`.
-	                    attributes: { class: 'foo' },
-	                    // Use camel-case. Units (`px`) will be added where necessary.
-	                    style: { fontSize: 12 }
-	                },
-	                // Use a custom inline style. Default element is `span`.
-	                RED: { style: { color: '#900' } }
-	            }
-	        };
+	        var exportedContent = _server2.default.renderToStaticMarkup(_react2.default.createElement(_RichTextEditor2.default, {
+	            mode: 'export',
+	            editorState: editorState
+	        }));
 
 	        _this2.setState({
 	            smokeJson: JSON.stringify((0, _draftJs.convertToRaw)(editorState.getCurrentContent())),
-	            smokeHtml: (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent(), options)
+	            smokeHtml: exportedContent
 	        });
 	    };
 	};
@@ -8294,6 +8291,10 @@
 
 	var _draftJsExportHtml = __webpack_require__(610);
 
+	var _immutable = __webpack_require__(335);
+
+	var _immutable2 = _interopRequireDefault(_immutable);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -8301,6 +8302,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Map = _immutable2.default.Map;
 
 	var RichTextEditor = function (_React$Component) {
 	    _inherits(RichTextEditor, _React$Component);
@@ -8378,49 +8381,99 @@
 	                }
 	            }
 
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'RichEditor-root' },
-	                _react2.default.createElement(BlockStyleControls, {
-	                    mode: this.props.mode,
+	            if (this.props.mode == 'export') {
+	                return _react2.default.createElement(_draftJs.Editor, {
+	                    blockRenderMap: customBlockRendering
+	                    //blockRendererFn={myBlockRenderer}
+	                    , blockStyleFn: getBlockStyle,
+	                    customStyleMap: styleMap,
 	                    editorState: editorState,
-	                    onToggle: this.toggleBlockType
-	                }),
-	                _react2.default.createElement(InlineStyleControls, {
-	                    mode: this.props.mode,
-	                    editorState: editorState,
-	                    onToggle: this.toggleInlineStyle
-	                }),
-	                _react2.default.createElement(
+	                    placeholder: '',
+	                    ref: 'editor',
+	                    readOnly: true
+	                });
+	            } else {
+
+	                return _react2.default.createElement(
 	                    'div',
-	                    { className: className, onClick: this.focus },
-	                    _react2.default.createElement(_draftJs.Editor, {
-	                        blockStyleFn: getBlockStyle,
-	                        customStyleMap: styleMap,
+	                    { className: 'RichEditor-root' },
+	                    _react2.default.createElement(BlockStyleControls, {
+	                        mode: this.props.mode,
 	                        editorState: editorState,
-	                        handleKeyCommand: this.handleKeyCommand,
-	                        onChange: this.onChange,
-	                        placeholder: '',
-	                        ref: 'editor',
-	                        spellCheck: true
-	                    })
-	                )
-	            );
+	                        onToggle: this.toggleBlockType
+	                    }),
+	                    _react2.default.createElement(InlineStyleControls, {
+	                        mode: this.props.mode,
+	                        editorState: editorState,
+	                        onToggle: this.toggleInlineStyle
+	                    }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: className, onClick: this.focus },
+	                        _react2.default.createElement(_draftJs.Editor, {
+	                            blockRenderMap: extendedBlockRenderMap
+	                            //blockRendererFn={myBlockRenderer}
+	                            , blockStyleFn: getBlockStyle,
+	                            customStyleMap: styleMap,
+	                            editorState: editorState,
+	                            handleKeyCommand: this.handleKeyCommand,
+	                            onChange: this.onChange,
+	                            placeholder: '',
+	                            ref: 'editor',
+	                            spellCheck: true
+	                        })
+	                    )
+	                );
+	            }
 	        }
 	    }]);
 
 	    return RichTextEditor;
 	}(_react2.default.Component);
 
+	/**
+	 * @ref: https://github.com/facebook/draft-js/pull/387
+	 */
+
+	var customBlockRendering = Map({
+	    'paragraph': {
+	        element: 'p'
+	    },
+	    'unstyled': {
+	        element: 'p'
+	    },
+	    'subtitle': {
+	        element: 'h2'
+	    }
+	});
+
+	var extendedBlockRenderMap = _draftJs.DefaultDraftBlockRenderMap.merge(customBlockRendering);
+
+	/*
+	@todo: ver como funciona esto para mapear componentes a los blockTypes
+	function myBlockRenderer(contentBlock) {
+	    const type = contentBlock.getType();
+	    if (type === 'subtitle') {
+	        return {
+	            component: SubtitleComponent,
+	            editable: false,
+	            props: {
+	                foo: 'bar',
+	            },
+	        };
+	    }
+	}*/
+
 	// Custom overrides for "code" style.
-
-
 	var styleMap = {
 	    CODE: {
 	        backgroundColor: 'rgba(0, 0, 0, 0.05)',
 	        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
 	        fontSize: 16,
 	        padding: 2
+	    },
+	    SUBTITLE: {
+	        backgroundColor: 'red'
 	    }
 	};
 
@@ -8428,6 +8481,8 @@
 	    switch (block.getType()) {
 	        case 'blockquote':
 	            return 'RichEditor-blockquote';
+	        case 'subtitle':
+	            return 'subtitle';
 	        default:
 	            return null;
 	    }
@@ -8468,7 +8523,7 @@
 	}(_react2.default.Component);
 
 	var BASIC_BLOCK_TYPES = [];
-	var ADVANCED_BLOCK_TYPES = [{ label: 'H1', style: 'header-one' }, { label: 'H2', style: 'header-two' }, { label: 'H3', style: 'header-three' }, { label: 'H4', style: 'header-four' }, { label: 'H5', style: 'header-five' }, { label: 'H6', style: 'header-six' }, { label: 'Blockquote', style: 'blockquote' }, { label: 'UL', style: 'unordered-list-item' }, { label: 'OL', style: 'ordered-list-item' }, { label: 'Code Block', style: 'code-block' }];
+	var ADVANCED_BLOCK_TYPES = [{ label: 'H1', style: 'header-one' }, { label: 'H2', style: 'header-two' }, { label: 'H3', style: 'header-three' }, { label: 'H4', style: 'header-four' }, { label: 'H5', style: 'header-five' }, { label: 'H6', style: 'header-six' }, { label: 'Blockquote', style: 'blockquote' }, { label: 'UL', style: 'unordered-list-item' }, { label: 'OL', style: 'ordered-list-item' }, { label: 'Code Block', style: 'code-block' }, { label: 'Subtitle', style: 'subtitle' }];
 
 	var BlockStyleControls = function BlockStyleControls(props) {
 	    var editorState = props.editorState;
@@ -48386,6 +48441,161 @@
 	function stateToHTML(content) {
 	  return new MarkupGenerator(content).generate();
 	}
+
+/***/ },
+/* 612 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(613);
+
+
+/***/ },
+/* 613 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactDOMServer
+	 */
+
+	'use strict';
+
+	var ReactDefaultInjection = __webpack_require__(385);
+	var ReactServerRendering = __webpack_require__(614);
+	var ReactVersion = __webpack_require__(330);
+
+	ReactDefaultInjection.inject();
+
+	var ReactDOMServer = {
+	  renderToString: ReactServerRendering.renderToString,
+	  renderToStaticMarkup: ReactServerRendering.renderToStaticMarkup,
+	  version: ReactVersion
+	};
+
+	module.exports = ReactDOMServer;
+
+/***/ },
+/* 614 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactServerRendering
+	 */
+	'use strict';
+
+	var _prodInvariant = __webpack_require__(306);
+
+	var ReactDOMContainerInfo = __webpack_require__(512);
+	var ReactDefaultBatchingStrategy = __webpack_require__(485);
+	var ReactElement = __webpack_require__(308);
+	var ReactInstrumentation = __webpack_require__(408);
+	var ReactMarkupChecksum = __webpack_require__(514);
+	var ReactReconciler = __webpack_require__(405);
+	var ReactServerBatchingStrategy = __webpack_require__(615);
+	var ReactServerRenderingTransaction = __webpack_require__(477);
+	var ReactUpdates = __webpack_require__(402);
+
+	var emptyObject = __webpack_require__(318);
+	var instantiateReactComponent = __webpack_require__(470);
+	var invariant = __webpack_require__(307);
+
+	/**
+	 * @param {ReactElement} element
+	 * @return {string} the HTML markup
+	 */
+	function renderToStringImpl(element, makeStaticMarkup) {
+	  var transaction;
+	  try {
+	    ReactUpdates.injection.injectBatchingStrategy(ReactServerBatchingStrategy);
+
+	    transaction = ReactServerRenderingTransaction.getPooled(makeStaticMarkup);
+
+	    return transaction.perform(function () {
+	      var componentInstance = instantiateReactComponent(element, true);
+	      var markup = ReactReconciler.mountComponent(componentInstance, transaction, null, ReactDOMContainerInfo(), emptyObject);
+	      if (process.env.NODE_ENV !== 'production') {
+	        ReactInstrumentation.debugTool.onUnmountComponent(componentInstance._debugID);
+	      }
+	      if (!makeStaticMarkup) {
+	        markup = ReactMarkupChecksum.addChecksumToMarkup(markup);
+	      }
+	      return markup;
+	    }, null);
+	  } finally {
+	    ReactServerRenderingTransaction.release(transaction);
+	    // Revert to the DOM batching strategy since these two renderers
+	    // currently share these stateful modules.
+	    ReactUpdates.injection.injectBatchingStrategy(ReactDefaultBatchingStrategy);
+	  }
+	}
+
+	/**
+	 * Render a ReactElement to its initial HTML. This should only be used on the
+	 * server.
+	 * See https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostring
+	 */
+	function renderToString(element) {
+	  !ReactElement.isValidElement(element) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'renderToString(): You must pass a valid ReactElement.') : _prodInvariant('46') : void 0;
+	  return renderToStringImpl(element, false);
+	}
+
+	/**
+	 * Similar to renderToString, except this doesn't create extra DOM attributes
+	 * such as data-react-id that React uses internally.
+	 * See https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
+	 */
+	function renderToStaticMarkup(element) {
+	  !ReactElement.isValidElement(element) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'renderToStaticMarkup(): You must pass a valid ReactElement.') : _prodInvariant('47') : void 0;
+	  return renderToStringImpl(element, true);
+	}
+
+	module.exports = {
+	  renderToString: renderToString,
+	  renderToStaticMarkup: renderToStaticMarkup
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(295)))
+
+/***/ },
+/* 615 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2014-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactServerBatchingStrategy
+	 */
+
+	'use strict';
+
+	var ReactServerBatchingStrategy = {
+	  isBatchingUpdates: false,
+	  batchedUpdates: function (callback) {
+	    // Don't do anything here. During the server rendering we don't want to
+	    // schedule any updates. We will simply ignore them.
+	  }
+	};
+
+	module.exports = ReactServerBatchingStrategy;
 
 /***/ }
 /******/ ]);
