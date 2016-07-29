@@ -7,7 +7,8 @@ import {
     RichUtils,
     DefaultDraftBlockRenderMap,
 } from 'draft-js';
-import SubtitleComponent from "../components/Subtitle.jsx";
+import MediaComponent from './MediaComponent.jsx';
+import insertMedia from '../Helpers/insertMedia.jsx';
 
 
 import {stateFromHTML} from 'draft-js-import-html';
@@ -16,6 +17,8 @@ import {stateToHTML} from 'draft-js-export-html';
 import immutable from 'immutable';
 
 const {Map} = immutable;
+
+
 
 class RichTextEditor extends React.Component {
     constructor(props) {
@@ -36,6 +39,38 @@ class RichTextEditor extends React.Component {
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+
+
+        this._blockRenderer = (block) => {
+            if (block.getType() === 'atomic') {
+                return {
+                    component: MediaComponent,
+                    editable: false,
+                    props: {
+                        /*onStartEdit: (blockKey) => {
+                            var {liveTeXEdits} = this.state;
+                            this.setState({liveTeXEdits: liveTeXEdits.set(blockKey, true)});
+                        },
+                        onFinishEdit: (blockKey) => {
+                            var {liveTeXEdits} = this.state;
+                            this.setState({liveTeXEdits: liveTeXEdits.remove(blockKey)});
+                        },
+                        onRemove: (blockKey) => this._removeTeX(blockKey),
+                        */
+                    },
+                };
+            }
+            return null;
+        };
+
+        this._insertMedia = () => {
+            this.setState({
+                //liveTeXEdits: Map(),
+                editorState: insertMedia(this.state.editorState),
+            });
+        };
+
+
 
     }
 
@@ -112,10 +147,11 @@ class RichTextEditor extends React.Component {
                         editorState={editorState}
                         onToggle={this.toggleInlineStyle}
                     />
+
                     <div className={className} onClick={this.focus}>
                         <Editor
                             blockRenderMap={extendedBlockRenderMap}
-                            //blockRendererFn={myBlockRenderer}
+                            blockRendererFn={this._blockRenderer}
                             blockStyleFn={getBlockStyle}
                             customStyleMap={styleMap}
                             editorState={editorState}
@@ -126,6 +162,10 @@ class RichTextEditor extends React.Component {
                             spellCheck={true}
                         />
                     </div>
+
+                    <button onClick={this._insertMedia} className="Media-insert">
+                        {'Insert new Media'}
+                    </button>
                 </div>
             );
         }
@@ -151,21 +191,21 @@ const customBlockRendering = Map({
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
 
-/*
-@ref: https://facebook.github.io/draft-js/docs/advanced-topics-block-components.html#content
-@todo: ver como funciona esto para mapear componentes a los blockTypes
+
+
+//@todo: ver como funciona esto para mapear componentes a los blockTypes
 function myBlockRenderer(contentBlock) {
     const type = contentBlock.getType();
-    if (type === 'subtitle') {
+    if (type === 'atomic') {
         return {
-            component: SubtitleComponent,
+            component: MediaComponent,
             editable: false,
             props: {
                 foo: 'bar',
             },
         };
     }
-}*/
+}
 
 // Custom overrides for "code" style.
 const styleMap = {

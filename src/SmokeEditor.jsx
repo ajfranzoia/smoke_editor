@@ -1,5 +1,5 @@
 //import Editor from './editors/MyMegadraft.jsx';
-import Editor from './editors/RichTextEditor.jsx';
+import Editor from './components/RichTextEditor.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server'
@@ -38,6 +38,9 @@ export default class SmokeEditor extends React.Component {
         } else {
             var editorState = EditorState.createEmpty();
         }
+
+
+        console.log(editorState);
 
         // @ref: https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
         var exportedContent = ReactDOMServer.renderToStaticMarkup(
