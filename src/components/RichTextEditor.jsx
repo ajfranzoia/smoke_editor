@@ -7,8 +7,8 @@ import {
     RichUtils,
     DefaultDraftBlockRenderMap,
 } from 'draft-js';
-import MediaComponent from './MediaComponent.jsx';
-import insertMedia from '../Helpers/insertMedia.jsx';
+import KalturaComponent from './KalturaComponent.jsx';
+import insertKaltura from '../Helpers/insertKaltura.jsx';
 
 
 import {stateFromHTML} from 'draft-js-import-html';
@@ -44,7 +44,7 @@ class RichTextEditor extends React.Component {
         this._blockRenderer = (block) => {
             if (block.getType() === 'atomic') {
                 return {
-                    component: MediaComponent,
+                    component: KalturaComponent,
                     editable: false,
                     props: {
                         /*onStartEdit: (blockKey) => {
@@ -63,10 +63,10 @@ class RichTextEditor extends React.Component {
             return null;
         };
 
-        this._insertMedia = () => {
+        this._insertKaltura = () => {
             this.setState({
                 //liveTeXEdits: Map(),
-                editorState: insertMedia(this.state.editorState),
+                editorState: insertKaltura(this.state.editorState),
             });
         };
 
@@ -141,6 +141,7 @@ class RichTextEditor extends React.Component {
                         mode={this.props.mode}
                         editorState={editorState}
                         onToggle={this.toggleBlockType}
+                        insertKaltura={this._insertKaltura}
                     />
                     <InlineStyleControls
                         mode={this.props.mode}
@@ -163,9 +164,6 @@ class RichTextEditor extends React.Component {
                         />
                     </div>
 
-                    <button onClick={this._insertMedia} className="Media-insert">
-                        {'Insert new Media'}
-                    </button>
                 </div>
             );
         }
@@ -191,21 +189,6 @@ const customBlockRendering = Map({
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
 
-
-
-//@todo: ver como funciona esto para mapear componentes a los blockTypes
-function myBlockRenderer(contentBlock) {
-    const type = contentBlock.getType();
-    if (type === 'atomic') {
-        return {
-            component: MediaComponent,
-            editable: false,
-            props: {
-                foo: 'bar',
-            },
-        };
-    }
-}
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -288,6 +271,9 @@ const BlockStyleControls = (props) => {
                     style={type.style}
                 />
             )}
+            <span className="RichEditor-styleButton" onMouseDown={props.insertKaltura}>
+              Video Kaltura
+            </span>
         </div>
     );
 };

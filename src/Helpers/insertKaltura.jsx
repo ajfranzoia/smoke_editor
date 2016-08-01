@@ -20,7 +20,7 @@ import {
 } from 'draft-js';
 
 
-export default function insertMedia(editorState) {
+export default function insertKaltura(editorState) {
 
 
   const pid = 'zaraza';

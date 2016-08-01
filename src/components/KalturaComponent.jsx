@@ -2,7 +2,7 @@ import React from 'react';
 import {Entity} from 'draft-js';
 import KalturaFactory from '../modules/Kaltura/js/kaltura-factory.jsx';
 
-export default class MediaComponent extends React.Component {
+export default class KalturaComponent extends React.Component {
 
 
     componentDidMount = () => {

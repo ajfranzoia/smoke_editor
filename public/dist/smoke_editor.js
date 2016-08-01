@@ -8289,13 +8289,13 @@
 
 	var _draftJs = __webpack_require__(332);
 
-	var _MediaComponent = __webpack_require__(597);
+	var _KalturaComponent = __webpack_require__(597);
 
-	var _MediaComponent2 = _interopRequireDefault(_MediaComponent);
+	var _KalturaComponent2 = _interopRequireDefault(_KalturaComponent);
 
-	var _insertMedia = __webpack_require__(624);
+	var _insertKaltura = __webpack_require__(624);
 
-	var _insertMedia2 = _interopRequireDefault(_insertMedia);
+	var _insertKaltura2 = _interopRequireDefault(_insertKaltura);
 
 	var _draftJsImportHtml = __webpack_require__(625);
 
@@ -8348,7 +8348,7 @@
 	        _this._blockRenderer = function (block) {
 	            if (block.getType() === 'atomic') {
 	                return {
-	                    component: _MediaComponent2.default,
+	                    component: _KalturaComponent2.default,
 	                    editable: false,
 	                    props: {
 	                        /*onStartEdit: (blockKey) => {
@@ -8367,10 +8367,10 @@
 	            return null;
 	        };
 
-	        _this._insertMedia = function () {
+	        _this._insertKaltura = function () {
 	            _this.setState({
 	                //liveTeXEdits: Map(),
-	                editorState: (0, _insertMedia2.default)(_this.state.editorState)
+	                editorState: (0, _insertKaltura2.default)(_this.state.editorState)
 	            });
 	        };
 
@@ -8439,7 +8439,8 @@
 	                    _react2.default.createElement(BlockStyleControls, {
 	                        mode: this.props.mode,
 	                        editorState: editorState,
-	                        onToggle: this.toggleBlockType
+	                        onToggle: this.toggleBlockType,
+	                        insertKaltura: this._insertKaltura
 	                    }),
 	                    _react2.default.createElement(InlineStyleControls, {
 	                        mode: this.props.mode,
@@ -8461,11 +8462,6 @@
 	                            ref: 'editor',
 	                            spellCheck: true
 	                        })
-	                    ),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { onClick: this._insertMedia, className: 'Media-insert' },
-	                        'Insert new Media'
 	                    )
 	                );
 	            }
@@ -8492,20 +8488,6 @@
 	});
 
 	var extendedBlockRenderMap = _draftJs.DefaultDraftBlockRenderMap.merge(customBlockRendering);
-
-	//@todo: ver como funciona esto para mapear componentes a los blockTypes
-	function myBlockRenderer(contentBlock) {
-	    var type = contentBlock.getType();
-	    if (type === 'atomic') {
-	        return {
-	            component: _MediaComponent2.default,
-	            editable: false,
-	            props: {
-	                foo: 'bar'
-	            }
-	        };
-	    }
-	}
 
 	// Custom overrides for "code" style.
 	var styleMap = {
@@ -8587,7 +8569,12 @@
 	                onToggle: props.onToggle,
 	                style: type.style
 	            });
-	        })
+	        }),
+	        _react2.default.createElement(
+	            'span',
+	            { className: 'RichEditor-styleButton', onMouseDown: props.insertKaltura },
+	            'Video Kaltura'
+	        )
 	    );
 	};
 
@@ -46886,26 +46873,26 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var MediaComponent = function (_React$Component) {
-	    _inherits(MediaComponent, _React$Component);
+	var KalturaComponent = function (_React$Component) {
+	    _inherits(KalturaComponent, _React$Component);
 
-	    function MediaComponent() {
+	    function KalturaComponent() {
 	        var _Object$getPrototypeO;
 
 	        var _temp, _this, _ret;
 
-	        _classCallCheck(this, MediaComponent);
+	        _classCallCheck(this, KalturaComponent);
 
 	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	            args[_key] = arguments[_key];
 	        }
 
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(MediaComponent)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.componentDidMount = function () {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(KalturaComponent)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.componentDidMount = function () {
 	            _kalturaFactory2.default.makeKaltura();
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
-	    _createClass(MediaComponent, [{
+	    _createClass(KalturaComponent, [{
 	        key: 'render',
 	        value: function render() {
 	            var block = this.props.block;
@@ -46929,10 +46916,10 @@
 	        }
 	    }]);
 
-	    return MediaComponent;
+	    return KalturaComponent;
 	}(_react2.default.Component);
 
-	exports.default = MediaComponent;
+	exports.default = KalturaComponent;
 
 /***/ },
 /* 598 */
@@ -48632,11 +48619,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = insertMedia;
+	exports.default = insertKaltura;
 
 	var _draftJs = __webpack_require__(332);
 
-	function insertMedia(editorState) {
+	function insertKaltura(editorState) {
 
 	  var pid = 'zaraza';
 	  var entryId = window.prompt('Enter a Kaltura ID');
