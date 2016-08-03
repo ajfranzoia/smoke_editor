@@ -260,6 +260,16 @@ const BlockStyleControls = (props) => {
 
     const BLOCK_TYPES = (props.mode == 'basic')? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES ;
 
+    if(props.mode == 'basic') {
+        var kalturaButton = '';
+    } else {
+        var kalturaButton = <span className="RichEditor-styleButton" onMouseDown={props.insertKaltura}>
+              Video Kaltura
+            </span>
+    }
+
+
+
     return (
         <div className="RichEditor-controls">
             {BLOCK_TYPES.map((type) =>
@@ -271,9 +281,7 @@ const BlockStyleControls = (props) => {
                     style={type.style}
                 />
             )}
-            <span className="RichEditor-styleButton" onMouseDown={props.insertKaltura}>
-              Video Kaltura
-            </span>
+            {kalturaButton}
         </div>
     );
 };

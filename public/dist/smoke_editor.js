@@ -45,7 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(299);
+	__webpack_require__(299);
+	module.exports = __webpack_require__(643);
 
 
 /***/ },
@@ -8145,13 +8146,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(380);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _server = __webpack_require__(640);
-
-	var _server2 = _interopRequireDefault(_server);
+	var _draftJsExportHtml = __webpack_require__(638);
 
 	var _draftJs = __webpack_require__(332);
 
@@ -8161,7 +8156,8 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import Editor from './editors/MyMegadraft.jsx';
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import ReactDOMServer from 'react-dom/server'
 
 
 	var SmokeEditor = function (_React$Component) {
@@ -8190,20 +8186,21 @@
 
 	        // Create the editorState
 	        if (props.defaultValue.length > 0) {
-	            //var contentState = stateFromHTML(props.defaultValue);
-	            var editorState = _draftJs.EditorState.createWithContent(_draftJs.ContentState.createFromText(props.defaultValue));
+	            var contentBlocks = (0, _draftJs.convertFromHTML)(props.defaultValue);
+	            var contentState = _draftJs.ContentState.createFromBlockArray(contentBlocks);
+	            var editorState = _draftJs.EditorState.createWithContent(contentState);
 	        } else {
 	            var editorState = _draftJs.EditorState.createEmpty();
 	        }
 
-	        console.log(editorState);
-
 	        // @ref: https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
-	        var exportedContent = _server2.default.renderToStaticMarkup(_react2.default.createElement(_RichTextEditor2.default, {
-	            mode: 'export',
-	            editorState: editorState
-	        }));
-	        // Set state
+	        /*var exportedContent = ReactDOMServer.renderToStaticMarkup(
+	             <Editor
+	                 mode="export"
+	                 editorState={editorState}
+	             />
+	         );*/
+	        var exportedContent = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent());
 	        _this.state = {
 	            editorState: editorState,
 	            smokeJson: JSON.stringify(editorState),
@@ -8236,20 +8233,18 @@
 	    return SmokeEditor;
 	}(_react2.default.Component);
 
-	// Export component as function
-	// @todo: move this function to another place
-
-
 	var _initialiseProps = function _initialiseProps() {
 	    var _this2 = this;
 
 	    this.onUpdateContent = function (editorState) {
 
-	        var exportedContent = _server2.default.renderToStaticMarkup(_react2.default.createElement(_RichTextEditor2.default, {
-	            mode: 'export',
-	            editorState: editorState
-	        }));
-
+	        /*var exportedContent = ReactDOMServer.renderToStaticMarkup(
+	            <Editor
+	                mode="export"
+	                editorState={editorState}
+	            />
+	        );*/
+	        var exportedContent = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent());
 	        _this2.setState({
 	            smokeJson: JSON.stringify((0, _draftJs.convertToRaw)(editorState.getCurrentContent())),
 	            smokeHtml: exportedContent
@@ -8258,18 +8253,6 @@
 	};
 
 	exports.default = SmokeEditor;
-	function SmokeEditorRender(element, config) {
-
-	    // @todo: validar ACA -> ver "playControls" (hudson/js/components)
-	    var textarea = element.querySelector('textarea');
-	    var defaultValue = typeof textarea.value === 'undefined' ? '' : textarea.value;
-	    _reactDom2.default.render(_react2.default.createElement(SmokeEditor, {
-	        config: config,
-	        targetElement: element,
-	        defaultValue: defaultValue
-	    }), element);
-	}
-	window.SmokeEditorRender = SmokeEditorRender;
 
 /***/ },
 /* 300 */
@@ -8558,6 +8541,16 @@
 
 	    var BLOCK_TYPES = props.mode == 'basic' ? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES;
 
+	    if (props.mode == 'basic') {
+	        var kalturaButton = '';
+	    } else {
+	        var kalturaButton = _react2.default.createElement(
+	            'span',
+	            { className: 'RichEditor-styleButton', onMouseDown: props.insertKaltura },
+	            'Video Kaltura'
+	        );
+	    }
+
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'RichEditor-controls' },
@@ -8570,11 +8563,7 @@
 	                style: type.style
 	            });
 	        }),
-	        _react2.default.createElement(
-	            'span',
-	            { className: 'RichEditor-styleButton', onMouseDown: props.insertKaltura },
-	            'Video Kaltura'
-	        )
+	        kalturaButton
 	    );
 	};
 
@@ -46888,7 +46877,7 @@
 	        }
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(KalturaComponent)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.componentDidMount = function () {
-	            _kalturaFactory2.default.makeKaltura();
+	            //KalturaFactory.makeKaltura();
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
@@ -48625,15 +48614,13 @@
 
 	function insertKaltura(editorState) {
 
-	  var pid = 'zaraza';
 	  var entryId = window.prompt('Enter a Kaltura ID');
 
 	  if (!entryId) {
 	    return;
 	  }
 
-	  var entityKey = _draftJs.Entity.create('TOKEN', 'IMMUTABLE', {
-	    pid: pid,
+	  var entityKey = _draftJs.Entity.create('KALTURA', 'IMMUTABLE', {
 	    entryId: entryId
 	  });
 
@@ -49830,17 +49817,33 @@
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _ENTITY_ATTR_MAP, _DATA_TO_ATTR;
+	var _DEFAULT_STYLE_MAP, _ENTITY_ATTR_MAP, _DATA_TO_ATTR;
 
 	exports.default = stateToHTML;
+
+	var _combineOrderedStyles3 = __webpack_require__(640);
+
+	var _combineOrderedStyles4 = _interopRequireDefault(_combineOrderedStyles3);
+
+	var _normalizeAttributes = __webpack_require__(641);
+
+	var _normalizeAttributes2 = _interopRequireDefault(_normalizeAttributes);
+
+	var _styleToCSS = __webpack_require__(642);
+
+	var _styleToCSS2 = _interopRequireDefault(_styleToCSS);
 
 	var _draftJs = __webpack_require__(332);
 
 	var _draftJsUtils = __webpack_require__(630);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49855,6 +49858,13 @@
 
 	var INDENT = '  ';
 	var BREAK = '<br>';
+	var DATA_ATTRIBUTE = /^data-([a-z0-9-]+)$/;
+
+	var DEFAULT_STYLE_MAP = (_DEFAULT_STYLE_MAP = {}, _defineProperty(_DEFAULT_STYLE_MAP, BOLD, { element: 'strong' }), _defineProperty(_DEFAULT_STYLE_MAP, CODE, { element: 'code' }), _defineProperty(_DEFAULT_STYLE_MAP, ITALIC, { element: 'em' }), _defineProperty(_DEFAULT_STYLE_MAP, STRIKETHROUGH, { element: 'del' }), _defineProperty(_DEFAULT_STYLE_MAP, UNDERLINE, { element: 'ins' }), _DEFAULT_STYLE_MAP);
+
+	// Order: inner-most style to outer-most.
+	// Examle: <em><strong>foo</strong></em>
+	var DEFAULT_STYLE_ORDER = [BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, CODE];
 
 	// Map entity data to element attributes.
 	var ENTITY_ATTR_MAP = (_ENTITY_ATTR_MAP = {}, _defineProperty(_ENTITY_ATTR_MAP, _draftJsUtils.ENTITY_TYPE.LINK, { url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class' }), _defineProperty(_ENTITY_ATTR_MAP, _draftJsUtils.ENTITY_TYPE.IMAGE, { src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class' }), _ENTITY_ATTR_MAP);
@@ -49876,6 +49886,8 @@
 	      if (attrMap.hasOwnProperty(dataKey)) {
 	        var attrKey = attrMap[dataKey];
 	        attrs[attrKey] = dataValue;
+	      } else if (DATA_ATTRIBUTE.test(dataKey)) {
+	        attrs[dataKey] = dataValue;
 	      }
 	    }
 	  } catch (err) {
@@ -49910,6 +49922,8 @@
 	      if (attrMap.hasOwnProperty(dataKey)) {
 	        var attrKey = attrMap[dataKey];
 	        attrs[attrKey] = dataValue;
+	      } else if (DATA_ATTRIBUTE.test(dataKey)) {
+	        attrs[dataKey] = dataValue;
 	      }
 	    }
 	  } catch (err) {
@@ -49953,6 +49967,8 @@
 	      return ['blockquote'];
 	    case _draftJsUtils.BLOCK_TYPE.CODE:
 	      return ['pre', 'code'];
+	    case _draftJsUtils.BLOCK_TYPE.ATOMIC:
+	      return ['figure'];
 	    default:
 	      return ['p'];
 	  }
@@ -49970,11 +49986,29 @@
 	}
 
 	var MarkupGenerator = function () {
-	  function MarkupGenerator(contentState) {
+	  // These are related to state.
+
+	  function MarkupGenerator(contentState, options) {
 	    _classCallCheck(this, MarkupGenerator);
 
+	    if (options == null) {
+	      options = {};
+	    }
 	    this.contentState = contentState;
+	    this.options = options;
+
+	    var _combineOrderedStyles = (0, _combineOrderedStyles4.default)(options.inlineStyles, [DEFAULT_STYLE_MAP, DEFAULT_STYLE_ORDER]);
+
+	    var _combineOrderedStyles2 = _slicedToArray(_combineOrderedStyles, 2);
+
+	    var inlineStyles = _combineOrderedStyles2[0];
+	    var styleOrder = _combineOrderedStyles2[1];
+
+	    this.inlineStyles = inlineStyles;
+	    this.styleOrder = styleOrder;
 	  }
+	  // These are related to user-defined options.
+
 
 	  _createClass(MarkupGenerator, [{
 	    key: 'generate',
@@ -49994,6 +50028,8 @@
 	  }, {
 	    key: 'processBlock',
 	    value: function processBlock() {
+	      var blockRenderers = this.options.blockRenderers;
+
 	      var block = this.blocks[this.currentBlock];
 	      var blockType = block.getType();
 	      var newWrapperTag = getWrapperTag(blockType);
@@ -50006,6 +50042,16 @@
 	        }
 	      }
 	      this.indent();
+	      // Allow blocks to be rendered using a custom renderer.
+	      var customRenderer = blockRenderers != null && blockRenderers.hasOwnProperty(blockType) ? blockRenderers[blockType] : null;
+	      var customRendererOutput = customRenderer ? customRenderer(block) : null;
+	      // Renderer can return null, which will cause processing to continue as normal.
+	      if (customRendererOutput != null) {
+	        this.output.push(customRendererOutput);
+	        this.output.push('\n');
+	        this.currentBlock += 1;
+	        return;
+	      }
 	      this.writeStartTag(blockType);
 	      this.output.push(this.renderBlockContent(block));
 	      // Look ahead and see if we will nest list.
@@ -50133,6 +50179,8 @@
 	  }, {
 	    key: 'renderBlockContent',
 	    value: function renderBlockContent(block) {
+	      var _this = this;
+
 	      var blockType = block.getType();
 	      var text = block.getText();
 	      if (text === '') {
@@ -50152,27 +50200,55 @@
 	          var _ref4 = _slicedToArray(_ref3, 2);
 
 	          var text = _ref4[0];
-	          var style = _ref4[1];
+	          var styleSet = _ref4[1];
 
 	          var content = encodeContent(text);
-	          // These are reverse alphabetical by tag name.
-	          if (style.has(BOLD)) {
-	            content = '<strong>' + content + '</strong>';
+	          var _iteratorNormalCompletion5 = true;
+	          var _didIteratorError5 = false;
+	          var _iteratorError5 = undefined;
+
+	          try {
+	            for (var _iterator5 = _this.styleOrder[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	              var _styleName = _step5.value;
+
+	              // If our block type is CODE then don't wrap inline code elements.
+	              if (_styleName === CODE && blockType === _draftJsUtils.BLOCK_TYPE.CODE) {
+	                continue;
+	              }
+	              if (styleSet.has(_styleName)) {
+	                var _inlineStyles$_styleN = _this.inlineStyles[_styleName];
+	                var _element = _inlineStyles$_styleN.element;
+	                var _attributes = _inlineStyles$_styleN.attributes;
+	                var _style = _inlineStyles$_styleN.style;
+
+	                if (_element == null) {
+	                  _element = 'span';
+	                }
+	                // Normalize `className` -> `class`, etc.
+	                _attributes = (0, _normalizeAttributes2.default)(_attributes);
+	                if (_style != null) {
+	                  var styleAttr = (0, _styleToCSS2.default)(_style);
+	                  _attributes = _attributes == null ? { style: styleAttr } : _extends({}, _attributes, { style: styleAttr });
+	                }
+	                var attrString = stringifyAttrs(_attributes);
+	                content = '<' + _element + attrString + '>' + content + '</' + _element + '>';
+	              }
+	            }
+	          } catch (err) {
+	            _didIteratorError5 = true;
+	            _iteratorError5 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	                _iterator5.return();
+	              }
+	            } finally {
+	              if (_didIteratorError5) {
+	                throw _iteratorError5;
+	              }
+	            }
 	          }
-	          if (style.has(UNDERLINE)) {
-	            content = '<ins>' + content + '</ins>';
-	          }
-	          if (style.has(ITALIC)) {
-	            content = '<em>' + content + '</em>';
-	          }
-	          if (style.has(STRIKETHROUGH)) {
-	            content = '<del>' + content + '</del>';
-	          }
-	          if (style.has(CODE)) {
-	            // If our block type is CODE then we are already wrapping the whole
-	            // block in a `<code>` so don't wrap inline code elements.
-	            content = blockType === _draftJsUtils.BLOCK_TYPE.CODE ? content : '<code>' + content + '</code>';
-	          }
+
 	          return content;
 	        }).join('');
 	        var entity = entityKey ? _draftJs.Entity.get(entityKey) : null;
@@ -50180,12 +50256,12 @@
 	        var entityType = entity == null ? null : entity.getType().toUpperCase();
 	        if (entityType != null && entityType === _draftJsUtils.ENTITY_TYPE.LINK) {
 	          var attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-	          var strAttrs = stringifyAttrs(attrs);
-	          return '<a' + strAttrs + '>' + content + '</a>';
+	          var attrString = stringifyAttrs(attrs);
+	          return '<a' + attrString + '>' + content + '</a>';
 	        } else if (entityType != null && entityType === _draftJsUtils.ENTITY_TYPE.IMAGE) {
 	          var _attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-	          var _strAttrs = stringifyAttrs(_attrs);
-	          return '<img' + _strAttrs + '/>';
+	          var _attrString = stringifyAttrs(_attrs);
+	          return '<img' + _attrString + '/>';
 	        } else {
 	          return content;
 	        }
@@ -50216,30 +50292,30 @@
 	    return '';
 	  }
 	  var parts = [];
-	  var _iteratorNormalCompletion5 = true;
-	  var _didIteratorError5 = false;
-	  var _iteratorError5 = undefined;
+	  var _iteratorNormalCompletion6 = true;
+	  var _didIteratorError6 = false;
+	  var _iteratorError6 = undefined;
 
 	  try {
-	    for (var _iterator5 = Object.keys(attrs)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	      var attrKey = _step5.value;
+	    for (var _iterator6 = Object.keys(attrs)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	      var name = _step6.value;
 
-	      var attrValue = attrs[attrKey];
-	      if (attrValue != null) {
-	        parts.push(' ' + attrKey + '="' + encodeAttr(attrValue + '') + '"');
+	      var value = attrs[name];
+	      if (value != null) {
+	        parts.push(' ' + name + '="' + encodeAttr(value + '') + '"');
 	      }
 	    }
 	  } catch (err) {
-	    _didIteratorError5 = true;
-	    _iteratorError5 = err;
+	    _didIteratorError6 = true;
+	    _iteratorError6 = err;
 	  } finally {
 	    try {
-	      if (!_iteratorNormalCompletion5 && _iterator5.return) {
-	        _iterator5.return();
+	      if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	        _iterator6.return();
 	      }
 	    } finally {
-	      if (_didIteratorError5) {
-	        throw _iteratorError5;
+	      if (_didIteratorError6) {
+	        throw _iteratorError6;
 	      }
 	    }
 	  }
@@ -50265,164 +50341,214 @@
 	  return text.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
 	}
 
-	function stateToHTML(content) {
-	  return new MarkupGenerator(content).generate();
+	function stateToHTML(content, options) {
+	  return new MarkupGenerator(content, options).generate();
 	}
 
 /***/ },
 /* 640 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
-	module.exports = __webpack_require__(641);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function combineOrderedStyles(customMap, defaults) {
+	  if (customMap == null) {
+	    return defaults;
+	  }
+
+	  var _defaults = _slicedToArray(defaults, 2);
+
+	  var defaultStyleMap = _defaults[0];
+	  var defaultStyleOrder = _defaults[1];
+
+	  var styleMap = _extends({}, defaultStyleMap);
+	  var styleOrder = [].concat(_toConsumableArray(defaultStyleOrder));
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = Object.keys(customMap)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var _styleName = _step.value;
+
+	      if (defaultStyleMap.hasOwnProperty(_styleName)) {
+	        var defaultStyles = defaultStyleMap[_styleName];
+	        styleMap[_styleName] = _extends({}, defaultStyles, customMap[_styleName]);
+	      } else {
+	        styleMap[_styleName] = customMap[_styleName];
+	        styleOrder.push(_styleName);
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+
+	  return [styleMap, styleOrder];
+	}
+
+	exports.default = combineOrderedStyles;
 
 /***/ },
 /* 641 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactDOMServer
-	 */
+/***/ function(module, exports) {
 
 	'use strict';
 
-	var ReactDefaultInjection = __webpack_require__(385);
-	var ReactServerRendering = __webpack_require__(642);
-	var ReactVersion = __webpack_require__(330);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	ReactDefaultInjection.inject();
 
-	var ReactDOMServer = {
-	  renderToString: ReactServerRendering.renderToString,
-	  renderToStaticMarkup: ReactServerRendering.renderToStaticMarkup,
-	  version: ReactVersion
+	// Lifted from: https://github.com/facebook/react/blob/master/src/renderers/dom/shared/HTMLDOMPropertyConfig.js
+	var ATTR_NAME_MAP = {
+	  acceptCharset: 'accept-charset',
+	  className: 'class',
+	  htmlFor: 'for',
+	  httpEquiv: 'http-equiv'
 	};
 
-	module.exports = ReactDOMServer;
+	function normalizeAttributes(attributes) {
+	  if (attributes == null) {
+	    return attributes;
+	  }
+	  var normalized = {};
+	  var didNormalize = false;
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = Object.keys(attributes)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var name = _step.value;
+
+	      var newName = name;
+	      if (ATTR_NAME_MAP.hasOwnProperty(name)) {
+	        newName = ATTR_NAME_MAP[name];
+	        didNormalize = true;
+	      }
+	      normalized[newName] = attributes[name];
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+
+	  return didNormalize ? normalized : attributes;
+	}
+
+	exports.default = normalizeAttributes;
 
 /***/ },
 /* 642 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactServerRendering
-	 */
 	'use strict';
 
-	var _prodInvariant = __webpack_require__(306);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	var ReactDOMContainerInfo = __webpack_require__(512);
-	var ReactDefaultBatchingStrategy = __webpack_require__(485);
-	var ReactElement = __webpack_require__(308);
-	var ReactInstrumentation = __webpack_require__(408);
-	var ReactMarkupChecksum = __webpack_require__(514);
-	var ReactReconciler = __webpack_require__(405);
-	var ReactServerBatchingStrategy = __webpack_require__(643);
-	var ReactServerRenderingTransaction = __webpack_require__(477);
-	var ReactUpdates = __webpack_require__(402);
+	var _CSSProperty = __webpack_require__(443);
 
-	var emptyObject = __webpack_require__(318);
-	var instantiateReactComponent = __webpack_require__(470);
-	var invariant = __webpack_require__(307);
+	var VENDOR_PREFIX = /^(moz|ms|o|webkit)-/;
+	var NUMERIC_STRING = /^\d+$/;
+	var UPPERCASE_PATTERN = /([A-Z])/g;
 
-	/**
-	 * @param {ReactElement} element
-	 * @return {string} the HTML markup
-	 */
-	function renderToStringImpl(element, makeStaticMarkup) {
-	  var transaction;
-	  try {
-	    ReactUpdates.injection.injectBatchingStrategy(ReactServerBatchingStrategy);
+	// Lifted from: https://github.com/facebook/react/blob/master/src/renderers/dom/shared/CSSPropertyOperations.js
+	function processStyleName(name) {
+	  return name.replace(UPPERCASE_PATTERN, '-$1').toLowerCase().replace(VENDOR_PREFIX, '-$1-');
+	}
 
-	    transaction = ReactServerRenderingTransaction.getPooled(makeStaticMarkup);
-
-	    return transaction.perform(function () {
-	      var componentInstance = instantiateReactComponent(element, true);
-	      var markup = ReactReconciler.mountComponent(componentInstance, transaction, null, ReactDOMContainerInfo(), emptyObject);
-	      if (process.env.NODE_ENV !== 'production') {
-	        ReactInstrumentation.debugTool.onUnmountComponent(componentInstance._debugID);
-	      }
-	      if (!makeStaticMarkup) {
-	        markup = ReactMarkupChecksum.addChecksumToMarkup(markup);
-	      }
-	      return markup;
-	    }, null);
-	  } finally {
-	    ReactServerRenderingTransaction.release(transaction);
-	    // Revert to the DOM batching strategy since these two renderers
-	    // currently share these stateful modules.
-	    ReactUpdates.injection.injectBatchingStrategy(ReactDefaultBatchingStrategy);
+	// Lifted from: https://github.com/facebook/react/blob/master/src/renderers/dom/shared/dangerousStyleValue.js
+	function processStyleValue(name, value) {
+	  var isNumeric = void 0;
+	  if (typeof value === 'string') {
+	    isNumeric = NUMERIC_STRING.test(value);
+	  } else {
+	    isNumeric = true;
+	    value = String(value);
+	  }
+	  if (!isNumeric || value === '0' || _CSSProperty.isUnitlessNumber[name] === true) {
+	    return value;
+	  } else {
+	    return value + 'px';
 	  }
 	}
 
-	/**
-	 * Render a ReactElement to its initial HTML. This should only be used on the
-	 * server.
-	 * See https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostring
-	 */
-	function renderToString(element) {
-	  !ReactElement.isValidElement(element) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'renderToString(): You must pass a valid ReactElement.') : _prodInvariant('46') : void 0;
-	  return renderToStringImpl(element, false);
+	function styleToCSS(styleDescr) {
+	  return Object.keys(styleDescr).map(function (name) {
+	    var styleValue = processStyleValue(name, styleDescr[name]);
+	    var styleName = processStyleName(name);
+	    return styleName + ': ' + styleValue;
+	  }).join('; ');
 	}
 
-	/**
-	 * Similar to renderToString, except this doesn't create extra DOM attributes
-	 * such as data-react-id that React uses internally.
-	 * See https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
-	 */
-	function renderToStaticMarkup(element) {
-	  !ReactElement.isValidElement(element) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'renderToStaticMarkup(): You must pass a valid ReactElement.') : _prodInvariant('47') : void 0;
-	  return renderToStringImpl(element, true);
-	}
-
-	module.exports = {
-	  renderToString: renderToString,
-	  renderToStaticMarkup: renderToStaticMarkup
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(295)))
+	exports.default = styleToCSS;
 
 /***/ },
 /* 643 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2014-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactServerBatchingStrategy
-	 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ReactServerBatchingStrategy = {
-	  isBatchingUpdates: false,
-	  batchedUpdates: function (callback) {
-	    // Don't do anything here. During the server rendering we don't want to
-	    // schedule any updates. We will simply ignore them.
-	  }
-	};
+	var _react = __webpack_require__(301);
 
-	module.exports = ReactServerBatchingStrategy;
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(380);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _SmokeEditor = __webpack_require__(299);
+
+	var _SmokeEditor2 = _interopRequireDefault(_SmokeEditor);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Export component as function
+	function SmokeEditorRender(element, config) {
+
+	    // @todo: validar ACA -> ver "playControls" (hudson/js/components)
+	    var textarea = element.querySelector('textarea');
+	    var defaultValue = typeof textarea.value === 'undefined' ? '' : textarea.value;
+	    _reactDom2.default.render(_react2.default.createElement(_SmokeEditor2.default, {
+	        config: config,
+	        targetElement: element,
+	        defaultValue: defaultValue
+	    }), element);
+	}
+	window.SmokeEditorRender = SmokeEditorRender;
 
 /***/ }
 /******/ ]);

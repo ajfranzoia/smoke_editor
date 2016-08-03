@@ -5,7 +5,8 @@ module.exports = {
     context: __dirname,
     entry: [
         'babel-polyfill',
-        './src/SmokeEditor.jsx'
+        './src/SmokeEditor.jsx',
+        './src/utils/smokeeditor.utils.jsx'
     ],
     output: {
         path: path.resolve(__dirname + '/public/dist'),

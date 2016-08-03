@@ -6,7 +6,7 @@ export default class KalturaComponent extends React.Component {
 
 
     componentDidMount = () => {
-        KalturaFactory.makeKaltura();
+        //KalturaFactory.makeKaltura();
     }
 
     render() {

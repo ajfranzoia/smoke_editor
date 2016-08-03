@@ -23,7 +23,6 @@ import {
 export default function insertKaltura(editorState) {
 
 
-  const pid = 'zaraza';
   const entryId = window.prompt('Enter a Kaltura ID');
 
   if (!entryId) {
@@ -31,10 +30,9 @@ export default function insertKaltura(editorState) {
   }
 
   const entityKey = Entity.create(
-    'TOKEN',
+    'KALTURA',
     'IMMUTABLE',
     {
-      pid: pid,
       entryId: entryId
     }
   );
