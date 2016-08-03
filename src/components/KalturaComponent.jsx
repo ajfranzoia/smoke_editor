@@ -1,6 +1,6 @@
 import React from 'react';
 import {Entity} from 'draft-js';
-import KalturaFactory from '../modules/Kaltura/js/kaltura-factory.jsx';
+//import KalturaFactory from '../modules/Kaltura/js/kaltura-factory.jsx';
 
 export default class KalturaComponent extends React.Component {
 
@@ -24,7 +24,7 @@ export default class KalturaComponent extends React.Component {
                  data-publisher="56fbd64476311"
                  data-sp="10700"
                  id={'kaltura_player_'+ Math.random().toString(36).substring(7)}>
-                Soy un kaltura: {data.entryId}
+                Kaltura ID: {data.entryId}
             </div>
 
 

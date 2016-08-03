@@ -8,7 +8,7 @@ import {
     DefaultDraftBlockRenderMap,
 } from 'draft-js';
 import KalturaComponent from './KalturaComponent.jsx';
-import insertKaltura from '../Helpers/insertKaltura.jsx';
+import {insertKaltura} from '../Helpers/insertKaltura.jsx';
 
 
 import {stateFromHTML} from 'draft-js-import-html';
