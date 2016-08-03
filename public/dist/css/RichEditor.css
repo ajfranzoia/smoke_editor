@@ -61,3 +61,14 @@
 .RichEditor-activeButton {
     color: #5890ff;
 }
+
+
+.kaltura_player {
+    width: 976px;
+    height: 549px;
+    background: #eeeeee;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #bbbbbb;
+}

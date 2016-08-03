@@ -20,7 +20,7 @@ import {
 } from 'draft-js';
 
 
-export default function insertKaltura(editorState) {
+export function insertKaltura(editorState) {
 
 
   const entryId = window.prompt('Enter a Kaltura ID');
