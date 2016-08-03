@@ -7,6 +7,8 @@ import {
     RichUtils,
     DefaultDraftBlockRenderMap,
 } from 'draft-js';
+import KalturaComponent from './KalturaComponent.jsx';
+import insertKaltura from '../Helpers/insertKaltura.jsx';
 
 
 import {stateFromHTML} from 'draft-js-import-html';
@@ -15,6 +17,8 @@ import {stateToHTML} from 'draft-js-export-html';
 import immutable from 'immutable';
 
 const {Map} = immutable;
+
+
 
 class RichTextEditor extends React.Component {
     constructor(props) {
@@ -35,6 +39,38 @@ class RichTextEditor extends React.Component {
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+
+
+        this._blockRenderer = (block) => {
+            if (block.getType() === 'atomic') {
+                return {
+                    component: KalturaComponent,
+                    editable: false,
+                    props: {
+                        /*onStartEdit: (blockKey) => {
+                            var {liveTeXEdits} = this.state;
+                            this.setState({liveTeXEdits: liveTeXEdits.set(blockKey, true)});
+                        },
+                        onFinishEdit: (blockKey) => {
+                            var {liveTeXEdits} = this.state;
+                            this.setState({liveTeXEdits: liveTeXEdits.remove(blockKey)});
+                        },
+                        onRemove: (blockKey) => this._removeTeX(blockKey),
+                        */
+                    },
+                };
+            }
+            return null;
+        };
+
+        this._insertKaltura = () => {
+            this.setState({
+                //liveTeXEdits: Map(),
+                editorState: insertKaltura(this.state.editorState),
+            });
+        };
+
+
 
     }
 
@@ -105,16 +141,18 @@ class RichTextEditor extends React.Component {
                         mode={this.props.mode}
                         editorState={editorState}
                         onToggle={this.toggleBlockType}
+                        insertKaltura={this._insertKaltura}
                     />
                     <InlineStyleControls
                         mode={this.props.mode}
                         editorState={editorState}
                         onToggle={this.toggleInlineStyle}
                     />
+
                     <div className={className} onClick={this.focus}>
                         <Editor
                             blockRenderMap={extendedBlockRenderMap}
-                            //blockRendererFn={myBlockRenderer}
+                            blockRendererFn={this._blockRenderer}
                             blockStyleFn={getBlockStyle}
                             customStyleMap={styleMap}
                             editorState={editorState}
@@ -125,6 +163,7 @@ class RichTextEditor extends React.Component {
                             spellCheck={true}
                         />
                     </div>
+
                 </div>
             );
         }
@@ -150,20 +189,6 @@ const customBlockRendering = Map({
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
 
-/*
-@todo: ver como funciona esto para mapear componentes a los blockTypes
-function myBlockRenderer(contentBlock) {
-    const type = contentBlock.getType();
-    if (type === 'subtitle') {
-        return {
-            component: SubtitleComponent,
-            editable: false,
-            props: {
-                foo: 'bar',
-            },
-        };
-    }
-}*/
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -235,6 +260,16 @@ const BlockStyleControls = (props) => {
 
     const BLOCK_TYPES = (props.mode == 'basic')? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES ;
 
+    if(props.mode == 'basic') {
+        var kalturaButton = '';
+    } else {
+        var kalturaButton = <span className="RichEditor-styleButton" onMouseDown={props.insertKaltura}>
+              Video Kaltura
+            </span>
+    }
+
+
+
     return (
         <div className="RichEditor-controls">
             {BLOCK_TYPES.map((type) =>
@@ -246,6 +281,7 @@ const BlockStyleControls = (props) => {
                     style={type.style}
                 />
             )}
+            {kalturaButton}
         </div>
     );
 };

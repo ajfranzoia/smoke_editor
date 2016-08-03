@@ -20,7 +20,9 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "axios": "^0.13.1",
     "draft-js": "^0.7.0",
+    "draft-js-export-html": "^0.4.0",
     "immutable": "^3.8.1",
     "megadraft": "^0.1.1",
     "react": "^15.1.0",

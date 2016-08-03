@@ -1,13 +1,13 @@
-//import Editor from './editors/MyMegadraft.jsx';
-import Editor from './editors/RichTextEditor.jsx';
+import Editor from './components/RichTextEditor.jsx';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server'
+//import ReactDOMServer from 'react-dom/server'
+import {stateToHTML} from 'draft-js-export-html'
 
 import {
     EditorState,
     ContentState,
     convertFromRaw,
+    convertFromHTML,
     DraftEditorContents,
     convertToRaw
 } from 'draft-js';
@@ -33,20 +33,22 @@ export default class SmokeEditor extends React.Component {
 
         // Create the editorState
         if(props.defaultValue.length > 0) {
-            //var contentState = stateFromHTML(props.defaultValue);
-            var editorState = EditorState.createWithContent(ContentState.createFromText(props.defaultValue));
+            var contentBlocks = convertFromHTML(props.defaultValue);
+            var contentState = ContentState.createFromBlockArray(contentBlocks);
+            var editorState = EditorState.createWithContent(contentState);
+
         } else {
             var editorState = EditorState.createEmpty();
         }
 
         // @ref: https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
-        var exportedContent = ReactDOMServer.renderToStaticMarkup(
-            <Editor
-                mode="export"
-                editorState={editorState}
-            />
-        );
-        // Set state
+        /*var exportedContent = ReactDOMServer.renderToStaticMarkup(
+             <Editor
+                 mode="export"
+                 editorState={editorState}
+             />
+         );*/
+        var exportedContent = stateToHTML(editorState.getCurrentContent());
         this.state = {
             editorState: editorState,
             smokeJson: JSON.stringify(editorState),
@@ -58,13 +60,13 @@ export default class SmokeEditor extends React.Component {
 
     onUpdateContent = (editorState) => {
 
-        var exportedContent = ReactDOMServer.renderToStaticMarkup(
+        /*var exportedContent = ReactDOMServer.renderToStaticMarkup(
             <Editor
                 mode="export"
                 editorState={editorState}
             />
-        );
-
+        );*/
+        var exportedContent = stateToHTML(editorState.getCurrentContent());
         this.setState({
             smokeJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
             smokeHtml: exportedContent
@@ -90,24 +92,3 @@ export default class SmokeEditor extends React.Component {
         )
     }
 }
-
-// Export component as function
-// @todo: move this function to another place
-function SmokeEditorRender(element, config) {
-
-    // @todo: validar ACA -> ver "playControls" (hudson/js/components)
-    var textarea = element.querySelector('textarea');
-    var defaultValue = (typeof textarea.value === 'undefined') ? '' : textarea.value ;
-    ReactDOM.render(
-        <SmokeEditor
-            config={config}
-            targetElement={element}
-            defaultValue={defaultValue}
-        />,
-        element
-    );
-}
-window.SmokeEditorRender = SmokeEditorRender;
-
-
-
