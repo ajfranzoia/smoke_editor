@@ -46,7 +46,7 @@
 
 	__webpack_require__(1);
 	__webpack_require__(299);
-	module.exports = __webpack_require__(617);
+	module.exports = __webpack_require__(620);
 
 
 /***/ },
@@ -8146,7 +8146,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _draftJsExportHtml = __webpack_require__(612);
+	var _draftJsExportHtml = __webpack_require__(615);
 
 	var _draftJs = __webpack_require__(332);
 
@@ -8203,7 +8203,7 @@
 	        var exportedContent = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent());
 	        _this.state = {
 	            editorState: editorState,
-	            smokeJson: JSON.stringify(editorState),
+	            smokeJson: JSON.stringify(editorState.getCurrentContent()),
 	            smokeHtml: exportedContent,
 	            name: name,
 	            id: _this.props.targetElement.id
@@ -8224,8 +8224,8 @@
 	                    editorState: this.state.editorState,
 	                    readOnly: false
 	                }),
-	                _react2.default.createElement('input', { type: 'hidden', name: "smoke-" + this.state.id + "-json", value: this.state.smokeJson }),
-	                _react2.default.createElement('input', { type: 'hidden', name: this.state.name, id: this.state.id, value: this.state.smokeHtml })
+	                _react2.default.createElement('input', { type: 'text', name: "smoke-" + this.state.id + "-json", value: this.state.smokeJson }),
+	                _react2.default.createElement('input', { type: 'text', name: this.state.name, id: this.state.id, value: this.state.smokeHtml })
 	            );
 	        }
 	    }]);
@@ -8272,15 +8272,13 @@
 
 	var _draftJs = __webpack_require__(332);
 
-	var _KalturaComponent = __webpack_require__(597);
+	var _Atomic = __webpack_require__(597);
 
-	var _KalturaComponent2 = _interopRequireDefault(_KalturaComponent);
+	var _Atomic2 = _interopRequireDefault(_Atomic);
 
-	var _insertKaltura = __webpack_require__(598);
+	var _draftJsImportHtml = __webpack_require__(602);
 
-	var _draftJsImportHtml = __webpack_require__(599);
-
-	var _draftJsExportHtml = __webpack_require__(612);
+	var _draftJsExportHtml = __webpack_require__(615);
 
 	var _immutable = __webpack_require__(335);
 
@@ -8304,6 +8302,13 @@
 
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(RichTextEditor).call(this, props));
 
+	        _this._insertBlock = function (entityKey) {
+	            console.log(entityKey);
+	            _this.setState({
+	                editorState: _draftJs.AtomicBlockUtils.insertAtomicBlock(_this.state.editorState, entityKey(), ' ')
+	            });
+	        };
+
 	        _this.state = {
 	            editorState: _this.props.editorState
 	        };
@@ -8325,11 +8330,15 @@
 	        _this.toggleInlineStyle = function (style) {
 	            return _this._toggleInlineStyle(style);
 	        };
+	        _this.insertBlock = function (entityKey) {
+	            return _this._insertBlock(entityKey);
+	        };
 
 	        _this._blockRenderer = function (block) {
+
 	            if (block.getType() === 'atomic') {
 	                return {
-	                    component: _KalturaComponent2.default,
+	                    component: _Atomic2.default,
 	                    editable: false,
 	                    props: {
 	                        /*onStartEdit: (blockKey) => {
@@ -8346,13 +8355,6 @@
 	                };
 	            }
 	            return null;
-	        };
-
-	        _this._insertKaltura = function () {
-	            _this.setState({
-	                //liveTeXEdits: Map(),
-	                editorState: (0, _insertKaltura.insertKaltura)(_this.state.editorState)
-	            });
 	        };
 
 	        return _this;
@@ -8421,7 +8423,7 @@
 	                        mode: this.props.mode,
 	                        editorState: editorState,
 	                        onToggle: this.toggleBlockType,
-	                        insertKaltura: this._insertKaltura
+	                        onInsertBlock: this.insertBlock
 	                    }),
 	                    _react2.default.createElement(InlineStyleControls, {
 	                        mode: this.props.mode,
@@ -8542,10 +8544,76 @@
 	    if (props.mode == 'basic') {
 	        var kalturaButton = '';
 	    } else {
+
+	        // Kaltura
+	        var insertKalturaBlock = props.onInsertBlock.bind(undefined, function () {
+	            var entryId = window.prompt('Enter a Kaltura ID');
+
+	            if (!entryId) {
+	                return;
+	            }
+
+	            var entityKey = _draftJs.Entity.create('KALTURA', 'IMMUTABLE', {
+	                entryId: entryId
+	            });
+	            return entityKey;
+	        });
+
 	        var kalturaButton = _react2.default.createElement(
 	            'span',
-	            { className: 'RichEditor-styleButton', onMouseDown: props.insertKaltura },
+	            { className: 'RichEditor-styleButton', onMouseDown: insertKalturaBlock },
 	            'Video Kaltura'
+	        );
+
+	        // Embed
+	        var insertEmbedBlock = props.onInsertBlock.bind(undefined, function () {
+	            var embedCode = window.prompt('Paste the embed code');
+	            if (!embedCode) {
+	                return;
+	            }
+	            var entityKey = _draftJs.Entity.create('EMBED', 'IMMUTABLE', {
+	                embedCode: embedCode
+	            });
+	            return entityKey;
+	        });
+	        var embedButton = _react2.default.createElement(
+	            'span',
+	            { className: 'RichEditor-styleButton', onMouseDown: insertEmbedBlock },
+	            'Embed'
+	        );
+
+	        // Video
+	        var insertVideoBlock = props.onInsertBlock.bind(undefined, function () {
+	            var src = window.prompt('Enter a video url');
+	            if (!src) {
+	                return;
+	            }
+	            var entityKey = _draftJs.Entity.create('VIDEO', 'IMMUTABLE', {
+	                src: src
+	            });
+	            return entityKey;
+	        });
+	        var videoButton = _react2.default.createElement(
+	            'span',
+	            { className: 'RichEditor-styleButton', onMouseDown: insertVideoBlock },
+	            'Video'
+	        );
+
+	        // Audio
+	        var insertAudioBlock = props.onInsertBlock.bind(undefined, function () {
+	            var src = window.prompt('Enter a video url');
+	            if (!src) {
+	                return;
+	            }
+	            var entityKey = _draftJs.Entity.create('AUDIO', 'IMMUTABLE', {
+	                src: src
+	            });
+	            return entityKey;
+	        });
+	        var audioButton = _react2.default.createElement(
+	            'span',
+	            { className: 'RichEditor-styleButton', onMouseDown: insertAudioBlock },
+	            'Audio'
 	        );
 	    }
 
@@ -8561,7 +8629,10 @@
 	                style: type.style
 	            });
 	        }),
-	        kalturaButton
+	        kalturaButton,
+	        embedButton,
+	        videoButton,
+	        audioButton
 	    );
 	};
 
@@ -46848,6 +46919,94 @@
 
 	var _draftJs = __webpack_require__(332);
 
+	var _KalturaComponent = __webpack_require__(598);
+
+	var _KalturaComponent2 = _interopRequireDefault(_KalturaComponent);
+
+	var _EmbedComponent = __webpack_require__(599);
+
+	var _EmbedComponent2 = _interopRequireDefault(_EmbedComponent);
+
+	var _VideoComponent = __webpack_require__(600);
+
+	var _VideoComponent2 = _interopRequireDefault(_VideoComponent);
+
+	var _AudioComponent = __webpack_require__(601);
+
+	var _AudioComponent2 = _interopRequireDefault(_AudioComponent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Atomic = function (_React$Component) {
+	    _inherits(Atomic, _React$Component);
+
+	    function Atomic() {
+	        _classCallCheck(this, Atomic);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Atomic).apply(this, arguments));
+	    }
+
+	    _createClass(Atomic, [{
+	        key: 'render',
+	        value: function render() {
+	            var block = this.props.block;
+
+	            var entity = _draftJs.Entity.get(block.getEntityAt(0));
+
+	            var _entity$getData = entity.getData();
+
+	            var data = _entity$getData.data;
+
+	            var type = entity.getType();
+
+	            switch (type) {
+	                case 'KALTURA':
+	                    return _react2.default.createElement(_KalturaComponent2.default, { block: block });
+	                    break;
+	                case 'EMBED':
+	                    return _react2.default.createElement(_EmbedComponent2.default, { block: block });
+	                case 'VIDEO':
+	                    return _react2.default.createElement(_VideoComponent2.default, { block: block });
+	                    break;
+	                case 'AUDIO':
+	                    return _react2.default.createElement(_AudioComponent2.default, { block: block });
+	                    break;
+	                default:
+	                    return '';
+	                    break;
+	            }
+	        }
+	    }]);
+
+	    return Atomic;
+	}(_react2.default.Component);
+
+	exports.default = Atomic;
+
+/***/ },
+/* 598 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(301);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(332);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -46907,58 +47066,184 @@
 	exports.default = KalturaComponent;
 
 /***/ },
-/* 598 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
-	 *
-	 * This file provided by Facebook is for non-commercial testing and evaluation
-	 * purposes only. Facebook reserves all rights not expressly granted.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-	 * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-	 * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-	 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	 */
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.insertKaltura = insertKaltura;
-
-	var _draftJs = __webpack_require__(332);
-
-	function insertKaltura(editorState) {
-
-	  var entryId = window.prompt('Enter a Kaltura ID');
-
-	  if (!entryId) {
-	    return;
-	  }
-
-	  var entityKey = _draftJs.Entity.create('KALTURA', 'IMMUTABLE', {
-	    entryId: entryId
-	  });
-
-	  return _draftJs.AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');
-	}
-
-/***/ },
 /* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(301);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(332);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var EmbedComponent = function (_React$Component) {
+	    _inherits(EmbedComponent, _React$Component);
+
+	    function EmbedComponent() {
+	        _classCallCheck(this, EmbedComponent);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(EmbedComponent).apply(this, arguments));
+	    }
+
+	    _createClass(EmbedComponent, [{
+	        key: 'render',
+	        value: function render() {
+	            var block = this.props.block;
+
+	            var data = _draftJs.Entity.get(block.getEntityAt(0)).getData();
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                'Soy un embed: ',
+	                data.embedCode
+	            );
+	        }
+	    }]);
+
+	    return EmbedComponent;
+	}(_react2.default.Component);
+
+	exports.default = EmbedComponent;
+
+/***/ },
+/* 600 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(301);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(332);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VideoComponent = function (_React$Component) {
+	    _inherits(VideoComponent, _React$Component);
+
+	    function VideoComponent() {
+	        _classCallCheck(this, VideoComponent);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(VideoComponent).apply(this, arguments));
+	    }
+
+	    _createClass(VideoComponent, [{
+	        key: 'render',
+	        value: function render() {
+	            var block = this.props.block;
+
+	            var data = _draftJs.Entity.get(block.getEntityAt(0)).getData();
+
+	            return _react2.default.createElement(
+	                'video',
+	                { width: '960', height: '549', controls: true },
+	                _react2.default.createElement('source', { src: data.src }),
+	                'Your browser does not support the video tag.'
+	            );
+	        }
+	    }]);
+
+	    return VideoComponent;
+	}(_react2.default.Component);
+
+	exports.default = VideoComponent;
+
+/***/ },
+/* 601 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(301);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(332);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AudioComponent = function (_React$Component) {
+	    _inherits(AudioComponent, _React$Component);
+
+	    function AudioComponent() {
+	        _classCallCheck(this, AudioComponent);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AudioComponent).apply(this, arguments));
+	    }
+
+	    _createClass(AudioComponent, [{
+	        key: 'render',
+	        value: function render() {
+	            var block = this.props.block;
+
+	            var data = _draftJs.Entity.get(block.getEntityAt(0)).getData();
+
+	            return _react2.default.createElement(
+	                'audio',
+	                { controls: true, autoPlay: true },
+	                _react2.default.createElement('source', { src: data.src }),
+	                'Your browser does not support the audio tag.'
+	            );
+	        }
+	    }]);
+
+	    return AudioComponent;
+	}(_react2.default.Component);
+
+	exports.default = AudioComponent;
+
+/***/ },
+/* 602 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _stateFromHTML = __webpack_require__(600);
+	var _stateFromHTML = __webpack_require__(603);
 
 	Object.defineProperty(exports, 'stateFromHTML', {
 	  enumerable: true,
@@ -46970,7 +47255,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 600 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46980,9 +47265,9 @@
 	});
 	exports.default = stateFromHTML;
 
-	var _draftJsImportElement = __webpack_require__(601);
+	var _draftJsImportElement = __webpack_require__(604);
 
-	var _parseHTML = __webpack_require__(611);
+	var _parseHTML = __webpack_require__(614);
 
 	var _parseHTML2 = _interopRequireDefault(_parseHTML);
 
@@ -46995,7 +47280,7 @@
 	}
 
 /***/ },
-/* 601 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47004,7 +47289,7 @@
 	  value: true
 	});
 
-	var _stateFromElement = __webpack_require__(602);
+	var _stateFromElement = __webpack_require__(605);
 
 	Object.defineProperty(exports, 'stateFromElement', {
 	  enumerable: true,
@@ -47016,7 +47301,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 602 */
+/* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47029,7 +47314,7 @@
 
 	exports.default = stateFromElement;
 
-	var _replaceTextWithMeta3 = __webpack_require__(603);
+	var _replaceTextWithMeta3 = __webpack_require__(606);
 
 	var _replaceTextWithMeta4 = _interopRequireDefault(_replaceTextWithMeta3);
 
@@ -47037,9 +47322,9 @@
 
 	var _immutable = __webpack_require__(335);
 
-	var _draftJsUtils = __webpack_require__(604);
+	var _draftJsUtils = __webpack_require__(607);
 
-	var _syntheticDom = __webpack_require__(610);
+	var _syntheticDom = __webpack_require__(613);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47491,7 +47776,7 @@
 	}
 
 /***/ },
-/* 603 */
+/* 606 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -47533,7 +47818,7 @@
 	}
 
 /***/ },
-/* 604 */
+/* 607 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47542,7 +47827,7 @@
 	  value: true
 	});
 
-	var _Constants = __webpack_require__(605);
+	var _Constants = __webpack_require__(608);
 
 	Object.keys(_Constants).forEach(function (key) {
 	  if (key === "default") return;
@@ -47560,7 +47845,7 @@
 	  }
 	});
 
-	var _getEntityRanges = __webpack_require__(606);
+	var _getEntityRanges = __webpack_require__(609);
 
 	Object.defineProperty(exports, 'getEntityRanges', {
 	  enumerable: true,
@@ -47569,7 +47854,7 @@
 	  }
 	});
 
-	var _getSelectedBlocks = __webpack_require__(607);
+	var _getSelectedBlocks = __webpack_require__(610);
 
 	Object.defineProperty(exports, 'getSelectedBlocks', {
 	  enumerable: true,
@@ -47578,7 +47863,7 @@
 	  }
 	});
 
-	var _selectionContainsEntity = __webpack_require__(608);
+	var _selectionContainsEntity = __webpack_require__(611);
 
 	Object.defineProperty(exports, 'selectionContainsEntity', {
 	  enumerable: true,
@@ -47587,7 +47872,7 @@
 	  }
 	});
 
-	var _callModifierForSelectedBlocks = __webpack_require__(609);
+	var _callModifierForSelectedBlocks = __webpack_require__(612);
 
 	Object.defineProperty(exports, 'callModifierForSelectedBlocks', {
 	  enumerable: true,
@@ -47599,7 +47884,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 605 */
+/* 608 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -47644,7 +47929,7 @@
 	};
 
 /***/ },
-/* 606 */
+/* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47696,7 +47981,7 @@
 	}
 
 /***/ },
-/* 607 */
+/* 610 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -47744,7 +48029,7 @@
 	};
 
 /***/ },
-/* 608 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47753,7 +48038,7 @@
 	  value: true
 	});
 
-	var _getSelectedBlocks = __webpack_require__(607);
+	var _getSelectedBlocks = __webpack_require__(610);
 
 	var _getSelectedBlocks2 = _interopRequireDefault(_getSelectedBlocks);
 
@@ -47802,7 +48087,7 @@
 	};
 
 /***/ },
-/* 609 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47813,7 +48098,7 @@
 
 	var _draftJs = __webpack_require__(332);
 
-	var _getSelectedBlocks = __webpack_require__(607);
+	var _getSelectedBlocks = __webpack_require__(610);
 
 	var _getSelectedBlocks2 = _interopRequireDefault(_getSelectedBlocks);
 
@@ -47884,7 +48169,7 @@
 	};
 
 /***/ },
-/* 610 */
+/* 613 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -48076,7 +48361,7 @@
 	}
 
 /***/ },
-/* 611 */
+/* 614 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -48098,7 +48383,7 @@
 	}
 
 /***/ },
-/* 612 */
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48107,7 +48392,7 @@
 	  value: true
 	});
 
-	var _stateToHTML = __webpack_require__(613);
+	var _stateToHTML = __webpack_require__(616);
 
 	Object.defineProperty(exports, 'stateToHTML', {
 	  enumerable: true,
@@ -48119,7 +48404,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 613 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48138,21 +48423,21 @@
 
 	exports.default = stateToHTML;
 
-	var _combineOrderedStyles3 = __webpack_require__(614);
+	var _combineOrderedStyles3 = __webpack_require__(617);
 
 	var _combineOrderedStyles4 = _interopRequireDefault(_combineOrderedStyles3);
 
-	var _normalizeAttributes = __webpack_require__(615);
+	var _normalizeAttributes = __webpack_require__(618);
 
 	var _normalizeAttributes2 = _interopRequireDefault(_normalizeAttributes);
 
-	var _styleToCSS = __webpack_require__(616);
+	var _styleToCSS = __webpack_require__(619);
 
 	var _styleToCSS2 = _interopRequireDefault(_styleToCSS);
 
 	var _draftJs = __webpack_require__(332);
 
-	var _draftJsUtils = __webpack_require__(604);
+	var _draftJsUtils = __webpack_require__(607);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48657,7 +48942,7 @@
 	}
 
 /***/ },
-/* 614 */
+/* 617 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -48721,7 +49006,7 @@
 	exports.default = combineOrderedStyles;
 
 /***/ },
-/* 615 */
+/* 618 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -48781,7 +49066,7 @@
 	exports.default = normalizeAttributes;
 
 /***/ },
-/* 616 */
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48828,7 +49113,7 @@
 	exports.default = styleToCSS;
 
 /***/ },
-/* 617 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
