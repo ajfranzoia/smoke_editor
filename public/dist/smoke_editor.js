@@ -8203,7 +8203,7 @@
 	        var exportedContent = (0, _draftJsExportHtml.stateToHTML)(editorState.getCurrentContent());
 	        _this.state = {
 	            editorState: editorState,
-	            smokeJson: JSON.stringify(editorState.getCurrentContent()),
+	            smokeJson: JSON.stringify((0, _draftJs.convertToRaw)(editorState.getCurrentContent())),
 	            smokeHtml: exportedContent,
 	            name: name,
 	            id: _this.props.targetElement.id

@@ -51,7 +51,7 @@ export default class SmokeEditor extends React.Component {
         var exportedContent = stateToHTML(editorState.getCurrentContent());
         this.state = {
             editorState: editorState,
-            smokeJson: JSON.stringify(editorState.getCurrentContent()),
+            smokeJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
             smokeHtml: exportedContent,
             name: name,
             id: this.props.targetElement.id
