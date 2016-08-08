@@ -3,22 +3,18 @@ import {
     convertFromRaw,
     convertToRaw,
     EditorState,
+    Editor,
     Entity,
     RichUtils,
     DefaultDraftBlockRenderMap,
     AtomicBlockUtils
 } from 'draft-js';
 import Atomic from './Atomic.jsx';
-
-
 import {stateFromHTML} from 'draft-js-import-html';
 import {stateToHTML} from 'draft-js-export-html';
-
 import immutable from 'immutable';
 
 const {Map} = immutable;
-
-
 
 class RichTextEditor extends React.Component {
     constructor(props) {
@@ -34,29 +30,30 @@ class RichTextEditor extends React.Component {
             this.updateContent(editorState);
         }
 
-
-
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
         this.insertBlock = (entityKey) => this._insertBlock(entityKey);
 
-
-        this._blockRenderer = (block) => {
-
-            if (block.getType() === 'atomic') {
-                return {
-                    component: Atomic,
-                    editable: false,
-                    props: {
-                        plugins: this.props.plugins
-                    },
-                };
-            }
-            return null;
-        };
+        this.blockRenderer = this._blockRenderer;
 
     }
+
+    // Handles rendering for new blocks
+    _blockRenderer = (block) => {
+
+        if (block.getType() === 'atomic') {
+            return {
+                component: Atomic, // Atomic decides which component to render
+                editable: false,
+                props: {
+                    plugins: this.props.plugins
+                },
+            };
+        }
+        return null;
+    };
+
 
     _insertBlock = (entityKey) => {
         this.setState({
@@ -113,7 +110,7 @@ class RichTextEditor extends React.Component {
             return (
                 <Editor
                 blockRenderMap={customBlockRendering}
-                //blockRendererFn={myBlockRenderer}
+                blockRendererFn={this.blockRenderer}
                 blockStyleFn={getBlockStyle}
                 customStyleMap={styleMap}
                 editorState={editorState}
@@ -144,7 +141,7 @@ class RichTextEditor extends React.Component {
                     <div className={className} onClick={this.focus}>
                         <Editor
                             blockRenderMap={extendedBlockRenderMap}
-                            blockRendererFn={this._blockRenderer}
+                            blockRendererFn={this.blockRenderer}
                             blockStyleFn={getBlockStyle}
                             customStyleMap={styleMap}
                             editorState={editorState}

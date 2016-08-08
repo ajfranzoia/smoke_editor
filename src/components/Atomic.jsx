@@ -7,9 +7,13 @@ export default class Atomic extends React.Component {
 
         const {block} = this.props;
         const plugins = this.props.blockProps.plugins;
+
+        // Get the entity at the cursor position
         const entity = Entity.get(block.getEntityAt(0));
         const {data} = entity.getData();
         const type = entity.getType();
+
+        // use the plugin matching the entity type
         var Block = '';
         {plugins.map((plugin) => {
             if(type === plugin.type) {
@@ -17,6 +21,7 @@ export default class Atomic extends React.Component {
             }
         })}
 
+        // render the
         return (
             <Block block={block}/>
         );
