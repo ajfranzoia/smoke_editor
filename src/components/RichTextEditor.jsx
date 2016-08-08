@@ -30,18 +30,10 @@ class RichTextEditor extends React.Component {
             this.updateContent(editorState);
         }
 
-        this.handleKeyCommand = (command) => this._handleKeyCommand(command);
-        this.toggleBlockType = (type) => this._toggleBlockType(type);
-        this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-        this.insertBlock = (entityKey) => this._insertBlock(entityKey);
-
-        this.blockRenderer = this._blockRenderer;
-
     }
 
     // Handles rendering for new blocks
-    _blockRenderer = (block) => {
-
+    blockRenderer = (block) => {
         if (block.getType() === 'atomic') {
             return {
                 component: Atomic, // Atomic decides which component to render
@@ -55,13 +47,13 @@ class RichTextEditor extends React.Component {
     };
 
 
-    _insertBlock = (entityKey) => {
+    insertBlock = (entityKey) => {
         this.setState({
             editorState: AtomicBlockUtils.insertAtomicBlock(this.state.editorState, entityKey(), ' '),
         });
     };
 
-    _handleKeyCommand(command) {
+    handleKeyCommand = (command) => {
         const {editorState} = this.state;
         const newState = RichUtils.handleKeyCommand(editorState, command);
         if (newState) {
@@ -71,7 +63,7 @@ class RichTextEditor extends React.Component {
         return false;
     }
 
-    _toggleBlockType(blockType) {
+    toggleBlockType = (blockType) => {
         this.onChange(
             RichUtils.toggleBlockType(
                 this.state.editorState,
@@ -80,7 +72,7 @@ class RichTextEditor extends React.Component {
         );
     }
 
-    _toggleInlineStyle(inlineStyle) {
+    toggleInlineStyle = (inlineStyle) => {
         this.onChange(
             RichUtils.toggleInlineStyle(
                 this.state.editorState,
@@ -89,7 +81,7 @@ class RichTextEditor extends React.Component {
         );
     }
 
-    updateContent(editorState) {
+    updateContent = (editorState) => {
         this.props.updateContent(editorState);
     }
 
