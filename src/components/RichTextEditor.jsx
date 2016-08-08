@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {
     convertFromRaw,
     convertToRaw,
-    Editor,
     EditorState,
     Entity,
     RichUtils,
@@ -45,22 +44,12 @@ class RichTextEditor extends React.Component {
 
         this._blockRenderer = (block) => {
 
-
             if (block.getType() === 'atomic') {
                 return {
                     component: Atomic,
                     editable: false,
                     props: {
-                        /*onStartEdit: (blockKey) => {
-                            var {liveTeXEdits} = this.state;
-                            this.setState({liveTeXEdits: liveTeXEdits.set(blockKey, true)});
-                        },
-                        onFinishEdit: (blockKey) => {
-                            var {liveTeXEdits} = this.state;
-                            this.setState({liveTeXEdits: liveTeXEdits.remove(blockKey)});
-                        },
-                        onRemove: (blockKey) => this._removeTeX(blockKey),
-                        */
+                        plugins: this.props.plugins
                     },
                 };
             }
@@ -70,7 +59,6 @@ class RichTextEditor extends React.Component {
     }
 
     _insertBlock = (entityKey) => {
-        console.log(entityKey);
         this.setState({
             editorState: AtomicBlockUtils.insertAtomicBlock(this.state.editorState, entityKey(), ' '),
         });
@@ -144,11 +132,13 @@ class RichTextEditor extends React.Component {
                         editorState={editorState}
                         onToggle={this.toggleBlockType}
                         onInsertBlock={this.insertBlock}
+                        plugins={this.props.plugins}
                     />
                     <InlineStyleControls
                         mode={this.props.mode}
                         editorState={editorState}
                         onToggle={this.toggleInlineStyle}
+                        plugins={this.props.plugins}
                     />
 
                     <div className={className} onClick={this.focus}>
@@ -262,94 +252,6 @@ const BlockStyleControls = (props) => {
 
     const BLOCK_TYPES = (props.mode == 'basic')? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES ;
 
-    if(props.mode == 'basic') {
-        var kalturaButton = '';
-    } else {
-
-        // Kaltura
-        var insertKalturaBlock = props.onInsertBlock.bind(this, function(){
-            const entryId = window.prompt('Enter a Kaltura ID');
-
-            if (!entryId) {
-                return;
-            }
-
-            const entityKey = Entity.create(
-                'KALTURA',
-                'IMMUTABLE',
-                {
-                    entryId: entryId
-                }
-            );
-            return entityKey;
-        });
-
-        var kalturaButton = <span className="RichEditor-styleButton" onMouseDown={insertKalturaBlock}>
-              Video Kaltura
-            </span>
-
-
-        // Embed
-        var insertEmbedBlock = props.onInsertBlock.bind(this, function(){
-            const embedCode = window.prompt('Paste the embed code');
-            if (!embedCode) {
-                return;
-            }
-            const entityKey = Entity.create(
-                'EMBED',
-                'IMMUTABLE',
-                {
-                    embedCode: embedCode
-                }
-            );
-            return entityKey;
-        });
-        var embedButton = <span className="RichEditor-styleButton" onMouseDown={insertEmbedBlock}>
-                          Embed
-                        </span>
-
-
-        // Video
-        var insertVideoBlock = props.onInsertBlock.bind(this, function(){
-            const src = window.prompt('Enter a video url');
-            if (!src) {
-                return;
-            }
-            const entityKey = Entity.create(
-                'VIDEO',
-                'IMMUTABLE',
-                {
-                    src: src
-                }
-            );
-            return entityKey;
-        });
-        var videoButton = <span className="RichEditor-styleButton" onMouseDown={insertVideoBlock}>
-                          Video
-                        </span>
-
-
-        // Audio
-        var insertAudioBlock = props.onInsertBlock.bind(this, function(){
-            const src = window.prompt('Enter a video url');
-            if (!src) {
-                return;
-            }
-            const entityKey = Entity.create(
-                'AUDIO',
-                'IMMUTABLE',
-                {
-                    src: src
-                }
-            );
-            return entityKey;
-        });
-        var audioButton = <span className="RichEditor-styleButton" onMouseDown={insertAudioBlock}>
-                          Audio
-                        </span>
-
-    }
-
 
 
     return (
@@ -363,10 +265,16 @@ const BlockStyleControls = (props) => {
                     style={type.style}
                 />
             )}
-            {kalturaButton}
-            {embedButton}
-            {videoButton}
-            {audioButton}
+
+            {props.plugins.map((plugin) => {
+                const Button = plugin.buttonComponent;
+                return (
+                    <Button
+                        key={plugin.type}
+                        onInsert={props.onInsertBlock}
+                    />
+                );
+            })}
         </div>
     );
 };

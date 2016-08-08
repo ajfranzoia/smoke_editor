@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import SmokeEditor from '../SmokeEditor.jsx'
+import plugins from '../plugins/default.jsx'
 
 // Export component as function
 function SmokeEditorRender(element, config) {
@@ -11,6 +12,7 @@ function SmokeEditorRender(element, config) {
     ReactDOM.render(
         <SmokeEditor
             config={config}
+            plugins={plugins}
             targetElement={element}
             defaultValue={defaultValue}
         />,
