@@ -21,9 +21,10 @@
 <script src="/dist/smoke_editor.js"></script>
 <script>
     var config = {
-        mode: 'advanced',
+        plugins: ['AUDIO', 'KALTURA', 'EMBED']
     }
-    SmokeEditorRender(document.getElementById('edit-body'), config);
+    //SmokeEditorRender(document.getElementById('edit-body'), config);
+    SmokeEditorFactory.make(document.getElementById('edit-body'), config);
 </script>
 
 </body>

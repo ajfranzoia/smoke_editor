@@ -6,7 +6,7 @@ module.exports = {
     entry: [
         'babel-polyfill',
         './src/SmokeEditor.jsx',
-        './src/utils/smokeeditor.utils.jsx'
+        './src/SmokeEditorFactory.jsx'
     ],
     output: {
         path: path.resolve(__dirname + '/public/dist'),

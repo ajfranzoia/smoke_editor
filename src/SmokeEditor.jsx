@@ -1,6 +1,5 @@
-import Editor from './components/RichTextEditor.jsx';
 import React from 'react';
-//import ReactDOMServer from 'react-dom/server'
+import Editor from './components/RichTextEditor.jsx';
 import {stateToHTML} from 'draft-js-export-html'
 
 import {
@@ -41,13 +40,6 @@ export default class SmokeEditor extends React.Component {
             var editorState = EditorState.createEmpty();
         }
 
-        // @ref: https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
-        /*var exportedContent = ReactDOMServer.renderToStaticMarkup(
-             <Editor
-                 mode="export"
-                 editorState={editorState}
-             />
-         );*/
         var exportedContent = stateToHTML(editorState.getCurrentContent());
         this.state = {
             editorState: editorState,
@@ -60,12 +52,6 @@ export default class SmokeEditor extends React.Component {
 
     onUpdateContent = (editorState) => {
 
-        /*var exportedContent = ReactDOMServer.renderToStaticMarkup(
-            <Editor
-                mode="export"
-                editorState={editorState}
-            />
-        );*/
         var exportedContent = stateToHTML(editorState.getCurrentContent());
         this.setState({
             smokeJson: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
@@ -79,7 +65,6 @@ export default class SmokeEditor extends React.Component {
         return (
             <div>
                 <Editor
-                    mode={this.props.config.mode}
                     updateContent={this.onUpdateContent}
                     editorState={this.state.editorState}
                     readOnly={false}

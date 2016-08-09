@@ -98,7 +98,7 @@ class RichTextEditor extends React.Component {
             }
         }
 
-        if(this.props.mode == 'export'){
+        if(this.props.export == true){
             return (
                 <Editor
                 blockRenderMap={customBlockRendering}
@@ -117,14 +117,12 @@ class RichTextEditor extends React.Component {
             return (
                 <div className="RichEditor-root">
                     <BlockStyleControls
-                        mode={this.props.mode}
                         editorState={editorState}
                         onToggle={this.toggleBlockType}
                         onInsertBlock={this.insertBlock}
                         plugins={this.props.plugins}
                     />
                     <InlineStyleControls
-                        mode={this.props.mode}
                         editorState={editorState}
                         onToggle={this.toggleInlineStyle}
                         plugins={this.props.plugins}
@@ -215,9 +213,7 @@ class StyleButton extends React.Component {
     }
 }
 
-const BASIC_BLOCK_TYPES = [
-];
-const ADVANCED_BLOCK_TYPES = [
+const BLOCK_TYPES = [
     {label: 'H1', style: 'header-one'},
     {label: 'H2', style: 'header-two'},
     {label: 'H3', style: 'header-three'},
@@ -238,9 +234,6 @@ const BlockStyleControls = (props) => {
         .getCurrentContent()
         .getBlockForKey(selection.getStartKey())
         .getType();
-
-    const BLOCK_TYPES = (props.mode == 'basic')? BASIC_BLOCK_TYPES : ADVANCED_BLOCK_TYPES ;
-
 
 
     return (
@@ -268,11 +261,7 @@ const BlockStyleControls = (props) => {
     );
 };
 
-var BASIC_INLINE_STYLES = [
-    {label: 'Bold', style: 'BOLD'},
-    {label: 'Italic', style: 'ITALIC'},
-];
-var ADVANCED_INLINE_STYLES = [
+var INLINE_STYLES = [
     {label: 'Bold', style: 'BOLD'},
     {label: 'Italic', style: 'ITALIC'},
     {label: 'Underline', style: 'UNDERLINE'},
@@ -281,7 +270,6 @@ var ADVANCED_INLINE_STYLES = [
 
 const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
-    const INLINE_STYLES = (props.mode == 'basic')? BASIC_INLINE_STYLES : ADVANCED_INLINE_STYLES ;
     return (
         <div className="RichEditor-controls">
             {INLINE_STYLES.map(type =>
