@@ -61,6 +61,7 @@ export default class SmokeEditor extends React.Component {
 
     render() {
 
+        const inputType = (this.props.debug === true) ? 'hidden' : 'text';
 
         return (
             <div>
@@ -71,8 +72,8 @@ export default class SmokeEditor extends React.Component {
                     plugins={this.props.plugins}
                 />
 
-                <input type="text" name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
-                <input type="text" name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
+                <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
+                <input type={inputType} name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
 
             </div>
         )

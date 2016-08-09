@@ -9,8 +9,7 @@ export default class SmokeEditorFactory {
 
         const textarea = element.querySelector('textarea');
         const defaultValue = (typeof textarea.value === 'undefined') ? '' : textarea.value ;
-
-
+        
         var plugins = [];
         config.plugins.forEach(function (pluginName) {
             try {
@@ -18,13 +17,11 @@ export default class SmokeEditorFactory {
             } catch (e) {
                 console.log(pluginName, e);
             }
-        })
-
-        console.log('active plugins -> ', plugins);
-
+        });
 
         ReactDOM.render(
             <SmokeEditor
+                debug={config.debug}
                 plugins={plugins}
                 targetElement={element}
                 defaultValue={defaultValue}
