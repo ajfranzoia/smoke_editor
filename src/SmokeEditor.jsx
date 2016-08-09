@@ -61,7 +61,7 @@ export default class SmokeEditor extends React.Component {
 
     render() {
 
-        const inputType = (this.props.debug === true) ? 'hidden' : 'text';
+        const inputType = (this.props.debug === true) ? 'text' : 'hidden';
 
         return (
             <div>
