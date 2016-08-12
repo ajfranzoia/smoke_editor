@@ -16,7 +16,7 @@ export default class Atomic extends React.Component {
         // use the plugin matching the entity type
         var Block = '';
         {plugins.map((plugin) => {
-            if(type === plugin.type) {
+            if(type === plugin.name) {
                 Block = plugin.blockComponent;
             }
         })}

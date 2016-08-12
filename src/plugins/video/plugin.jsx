@@ -2,7 +2,8 @@ import Button from './VideoButton.jsx';
 import Block from './VideoBlock.jsx';
 
 export default {
-    type: "VIDEO",
+    type: "atomic",
+    name: "VIDEO",
     buttonComponent: Button,
     blockComponent: Block
 };

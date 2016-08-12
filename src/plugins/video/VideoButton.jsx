@@ -5,7 +5,7 @@ import {
 
 const VideoButton = (props) => {
 
-    var insertVideoBlock = props.onInsert.bind(this, function(){
+    var insertVideoBlock = props.onClick.bind(this, function(){
         const src = window.prompt('Enter a video url');
         if (!src) {
             return;

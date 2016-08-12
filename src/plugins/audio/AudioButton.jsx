@@ -5,7 +5,7 @@ import {
 
 const AudioButton = (props) => {
     
-    var insertAudioBlock = props.onInsert.bind(this, function(){
+    var insertAudioBlock = props.onClick.bind(this, function(){
         const src = window.prompt('Enter an audio url');
         if (!src) {
             return;

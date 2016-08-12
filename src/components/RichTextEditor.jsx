@@ -32,7 +32,7 @@ class RichTextEditor extends React.Component {
 
     }
 
-    // Handles rendering for new blocks
+    // Handles rendering for atomic blocks
     blockRenderer = (block) => {
         if (block.getType() === 'atomic') {
             return {
@@ -45,6 +45,30 @@ class RichTextEditor extends React.Component {
         }
         return null;
     };
+
+
+    getBlockStyle = (block) => {
+        const blockType = block.getType();
+        //console.log('blockType -> ', blockType);
+        let style = null;
+        this.props.plugins.forEach(function (plugin) {
+            if(blockType === plugin.style){
+                style = plugin.style;
+            }
+        });
+
+        return style;
+
+        /*switch (block.getType()) {
+            case 'blockquote': return 'RichEditor-blockquote';
+            case 'subtitle': return 'subtitle';
+
+
+
+
+            default: return null;
+        }*/
+    }
 
 
     insertBlock = (entityKey) => {
@@ -73,6 +97,7 @@ class RichTextEditor extends React.Component {
     }
 
     toggleInlineStyle = (inlineStyle) => {
+
         this.onChange(
             RichUtils.toggleInlineStyle(
                 this.state.editorState,
@@ -103,7 +128,7 @@ class RichTextEditor extends React.Component {
                 <Editor
                 blockRenderMap={customBlockRendering}
                 blockRendererFn={this.blockRenderer}
-                blockStyleFn={getBlockStyle}
+                blockStyleFn={this.getBlockStyle}
                 customStyleMap={styleMap}
                 editorState={editorState}
                 placeholder=""
@@ -118,13 +143,9 @@ class RichTextEditor extends React.Component {
                 <div className="RichEditor-root">
                     <BlockStyleControls
                         editorState={editorState}
-                        onToggle={this.toggleBlockType}
+                        onToggleBlockType={this.toggleBlockType}
+                        onToggleInlineStyle={this.toggleInlineStyle}
                         onInsertBlock={this.insertBlock}
-                        plugins={this.props.plugins}
-                    />
-                    <InlineStyleControls
-                        editorState={editorState}
-                        onToggle={this.toggleInlineStyle}
                         plugins={this.props.plugins}
                     />
 
@@ -132,7 +153,7 @@ class RichTextEditor extends React.Component {
                         <Editor
                             blockRenderMap={extendedBlockRenderMap}
                             blockRendererFn={this.blockRenderer}
-                            blockStyleFn={getBlockStyle}
+                            blockStyleFn={this.getBlockStyle}
                             customStyleMap={styleMap}
                             editorState={editorState}
                             handleKeyCommand={this.handleKeyCommand}
@@ -182,13 +203,8 @@ const styleMap = {
     },
 };
 
-function getBlockStyle(block) {
-    switch (block.getType()) {
-        case 'blockquote': return 'RichEditor-blockquote';
-        case 'subtitle': return 'subtitle';
-        default: return null;
-    }
-}
+
+
 
 class StyleButton extends React.Component {
     constructor() {
@@ -212,7 +228,7 @@ class StyleButton extends React.Component {
         );
     }
 }
-
+/*
 const BLOCK_TYPES = [
     //{label: 'H1', style: 'header-one'},
     //{label: 'H2', style: 'header-two'},
@@ -225,7 +241,7 @@ const BLOCK_TYPES = [
     //{label: 'OL', style: 'ordered-list-item'},
     //{label: 'Code Block', style: 'code-block'},
     {label: 'Subtitle', style: 'subtitle'},
-];
+];*/
 
 const BlockStyleControls = (props) => {
     const {editorState} = props;
@@ -238,35 +254,44 @@ const BlockStyleControls = (props) => {
 
     return (
         <div className="RichEditor-controls">
-            {BLOCK_TYPES.map((type) =>
-                <StyleButton
-                    key={type.label}
-                    active={type.style === blockType}
-                    label={type.label}
-                    onToggle={props.onToggle}
-                    style={type.style}
-                />
-            )}
 
             {props.plugins.map((plugin) => {
+
                 const Button = plugin.buttonComponent;
+
+                let clickAction = '';
+                switch (plugin.type){
+                    case 'inline':
+                        clickAction = props.onToggleInlineStyle;
+                        break;
+                    case 'block':
+                        clickAction = props.onToggleBlockType;
+                        break;
+                    case 'atomic':
+                        clickAction = props.onInsertBlock;
+                        break;
+                }
+
+
+
                 return (
                     <Button
-                        key={plugin.type}
-                        onInsert={props.onInsertBlock}
+                        key={plugin.name}
+                        plugin={plugin}
+                        onClick={clickAction}
                     />
                 );
             })}
         </div>
     );
 };
-
+/*
 var INLINE_STYLES = [
     {label: 'Bold', style: 'BOLD'},
     {label: 'Italic', style: 'ITALIC'},
     //{label: 'Underline', style: 'UNDERLINE'},
     //{label: 'Monospace', style: 'CODE'},
-];
+];*/
 
 const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();

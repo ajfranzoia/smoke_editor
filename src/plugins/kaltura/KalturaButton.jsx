@@ -5,7 +5,7 @@ import {
 
 const KalturaButton = (props) => {
 
-    var insertKalturaBlock = props.onInsert.bind(this, function(){
+    var insertKalturaBlock = props.onClick.bind(this, function(){
         const entryId = window.prompt('Enter a Kaltura ID');
 
         if (!entryId) {

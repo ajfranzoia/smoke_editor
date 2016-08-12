@@ -5,7 +5,7 @@ import {
 
 const EmbedButton = (props) => {
 
-    var insertBlock = props.onInsert.bind(this, function(){
+    var insertBlock = props.onClick.bind(this, function(){
         const embedCode = window.prompt('Paste the embed code');
         if (!embedCode) {
             return;
