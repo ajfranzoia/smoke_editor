@@ -1,4 +1,4 @@
-import Button from './BoldButton.jsx';
+import Button from './BoldButton';
 
 export default {
     type: "inline",

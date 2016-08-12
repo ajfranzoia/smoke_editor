@@ -1,5 +1,4 @@
-import Button from './SubtitleButton.jsx';
-//import Block from './HeaderOneBlock.jsx';
+import Button from './SubtitleButton';
 
 export default {
     type: "block",

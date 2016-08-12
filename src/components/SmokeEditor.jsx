@@ -16,20 +16,6 @@ export default class SmokeEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        if (this.props.targetElement.id.length === 0) {
-            throw new Error("The target element must have an ID");
-        }
-
-        var textarea = this.props.targetElement.querySelector('textarea');
-        if(typeof textarea === 'undefined'){
-            throw new Error("A textarea must exist inside the targetElement");
-        }
-
-        let name = textarea.getAttribute("name");
-        if(typeof name === 'undefined'){
-            throw new Error("The textarea must have a name attribute");
-        }
-
         // Create the editorState
         if(props.defaultValue.length > 0) {
             var contentBlocks = convertFromHTML(props.defaultValue);

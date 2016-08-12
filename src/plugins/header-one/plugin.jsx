@@ -1,5 +1,4 @@
-import Button from './HeaderOneButton.jsx';
-//import Block from './HeaderOneBlock.jsx';
+import Button from './HeaderOneButton';
 
 export default {
     type: "block",

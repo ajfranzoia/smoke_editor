@@ -1,4 +1,4 @@
-import Button from './ItalicButton.jsx';
+import Button from './ItalicButton';
 
 export default {
     type: "inline",

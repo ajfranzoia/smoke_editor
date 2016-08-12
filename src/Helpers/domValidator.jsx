@@ -46,7 +46,7 @@ export default class DomValidator {
         if (child != null) {
             return child;
         } else {
-            throw new Error('Child ' + child + ' is null')
+            throw new Error('Child ' + tag + ' is null')
         }
     }
 }
