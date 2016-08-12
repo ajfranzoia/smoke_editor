@@ -20,7 +20,12 @@
 
 <script src="/dist/SmokeEditorFactory.js"></script>
 <script>
-
+    var config = {
+        plugins: ['AUDIO', 'KALTURA', 'EMBED'],
+        debug: true
+    }
+    //SmokeEditorRender(document.getElementById('edit-body'), config);
+    SmokeEditorFactory.make(document.getElementById('edit-body'), config);
 </script>
 
 </body>

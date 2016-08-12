@@ -33,13 +33,5 @@ export default class SmokeEditorFactory {
     }
 }
 
-
-var config = {
-    plugins: ['AUDIO', 'KALTURA', 'EMBED'],
-    debug: true
-}
-//SmokeEditorRender(document.getElementById('edit-body'), config);
-SmokeEditorFactory.make(document.getElementById('edit-body'), config);
-
-
+window.SmokeEditorFactory = SmokeEditorFactory;
 
