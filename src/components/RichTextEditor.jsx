@@ -1,17 +1,13 @@
 import React, {Component} from "react";
 import {
-    convertFromRaw,
-    convertToRaw,
     EditorState,
     Editor,
-    Entity,
     RichUtils,
     DefaultDraftBlockRenderMap,
     AtomicBlockUtils
 } from 'draft-js';
+import {Toolbar} from './Toolbar';
 import Atomic from './Atomic';
-import {stateFromHTML} from 'draft-js-import-html';
-import {stateToHTML} from 'draft-js-export-html';
 import immutable from 'immutable';
 
 const {Map} = immutable;
@@ -39,6 +35,7 @@ class RichTextEditor extends React.Component {
     getBlockRenderMap = () => {
 
         // some custom mappings
+        // @todo: add this to an external config file
         let blockRenderMap = Map({
             'paragraph': {
                 element: 'p',
@@ -145,69 +142,33 @@ class RichTextEditor extends React.Component {
             }
         }
 
-            return (
-                <div className="RichEditor-root">
-                    <BlockStyleControls
+        return (
+            <div className="RichEditor-root">
+                <Toolbar
+                    editorState={editorState}
+                    onToggleBlockType={this.toggleBlockType}
+                    onToggleInlineStyle={this.toggleInlineStyle}
+                    onInsertBlock={this.insertBlock}
+                    plugins={this.props.plugins}
+                />
+
+                <div className={className} onClick={this.focus}>
+                    <Editor
+                        blockRenderMap={this.getBlockRenderMap()}
+                        blockRendererFn={this.getBlockRenderer}
+                        blockStyleFn={this.getBlockStyle}
                         editorState={editorState}
-                        onToggleBlockType={this.toggleBlockType}
-                        onToggleInlineStyle={this.toggleInlineStyle}
-                        onInsertBlock={this.insertBlock}
-                        plugins={this.props.plugins}
+                        handleKeyCommand={this.handleKeyCommand}
+                        onChange={this.onChange}
+                        ref="editor"
+                        spellCheck={true}
                     />
-
-                    <div className={className} onClick={this.focus}>
-                        <Editor
-                            blockRenderMap={this.getBlockRenderMap()}
-                            blockRendererFn={this.getBlockRenderer}
-                            blockStyleFn={this.getBlockStyle}
-                            editorState={editorState}
-                            handleKeyCommand={this.handleKeyCommand}
-                            onChange={this.onChange}
-                            placeholder=""
-                            ref="editor"
-                            spellCheck={true}
-                        />
-                    </div>
-
                 </div>
-            );
+
+            </div>
+        );
 
     }
 }
-
-const BlockStyleControls = (props) => {
-
-    return (
-        <div className="RichEditor-controls">
-
-            {props.plugins.map((plugin) => {
-
-                const Button = plugin.buttonComponent;
-
-                let clickAction = '';
-                switch (plugin.type){
-                    case 'inline':
-                        clickAction = props.onToggleInlineStyle;
-                        break;
-                    case 'block':
-                        clickAction = props.onToggleBlockType;
-                        break;
-                    case 'atomic':
-                        clickAction = props.onInsertBlock;
-                        break;
-                }
-
-
-                return (
-                    <Button
-                        key={plugin.name}
-                        plugin={plugin}
-                        onClick={clickAction}
-                    />
-                );
-            })}
-        </div>
-    );
-};
 
 export default RichTextEditor;
