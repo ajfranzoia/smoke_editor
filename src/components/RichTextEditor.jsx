@@ -19,7 +19,7 @@ const {Map} = immutable;
 class RichTextEditor extends React.Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             editorState: this.props.editorState
         };
@@ -30,42 +30,10 @@ class RichTextEditor extends React.Component {
             this.updateContent(editorState);
         }
 
-
-    }
-
-    /**
-     * @ref: https://github.com/facebook/draft-js/pull/387
-     */
-    getBlockRenderMap = () => {
-
-        // some custom mappings
-        let blockRenderMap = Map({
-            'paragraph': {
-                element: 'p',
-            },
-            'unstyled': {
-                element: 'p',
-            }
-        });
-
-        // plugins mappings
-        this.props.plugins.forEach(
-            function (plugin) {
-                if(typeof plugin.element != 'undefined' && typeof plugin.style != 'undefined') {
-                    blockRenderMap = blockRenderMap.set(plugin.style, { element: plugin.element });
-                }
-            }
-        );
-
-        // merge with default mappings and return
-        blockRenderMap = blockRenderMap.merge(DefaultDraftBlockRenderMap);
-
-        return blockRenderMap;
-
     }
 
     // Handles rendering for atomic blocks
-    getBlockRenderer = (block) => {
+    blockRenderer = (block) => {
         if (block.getType() === 'atomic') {
             return {
                 component: Atomic, // Atomic decides which component to render
@@ -81,6 +49,7 @@ class RichTextEditor extends React.Component {
 
     getBlockStyle = (block) => {
         const blockType = block.getType();
+        //console.log('blockType -> ', blockType);
         let style = null;
         this.props.plugins.forEach(function (plugin) {
             if(blockType === plugin.style){
@@ -93,6 +62,10 @@ class RichTextEditor extends React.Component {
         /*switch (block.getType()) {
             case 'blockquote': return 'RichEditor-blockquote';
             case 'subtitle': return 'subtitle';
+
+
+
+
             default: return null;
         }*/
     }
@@ -150,38 +123,71 @@ class RichTextEditor extends React.Component {
             }
         }
 
-        return (
-            <div className="RichEditor-root">
-                <BlockStyleControls
-                    editorState={editorState}
-                    onToggleBlockType={this.toggleBlockType}
-                    onToggleInlineStyle={this.toggleInlineStyle}
-                    onInsertBlock={this.insertBlock}
-                    plugins={this.props.plugins}
-                />
+        if(this.props.export == true){
+            return (
+                <Editor
+                blockRenderMap={customBlockRendering}
+                blockRendererFn={this.blockRenderer}
+                blockStyleFn={this.getBlockStyle}
+                customStyleMap={styleMap}
+                editorState={editorState}
+                placeholder=""
+                ref="editor"
+                readOnly={true}
+            />
+            );
+        } else {
 
-                <div className={className} onClick={this.focus}>
-                    <Editor
-                        blockRenderMap={this.getBlockRenderMap()}
-                        blockRendererFn={this.getBlockRenderer}
-                        blockStyleFn={this.getBlockStyle}
-                        customStyleMap={styleMap}
+
+            return (
+                <div className="RichEditor-root">
+                    <BlockStyleControls
                         editorState={editorState}
-                        handleKeyCommand={this.handleKeyCommand}
-                        onChange={this.onChange}
-                        placeholder=""
-                        ref="editor"
-                        spellCheck={true}
+                        onToggleBlockType={this.toggleBlockType}
+                        onToggleInlineStyle={this.toggleInlineStyle}
+                        onInsertBlock={this.insertBlock}
+                        plugins={this.props.plugins}
                     />
+
+                    <div className={className} onClick={this.focus}>
+                        <Editor
+                            blockRenderMap={extendedBlockRenderMap}
+                            blockRendererFn={this.blockRenderer}
+                            blockStyleFn={this.getBlockStyle}
+                            customStyleMap={styleMap}
+                            editorState={editorState}
+                            handleKeyCommand={this.handleKeyCommand}
+                            onChange={this.onChange}
+                            placeholder=""
+                            ref="editor"
+                            spellCheck={true}
+                        />
+                    </div>
+
                 </div>
-
-            </div>
-        );
-
+            );
+        }
     }
 }
 
 
+/**
+ * @ref: https://github.com/facebook/draft-js/pull/387
+ */
+
+const customBlockRendering = Map({
+    'paragraph': {
+        element: 'p',
+    },
+    'unstyled': {
+        element: 'p',
+    },
+    'subtitle': {
+        element: 'h2',
+    },
+});
+
+const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
 
 
 // Custom overrides for "code" style.

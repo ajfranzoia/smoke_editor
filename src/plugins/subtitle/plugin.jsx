@@ -6,5 +6,4 @@ export default {
     name: "SUBTITLE",
     buttonComponent: Button,
     style: "subtitle",
-    element: "h2"
 };
