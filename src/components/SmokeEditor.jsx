@@ -1,5 +1,5 @@
 import React from 'react';
-import Editor from './components/RichTextEditor.jsx';
+import Editor from './RichTextEditor';
 import {stateToHTML} from 'draft-js-export-html'
 
 import {

@@ -1,38 +1,45 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import SmokeEditor from './SmokeEditor.jsx'
-import PluginManager from "./plugins/pluginManager.jsx";
-//import DOMValidator from "../../dist/Helpers/js/domValidator";
+import SmokeEditor from '../public/dist/components/SmokeEditor'
+import PluginManager from "../public/dist/Helpers/pluginManager";
+import DOMValidator from "../public/dist/Helpers/domValidator";
 
 export default class SmokeEditorFactory {
     static make(element, config) {
 
-        const textarea = element.querySelector('textarea');
-        const defaultValue = (typeof textarea.value === 'undefined') ? '' : textarea.value ;
-        
-        var plugins = [];
-        config.plugins.forEach(function (pluginName) {
-            try {
+        try {
+            const textarea = DOMValidator.getFirstChildOrThrow(element, 'textarea');
+            const defaultValue = (typeof textarea.value === 'undefined') ? '' : textarea.value;
+
+            let plugins = [];
+
+            config.plugins.forEach(function (pluginName) {
                 plugins.push(PluginManager.get(pluginName));
-            } catch (e) {
-                console.log(pluginName, e);
-            }
-        });
+            });
 
-        ReactDOM.render(
-            <SmokeEditor
-                debug={config.debug}
-                plugins={plugins}
-                targetElement={element}
-                defaultValue={defaultValue}
-            />,
-            element
-        );
+            ReactDOM.render(
+                <SmokeEditor
+                    debug={config.debug}
+                    plugins={plugins}
+                    targetElement={element}
+                    defaultValue={defaultValue}
+                />,
+                element
+            );
 
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
-window.SmokeEditorFactory = SmokeEditorFactory;
+
+var config = {
+    plugins: ['AUDIO', 'KALTURA', 'EMBED'],
+    debug: true
+}
+//SmokeEditorRender(document.getElementById('edit-body'), config);
+SmokeEditorFactory.make(document.getElementById('edit-body'), config);
 
 
 

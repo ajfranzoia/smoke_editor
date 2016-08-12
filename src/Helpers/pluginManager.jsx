@@ -1,7 +1,7 @@
-import audio from "./audio/plugin.jsx";
-import kaltura from "./kaltura/plugin.jsx";
-import video from "./video/plugin.jsx";
-import embed from "./embed/plugin.jsx";
+import audio from "../plugins/audio/plugin";
+import kaltura from "../plugins/kaltura/plugin";
+import video from "../plugins/video/plugin";
+import embed from "../plugins/embed/plugin";
 
 let PLUGIN = {};
 

@@ -1,33 +1,61 @@
 {
-  "name": "smokeeditor",
-  "version": "1.0.0",
+  "name": "SMOKE-EDITOR",
+  "version": "0.0.1",
+  "author": "DEV's TN",
   "description": "",
-  "main": "smokeeditor.js",
-  "scripts": {
-    "dev": "webpack-dev-server --hot --inline --content-base public/ --port 9088"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "babel-core": "^6.4.5",
-    "babel-loader": "^6.2.4",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-react": "^6.5.0",
-    "babel-preset-react-hmre": "^1.1.1",
-    "babel-preset-stage-0": "^6.5.0",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
-  },
   "dependencies": {
+    "axios": "0.12.0",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
     "axios": "^0.13.1",
+    "babel": "^6.5.2",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "latest",
+    "colors": "^1.1.2",
+    "dateformat": "^1.0.12",
     "draft-js": "^0.7.0",
     "draft-js-export-html": "^0.4.0",
     "draft-js-import-html": "^0.2.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-changed": "^1.3.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-connect": "^5.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-prettify": "^0.4.0",
+    "gulp-refresh": "^1.1.0",
+    "gulp-sass": "^2.3.0",
+    "gulp-uglify": "^1.5.4",
+    "gulp-using": "^0.1.1",
+    "gulp-util": "^3.0.7",
     "immutable": "^3.8.1",
     "megadraft": "^0.1.1",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
+    "prompt": "^1.0.0",
     "setimmediate": "^1.0.4"
+  },
+  "scripts": {
+    "watch": "gulp watch",
+    "build": "gulp build",
+    "dev": "gulp dev"
   }
 }

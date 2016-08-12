@@ -1,5 +1,5 @@
-import AudioButton from './AudioButton.jsx';
-import AudioBlock from './AudioBlock.jsx';
+import AudioButton from './AudioButton'
+import AudioBlock from './AudioBlock'
 
 export default {
     type: "AUDIO",
