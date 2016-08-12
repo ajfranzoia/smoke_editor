@@ -9,7 +9,7 @@ import {
     DefaultDraftBlockRenderMap,
     AtomicBlockUtils
 } from 'draft-js';
-import Atomic from './Atomic.jsx';
+import Atomic from './Atomic';
 import {stateFromHTML} from 'draft-js-import-html';
 import {stateToHTML} from 'draft-js-export-html';
 import immutable from 'immutable';

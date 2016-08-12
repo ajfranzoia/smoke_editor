@@ -1,5 +1,5 @@
-import Button from './EmbedButton.jsx';
-import Block from './EmbedBlock.jsx';
+import Button from './EmbedButton';
+import Block from './EmbedBlock';
 
 export default {
     type: "atomic",

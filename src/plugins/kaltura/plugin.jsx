@@ -1,5 +1,5 @@
-import kalturaButton from './KalturaButton.jsx';
-import kalturaBlock from './KalturaBlock.jsx';
+import kalturaButton from './KalturaButton';
+import kalturaBlock from './KalturaBlock';
 
 export default {
     type: "atomic",

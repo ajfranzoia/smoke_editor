@@ -1,11 +1,11 @@
-import audio from "./audio/plugin.jsx";
-import kaltura from "./kaltura/plugin.jsx";
-import video from "./video/plugin.jsx";
-import embed from "./embed/plugin.jsx";
-import bold from "./bold/plugin.jsx";
-import headerOne from "./header-one/plugin.jsx";
-import subtitle from "./subtitle/plugin.jsx";
-import italic from "./italic/plugin.jsx";
+import audio from "../plugins/audio/plugin";
+import kaltura from "../plugins/kaltura/plugin";
+import video from "../plugins/video/plugin";
+import embed from "../plugins/embed/plugin";
+import bold from "../plugins/bold/plugin.jsx";
+import headerOne from "../plugins/header-one/plugin.jsx";
+import subtitle from "../plugins/subtitle/plugin.jsx";
+import italic from "../plugins/italic/plugin.jsx";
 
 let PLUGIN = {};
 

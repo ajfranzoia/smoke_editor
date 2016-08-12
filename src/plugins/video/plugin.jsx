@@ -1,5 +1,5 @@
-import Button from './VideoButton.jsx';
-import Block from './VideoBlock.jsx';
+import Button from './VideoButton';
+import Block from './VideoBlock';
 
 export default {
     type: "atomic",
