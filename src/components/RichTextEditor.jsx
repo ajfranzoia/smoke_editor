@@ -6,7 +6,7 @@ import {
     DefaultDraftBlockRenderMap,
     AtomicBlockUtils
 } from 'draft-js';
-import {Toolbar} from './Toolbar';
+import Toolbar from './Toolbar';
 import Atomic from './Atomic';
 import immutable from 'immutable';
 
@@ -89,13 +89,6 @@ class RichTextEditor extends React.Component {
 
     }
 
-
-    insertBlock = (entityKey) => {
-        this.setState({
-            editorState: AtomicBlockUtils.insertAtomicBlock(this.state.editorState, entityKey(), ' '),
-        });
-    };
-
     handleKeyCommand = (command) => {
         const {editorState} = this.state;
         const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -105,6 +98,13 @@ class RichTextEditor extends React.Component {
         }
         return false;
     }
+    
+    insertCustomBlock = (entityKey) => {
+        this.setState({
+            editorState: AtomicBlockUtils.insertAtomicBlock(this.state.editorState, entityKey(), ' '),
+        });
+    };
+
 
     toggleBlockType = (blockType) => {
         this.onChange(
@@ -132,27 +132,16 @@ class RichTextEditor extends React.Component {
     render() {
         const {editorState} = this.state;
 
-        // If the user changes block type before entering any text, we can
-        // either style the placeholder or hide it. Let's just hide it now.
-        let className = 'RichEditor-editor';
-        var contentState = editorState.getCurrentContent();
-        if (!contentState.hasText()) {
-            if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-                className += ' RichEditor-hidePlaceholder';
-            }
-        }
-
         return (
             <div className="RichEditor-root">
                 <Toolbar
                     editorState={editorState}
                     onToggleBlockType={this.toggleBlockType}
                     onToggleInlineStyle={this.toggleInlineStyle}
-                    onInsertBlock={this.insertBlock}
+                    onInsertCustomBlock={this.insertCustomBlock}
                     plugins={this.props.plugins}
                 />
-
-                <div className={className} onClick={this.focus}>
+                <div className="RichEditor-editor" onClick={this.focus}>
                     <Editor
                         blockRenderMap={this.getBlockRenderMap()}
                         blockRendererFn={this.getBlockRenderer}
