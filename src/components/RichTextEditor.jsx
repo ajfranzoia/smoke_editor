@@ -30,10 +30,42 @@ class RichTextEditor extends React.Component {
             this.updateContent(editorState);
         }
 
+
+    }
+
+    /**
+     * @ref: https://github.com/facebook/draft-js/pull/387
+     */
+    getBlockRenderMap = () => {
+
+        // some custom mappings
+        let blockRenderMap = Map({
+            'paragraph': {
+                element: 'p',
+            },
+            'unstyled': {
+                element: 'p',
+            }
+        });
+
+        // plugins mappings
+        this.props.plugins.forEach(
+            function (plugin) {
+                if(typeof plugin.element != 'undefined' && typeof plugin.style != 'undefined') {
+                    blockRenderMap = blockRenderMap.set(plugin.style, { element: plugin.element });
+                }
+            }
+        );
+
+        // merge with default mappings and return
+        blockRenderMap = blockRenderMap.merge(DefaultDraftBlockRenderMap);
+
+        return blockRenderMap;
+
     }
 
     // Handles rendering for atomic blocks
-    blockRenderer = (block) => {
+    getBlockRenderer = (block) => {
         if (block.getType() === 'atomic') {
             return {
                 component: Atomic, // Atomic decides which component to render
@@ -49,7 +81,6 @@ class RichTextEditor extends React.Component {
 
     getBlockStyle = (block) => {
         const blockType = block.getType();
-        //console.log('blockType -> ', blockType);
         let style = null;
         this.props.plugins.forEach(function (plugin) {
             if(blockType === plugin.style){
@@ -59,15 +90,6 @@ class RichTextEditor extends React.Component {
 
         return style;
 
-        /*switch (block.getType()) {
-            case 'blockquote': return 'RichEditor-blockquote';
-            case 'subtitle': return 'subtitle';
-
-
-
-
-            default: return null;
-        }*/
     }
 
 
@@ -123,22 +145,6 @@ class RichTextEditor extends React.Component {
             }
         }
 
-        if(this.props.export == true){
-            return (
-                <Editor
-                blockRenderMap={customBlockRendering}
-                blockRendererFn={this.blockRenderer}
-                blockStyleFn={this.getBlockStyle}
-                customStyleMap={styleMap}
-                editorState={editorState}
-                placeholder=""
-                ref="editor"
-                readOnly={true}
-            />
-            );
-        } else {
-
-
             return (
                 <div className="RichEditor-root">
                     <BlockStyleControls
@@ -151,10 +157,9 @@ class RichTextEditor extends React.Component {
 
                     <div className={className} onClick={this.focus}>
                         <Editor
-                            blockRenderMap={extendedBlockRenderMap}
-                            blockRendererFn={this.blockRenderer}
+                            blockRenderMap={this.getBlockRenderMap()}
+                            blockRendererFn={this.getBlockRenderer}
                             blockStyleFn={this.getBlockStyle}
-                            customStyleMap={styleMap}
                             editorState={editorState}
                             handleKeyCommand={this.handleKeyCommand}
                             onChange={this.onChange}
@@ -166,77 +171,11 @@ class RichTextEditor extends React.Component {
 
                 </div>
             );
-        }
-    }
-}
 
-
-/**
- * @ref: https://github.com/facebook/draft-js/pull/387
- */
-
-const customBlockRendering = Map({
-    'paragraph': {
-        element: 'p',
-    },
-    'unstyled': {
-        element: 'p',
-    },
-    'subtitle': {
-        element: 'h2',
-    },
-});
-
-const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(customBlockRendering);
-
-
-// Custom overrides for "code" style.
-const styleMap = {
-    CODE: {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-        fontSize: 16,
-        padding: 2,
-    },
-    SUBTITLE: {
-        backgroundColor: 'red',
-    },
-};
-
-
-
-
-class StyleButton extends React.Component {
-    constructor() {
-        super();
-        this.onToggle = (e) => {
-            e.preventDefault();
-            this.props.onToggle(this.props.style);
-        };
-    }
-
-    render() {
-        let className = 'RichEditor-styleButton';
-        if (this.props.active) {
-            className += ' RichEditor-activeButton';
-        }
-
-        return (
-            <span className={className} onMouseDown={this.onToggle}>
-              {this.props.label}
-            </span>
-        );
     }
 }
 
 const BlockStyleControls = (props) => {
-    const {editorState} = props;
-    const selection = editorState.getSelection();
-    const blockType = editorState
-        .getCurrentContent()
-        .getBlockForKey(selection.getStartKey())
-        .getType();
-
 
     return (
         <div className="RichEditor-controls">
@@ -259,7 +198,6 @@ const BlockStyleControls = (props) => {
                 }
 
 
-
                 return (
                     <Button
                         key={plugin.name}
@@ -268,30 +206,6 @@ const BlockStyleControls = (props) => {
                     />
                 );
             })}
-        </div>
-    );
-};
-/*
-var INLINE_STYLES = [
-    {label: 'Bold', style: 'BOLD'},
-    {label: 'Italic', style: 'ITALIC'},
-    //{label: 'Underline', style: 'UNDERLINE'},
-    //{label: 'Monospace', style: 'CODE'},
-];*/
-
-const InlineStyleControls = (props) => {
-    var currentStyle = props.editorState.getCurrentInlineStyle();
-    return (
-        <div className="RichEditor-controls">
-            {INLINE_STYLES.map(type =>
-                <StyleButton
-                    key={type.label}
-                    active={currentStyle.has(type.style)}
-                    label={type.label}
-                    onToggle={props.onToggle}
-                    style={type.style}
-                />
-            )}
         </div>
     );
 };
