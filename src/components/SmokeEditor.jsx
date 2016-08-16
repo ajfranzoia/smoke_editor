@@ -58,8 +58,8 @@ export default class SmokeEditor extends React.Component {
                     plugins={this.props.plugins}
                 />
 
-                <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
-                <input type={inputType} name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
+                <input type={inputType} readOnly name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
+                <input type={inputType} readOnly name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
 
             </div>
         )
