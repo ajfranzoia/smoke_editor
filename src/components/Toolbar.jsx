@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import StyleButton from './StyleButton';
 
 
 
@@ -15,7 +16,7 @@ export default class Toolbar extends React.Component {
 
                 {this.props.plugins.map((plugin) => {
 
-                    const Button = plugin.buttonComponent;
+                    const Button = (typeof plugin.buttonComponent != 'undefined') ? plugin.buttonComponent : StyleButton;
 
                     let clickAction = '';
                     switch (plugin.type){
@@ -33,7 +34,7 @@ export default class Toolbar extends React.Component {
 
                     return (
                         <Button
-                            key={plugin.name}
+                            key={plugin.style}
                             plugin={plugin}
                             onClick={clickAction}
                         />

@@ -81,7 +81,7 @@ class RichTextEditor extends React.Component {
         let style = null;
         this.props.plugins.forEach(function (plugin) {
             if(blockType === plugin.style){
-                style = plugin.style;
+                style = plugin.className;
             }
         });
 

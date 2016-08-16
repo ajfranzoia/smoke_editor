@@ -6,6 +6,8 @@ import bold from "../plugins/bold/plugin";
 import headerOne from "../plugins/header-one/plugin";
 import subtitle from "../plugins/subtitle/plugin";
 import italic from "../plugins/italic/plugin";
+import ol from "../plugins/ordered-list-item/plugin";
+import underline from "../plugins/underline/plugin";
 
 let PLUGIN = {};
 
@@ -32,4 +34,6 @@ PluginManager.set('BOLD', bold);
 PluginManager.set('H1', headerOne);
 PluginManager.set('SUBTITLE', subtitle);
 PluginManager.set('ITALIC', italic);
+PluginManager.set('OL', ol);
+PluginManager.set('UNDERLINE', underline);
 

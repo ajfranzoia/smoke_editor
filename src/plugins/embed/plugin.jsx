@@ -3,7 +3,7 @@ import Block from './EmbedBlock';
 
 export default {
     type: "atomic",
-    name: "EMBED",
+    style: "EMBED",
     buttonComponent: Button,
     blockComponent: Block
 };

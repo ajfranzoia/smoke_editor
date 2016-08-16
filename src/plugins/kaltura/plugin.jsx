@@ -3,7 +3,7 @@ import kalturaBlock from './KalturaBlock';
 
 export default {
     type: "atomic",
-    name: "KALTURA",
+    style: "KALTURA",
     buttonComponent: kalturaButton,
     blockComponent: kalturaBlock
 };

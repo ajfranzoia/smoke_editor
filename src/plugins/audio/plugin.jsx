@@ -3,7 +3,7 @@ import AudioBlock from './AudioBlock'
 
 export default {
     type: "atomic",
-    name: "AUDIO",
+    style: "AUDIO",
     buttonComponent: AudioButton,
     blockComponent: AudioBlock
 };
