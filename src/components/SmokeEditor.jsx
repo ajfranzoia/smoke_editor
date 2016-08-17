@@ -17,29 +17,9 @@ export default class SmokeEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        // Create the editorState
-        /*if(props.defaultValue.length > 0) {
-            var contentBlocks = convertFromHTML(props.defaultValue);
-            var contentState = ContentState.createFromBlockArray(contentBlocks);
-            var rawContentState = convertToRaw(contentState);
-
-            console.log('rawContentState -> ', rawContentState);
-
-            var editorState = editorStateFromRaw(rawContentState);
-
-        } else {
-            var editorState = editorStateFromRaw(null);
-        }*/
-        
-        
         if(props.defaultValue.length > 0){
-
             const contentState = JSON.parse(props.defaultValue);
-            console.log('contentState -> ', contentState);
-            
-
             var editorState = editorStateFromRaw(contentState);
-
         } else {
             var editorState = editorStateFromRaw(null);
         }
