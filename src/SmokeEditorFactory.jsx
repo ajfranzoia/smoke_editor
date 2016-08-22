@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import SmokeEditor from '../public/dist/components/SmokeEditor'
+import Smoke from '../public/dist/components/Smoke'
 import PluginManager from "../public/dist/Helpers/pluginManager";
 import DOMValidator from "../public/dist/Helpers/domValidator";
 
@@ -19,7 +19,7 @@ export default class SmokeEditorFactory {
             });
 
             ReactDOM.render(
-                <SmokeEditor
+                <Smoke
                     debug={config.debug}
                     plugins={plugins}
                     targetElement={element}

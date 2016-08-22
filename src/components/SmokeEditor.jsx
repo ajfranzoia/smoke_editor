@@ -1,65 +1,19 @@
-import React from 'react';
-import {stateToHTML} from 'draft-js-export-html';
+import {MegadraftEditor} from "megadraft";
 
-import {
-    EditorState,
-    ContentState,
-    convertFromRaw,
-    convertFromHTML,
-    DraftEditorContents,
-    convertToRaw
-} from 'draft-js';
-import actions from '../actions';
-import {MegadraftEditor, editorStateFromRaw, editorStateToJSON} from "megadraft";
-
-
-export default class SmokeEditor extends React.Component {
+export default class SmokeEditor extends MegadraftEditor {
     constructor(props) {
         super(props);
-
-        if(props.defaultValue.length > 0){
-            const contentState = JSON.parse(props.defaultValue);
-            var editorState = editorStateFromRaw(contentState);
-        } else {
-            var editorState = editorStateFromRaw(null);
-        }
-
-
-        this.state = {
-            editorState: editorState,
-            smokeJson: editorStateToJSON(editorState),
-            //smokeHtml: stateToHTML(editorState.getCurrentContent()),
-            name: name,
-            id: this.props.targetElement.id
-        };
-
+        console.log(props)
     }
 
-    onChange = (editorState) => {
-
-        this.setState({
-            editorState: editorState,
-            smokeJson: editorStateToJSON(editorState),
-            //smokeHtml: stateToHTML(editorState.getCurrentContent())
+    blockStyleFn = (contentBlock) => {
+        const blockType = contentBlock.getType();
+        let style = null;
+        this.props.actions.forEach(function (action) {
+            if(blockType == action.style){
+                style =  action.className;
+            }
         });
-    }
-
-    render() {
-
-        const inputType = (this.props.debug === true) ? 'text' : 'hidden';
-
-        return (
-            <div>
-
-                <MegadraftEditor
-                    editorState={this.state.editorState}
-                    actions={actions}
-                    onChange={this.onChange}/>
-
-                <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
-                <input type={inputType} name={this.state.name} id={this.state.id} value={this.state.smokeHtml} />
-
-            </div>
-        )
+        return style;
     }
 }
