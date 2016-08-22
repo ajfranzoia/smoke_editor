@@ -9,7 +9,8 @@ export default class SmokeEditorFactory {
 
         try {
             const textarea = DOMValidator.getFirstChildOrThrow(element, 'textarea');
-            const defaultValue = (typeof textarea.value === 'undefined') ? '' : textarea.value;
+
+            const defaultValue = DOMValidator.getAttributeOrThrow(textarea, 'data-draft-json') ;
 
             let plugins = [];
 

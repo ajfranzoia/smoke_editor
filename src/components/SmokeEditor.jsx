@@ -1,6 +1,5 @@
 import React from 'react';
-//import Editor from './RichTextEditor';
-import {stateToHTML} from 'draft-js-export-html'
+import {stateToHTML} from 'draft-js-export-html';
 
 import {
     EditorState,
@@ -10,6 +9,7 @@ import {
     DraftEditorContents,
     convertToRaw
 } from 'draft-js';
+import actions from '../actions';
 import {MegadraftEditor, editorStateFromRaw, editorStateToJSON} from "megadraft";
 
 
@@ -17,25 +17,18 @@ export default class SmokeEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        // Create the editorState
-        /*if(props.defaultValue.length > 0) {
-            var contentBlocks = convertFromHTML(props.defaultValue);
-            var contentState = ContentState.createFromBlockArray(contentBlocks);
-            var editorState = EditorState.createWithContent(contentState);
-
+        if(props.defaultValue.length > 0){
+            const contentState = JSON.parse(props.defaultValue);
+            var editorState = editorStateFromRaw(contentState);
         } else {
-            var editorState = EditorState.createEmpty();
-        }*/
-
-        var editorState = editorStateFromRaw(null);
-
-        var exportedContent = stateToHTML(editorState.getCurrentContent());
+            var editorState = editorStateFromRaw(null);
+        }
 
 
         this.state = {
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
-            smokeHtml: exportedContent,
+            //smokeHtml: stateToHTML(editorState.getCurrentContent()),
             name: name,
             id: this.props.targetElement.id
         };
@@ -44,11 +37,10 @@ export default class SmokeEditor extends React.Component {
 
     onChange = (editorState) => {
 
-        var exportedContent = stateToHTML(editorState.getCurrentContent());
         this.setState({
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
-            smokeHtml: exportedContent
+            //smokeHtml: stateToHTML(editorState.getCurrentContent())
         });
     }
 
@@ -61,6 +53,7 @@ export default class SmokeEditor extends React.Component {
 
                 <MegadraftEditor
                     editorState={this.state.editorState}
+                    actions={actions}
                     onChange={this.onChange}/>
 
                 <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson} />
