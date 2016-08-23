@@ -4,7 +4,7 @@
  * License: MIT
  */
 
-import icons from "./icons";
+import  {MegadraftIcons as icons} from "megadraft";
 
 export default [
     {type: "inline", label: "B", style: "BOLD", icon: icons.BoldIcon},
