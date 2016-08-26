@@ -1,50 +1,49 @@
+/*
+ * Copyright (c) 2016, Globo.com (https://github.com/globocom)
+ *
+ * License: MIT
+ */
+
 import React, {Component} from "react";
+import DOMParser from "parse-html";
 
 import {
-  BlockContent,
-  BlockData,
-  BlockInput,
-  CommonBlock
+    MegadraftPlugin
 } from "megadraft";
+
 
 import {MegadraftIcons as icons} from "megadraft";
 
-import VideoBlockStyle from "./TwitterStyle";
+import VideoBlockStyle from "./VideoBlockStyle";
 
 
-export default class TwitterBlock extends Component {
-  constructor(props) {
-    super(props);
+export default class VideoBlock extends Component {
+    constructor(props) {
+        super(props);
 
-    this._handleCaptionChange = ::this._handleCaptionChange;
+        console.log("MegadraftIcons --> ",icons)
 
-    this.actions = [
-      {"key": "edit", "icon": icons.EditIcon, "action": this._handleEdit},
-      {"key": "delete", "icon": icons.DeleteIcon, "action": this.props.container.remove}
-    ];
-  }
+        this._handleCaptionChange = ::this._handleCaptionChange;
 
-  _handleEdit() {
-  }
+        this.actions = [
+            {"key": "edit", "icon": icons.EditIcon, "action": this._handleEdit},
+            {"key": "delete", "icon": icons.DeleteIcon, "action": this.props.container.remove}
+        ];
+    }
 
-  _handleCaptionChange(event) {
-    this.props.container.updateData({caption: event.target.value});
-  }
+    _handleEdit() {
+    }
 
-  render() {
-    return (
-      <CommonBlock {...this.props} actions={this.actions}>
-        <BlockContent>
-          <video controls style={VideoBlockStyle.video} src={this.props.data.src} alt=""/>
-        </BlockContent>
+    _handleCaptionChange(event) {
+        this.props.container.updateData({caption: event.target.value});
+    }
 
-        <BlockData>
-          <BlockInput
-            placeholder="Caption"
-            value={this.props.data.caption}
-            onChange={this._handleCaptionChange} />
-        </BlockData>
-      </CommonBlock>
-    );
-  }
+    render() {
+        return (
+            <MegadraftPlugin.CommonBlock {...this.props} actions={this.actions}>
+                <blockquote className="twitter-tweet" data-lang="es"><p lang="es" dir="ltr">¿Encuentros furtivos? Las fotos de la polémica: <a href="https://twitter.com/balfederico">@balfederico</a> y <a href="https://twitter.com/laufer4">@laufer4</a> en Córdoba <a href="https://t.co/YDsTLcaPo0">https://t.co/YDsTLcaPo0</a> <a href="https://t.co/XJ6lhYtutb">pic.twitter.com/XJ6lhYtutb</a></p>&mdash; ElDoce (@ElDoce) <a href="https://twitter.com/ElDoce/status/769277364790562816">26 de agosto de 2016</a></blockquote>
+                <script async src="//platform.twitter.com/widgets.js" charSet="utf-8"></script>
+            </MegadraftPlugin.CommonBlock>
+        );
+    }
 }

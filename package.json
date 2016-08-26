@@ -5,10 +5,16 @@
   "description": "",
   "dependencies": {
     "axios": "0.12.0",
+    "babel-runtime": "^6.11.6",
     "immutable": "^3.8.1",
     "megadraft": "^0.3.0",
-    "react": "latest",
-    "react-dom": "latest"
+    "parse-html": "0.0.1",
+    "react": "^15.3.1",
+    "react-addons-transition-group": "^15.3.1",
+    "react-bootstrap-prompt": "^1.0.1",
+    "react-dom": "latest",
+    "tg-modal": "^0.4.1",
+    "xmldom": "^0.1.22"
   },
   "browserify": {
     "transform": [

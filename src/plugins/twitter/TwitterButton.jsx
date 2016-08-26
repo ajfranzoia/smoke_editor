@@ -6,34 +6,37 @@
 
 import React, {Component} from "react";
 
-import {MegadraftIcons,insertDataBlock} from "megadraft";
-
+import {insertDataBlock} from "megadraft";
+import icons from "../../icons/icons";
+import Modal from '../../components/Modal';
 
 
 export default class TwitterButton extends Component {
 
-  constructor(props) {
-    super(props);
-    this.onClick = ::this.onClick;
-  }
+    constructor(props) {
+        super(props);
+        this.onClick = ::this.onClick;
 
-  onClick(e) {
-    e.preventDefault();
-    const src = window.prompt("Dale tuiteaaa papá!!");
-    if (!src) {
-      return;
+        console.log('this.props.editorState --> ', this.props.editorState)
     }
 
-    const data = {src: src, type: "twitter", display: "small"};
+    onClick(e) {
+        e.preventDefault();
+        const src = window.prompt("Enter a URL");
+        if (!src) {
+            return;
+        }
 
-    this.props.onChange(insertDataBlock(this.props.editorState, data));
-  }
+        const data = {src: src, type: "twitter", display: "small"};
 
-  render() {
-    return (
-      <button className={this.props.className} type="button" onClick={this.onClick}>
-        <MegadraftIcons.VideoIcon className="sidemenu__button__icon" />
-      </button>
-    );
-  }
+        this.props.onChange(insertDataBlock(this.props.editorState, data));
+    }
+
+    render() {
+        return (
+            <button className={this.props.className} type="button" onClick={this.onClick}>
+                <icons.TwitterIcon className="sidemenu__button__icon"/>
+            </button>
+        );
+    }
 }

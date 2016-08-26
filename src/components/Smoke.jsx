@@ -2,6 +2,7 @@ import React from 'react';
 import {EditorState, ContentState} from 'draft-js';
 import actions from '../actions';
 import {editorStateFromRaw, editorStateToJSON} from "megadraft";
+import  CustomPlugins from "../plugins/default";
 import  SmokeEditor from "./SmokeEditor"
 
 
@@ -15,6 +16,8 @@ export default class Smoke extends React.Component {
         } else {
             var editorState = editorStateFromRaw(null);
         }
+
+        this.customPlugins = CustomPlugins;
 
         this.state = {
             editorState: editorState,
@@ -37,14 +40,15 @@ export default class Smoke extends React.Component {
 
     render() {
 
-        const inputType = (this.props.debug === true) ? 'text' : 'hidden';
+        const inputType = (this.props.debug === true) ? 'hidden' : 'hidden';
 
         return (
             <div>
                 <SmokeEditor
                     editorState={this.state.editorState}
                     actions={actions}
-                    onChange={this.onChange}/>
+                    onChange={this.onChange}
+                    plugins={this.customPlugins}/>
                 <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson}/>
                 <input type={inputType} name={this.state.name} id={this.state.id} value={this.state.smokeHtml}/>
             </div>
