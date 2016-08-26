@@ -3,6 +3,8 @@ import {EditorState, ContentState} from 'draft-js';
 import actions from '../actions';
 import {editorStateFromRaw, editorStateToJSON} from "megadraft";
 import  SmokeEditor from "./SmokeEditor"
+import stateToHTML from 'draft-js-export-html'
+import DOMValidator from "../Helpers/domValidator";
 
 
 export default class Smoke extends React.Component {
@@ -20,8 +22,9 @@ export default class Smoke extends React.Component {
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
             //smokeHtml: stateToHTML(editorState.getCurrentContent()),
-            name: name,
-            id: this.props.targetElement.id
+            fieldName: this.props.fieldName,
+            name: this.props.name,
+            id: this.props.id,
         };
 
     }
@@ -38,15 +41,15 @@ export default class Smoke extends React.Component {
     render() {
 
         const inputType = (this.props.debug === true) ? 'text' : 'hidden';
-
+        
         return (
             <div>
                 <SmokeEditor
                     editorState={this.state.editorState}
                     actions={actions}
                     onChange={this.onChange}/>
-                <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson}/>
-                <input type={inputType} name={this.state.name} id={this.state.id} value={this.state.smokeHtml}/>
+                <input type={inputType} readOnly name={"smoke-" + this.state.fieldName + "-json"} value={this.state.smokeJson}/>
+                <input type="hidden" readOnly name={this.state.name} id={this.state.id} value=" - "/>
             </div>
         )
     }

@@ -9,8 +9,10 @@ export default class SmokeEditorFactory {
 
         try {
             const textarea = DOMValidator.getFirstChildOrThrow(element, 'textarea');
-
             const defaultValue = DOMValidator.getAttributeOrThrow(textarea, 'data-draft-json') ;
+            const fieldName = DOMValidator.getAttributeOrThrow(textarea, 'data-field-name');
+            const name = DOMValidator.getAttributeOrThrow(textarea, 'name');
+            const id = DOMValidator.getAttributeOrThrow(textarea, 'id');
 
             let plugins = [];
 
@@ -23,6 +25,9 @@ export default class SmokeEditorFactory {
                     debug={config.debug}
                     plugins={plugins}
                     targetElement={element}
+                    fieldName={fieldName}
+                    name={name}
+                    id={id}
                     defaultValue={defaultValue}
                 />,
                 element
