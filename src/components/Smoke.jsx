@@ -1,8 +1,8 @@
 import React from 'react';
 import {EditorState, ContentState} from 'draft-js';
-import actions from '../actions';
+import actions from './Actions';
 import {editorStateFromRaw, editorStateToJSON} from "megadraft";
-import  CustomPlugins from "../plugins/default";
+import  CustomPlugins from "./Plugins";
 import  SmokeEditor from "./SmokeEditor"
 
 
@@ -22,10 +22,11 @@ export default class Smoke extends React.Component {
         this.state = {
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
-            //smokeHtml: stateToHTML(editorState.getCurrentContent()),
             name: name,
             id: this.props.targetElement.id
         };
+
+        console.log(this)
 
     }
 
@@ -40,7 +41,7 @@ export default class Smoke extends React.Component {
 
     render() {
 
-        const inputType = (this.props.debug === true) ? 'hidden' : 'hidden';
+        const inputType = (this.props.debug === true) ? 'text' : 'hidden';
 
         return (
             <div>

@@ -4,5 +4,6 @@ import TwitterBlock from "./TwitterBlock";
 export default {
   type: "twitter",
   buttonComponent: TwitterButton,
-  blockComponent: TwitterBlock
+  blockComponent: TwitterBlock,
+  options:{displayOptions:[]}
 };

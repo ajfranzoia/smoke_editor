@@ -92,7 +92,7 @@
   border-left: 2px solid #ddd;
   color: #999;
   font-style: italic;
-  margin: 12px 0 40px 0;
+  margin: 12px 0 40px 40px;
   padding: 6px 0 5px 18px;
 }
 
@@ -341,7 +341,6 @@
 
 .megadraft-editor .block__controls {
   overflow: auto;
-  padding: 8px;
 }
 
 .megadraft-editor .block__action-group {

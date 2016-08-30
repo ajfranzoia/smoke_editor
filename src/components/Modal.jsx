@@ -1,40 +1,51 @@
-import React from 'react';
-import Modal from 'tg-modal';
+import React, {PropTypes} from 'react';
+import {insertDataBlock} from "megadraft";
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 
-export default class App extends React.Component {
+export default class View extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            answer: 'GIMME',
-            isOpen: true
+            isShowingModal: this.props.isShowingModal
         };
     }
 
-    static open = () => {
-       <App isOpen={true} />
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            isShowingModal: nextProps.isShowingModal
+        });
     }
 
-    onConfirm = () => {
-        this.setState({
-            answer: 'GIMME',
-            isOpen: false
-        });
-    };
+    addData = (content) => {
+        const data = {content: content, type: "twitter", display: "small"};
+        this.props.onChange(insertDataBlock(this.props.editorState, data));
 
-    onCancel = () => {
-        this.setState({
-            answer: 'DO NOT WANT',
-            isOpen: false
-        });
-    };
+    }
+
+    handleClick = () => {
+        this.addData(this.textarea.value);
+        this.handleClose();
+
+    }
+
+    handleClose = () => {
+        this.setState({isShowingModal: false})
+    }
 
     render() {
-        return (
-            <Modal isOpen={true} title={this.props.title} onCancel={this.onCancel} onConfirm={this.onConfirm} isStatic>
-                <textarea>
-                    hola mundo
-                </textarea>
-            </Modal>
-        )
+        return <div onClick={this.handleClick}>
+            {
+                this.state.isShowingModal &&
+                <ModalContainer onClose={this.handleClose}>
+                    <ModalDialog onClose={this.handleClose}>
+                        <h3>Embed</h3>
+                        <textarea ref={(ref) => this.textarea = ref} rows="15" cols="75" />
+                        <div>
+                            <button onClick={this.handleClick}>Aceptar</button>
+                        </div>
+                    </ModalDialog>
+                </ModalContainer>
+            }
+        </div>;
     }
 }
