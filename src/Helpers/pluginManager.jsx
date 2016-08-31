@@ -1,39 +1,47 @@
-import audio from "../plugins/audio/plugin";
-import kaltura from "../plugins/kaltura/plugin";
-import video from "../plugins/video/plugin";
-import embed from "../plugins/embed/plugin";
-import bold from "../plugins/bold/plugin";
-import headerOne from "../plugins/header-one/plugin";
-import subtitle from "../plugins/subtitle/plugin";
-import italic from "../plugins/italic/plugin";
-import ol from "../plugins/ordered-list-item/plugin";
-import underline from "../plugins/underline/plugin";
+import plugins from "../plugins/Plugins";
+import actions from "../actions/Actions";
 
-let PLUGIN = {};
+let ACTIONS = {};
+let PLUGINS = {};
 
 export default class PluginManager {
 
-    static set(name, value) {
-        PLUGIN[name] = value;
+    static set(type, name, value) {
+        switch (type){
+            case 'plugin':
+                PLUGINS[name] = value;
+                break;
+            case 'action':
+                ACTIONS[name] = value;
+                break;
+        }
     }
 
-    static get(name) {
-        return PLUGIN[name];
+    static get(type, name) {
+
+        switch (type){
+            case 'plugin':
+                return PLUGINS[name];
+                break;
+            case 'action':
+                return ACTIONS[name];
+                break;
+        }
+
     }
 
-    static getAll() {
-        return PLUGIN;
+    static getPlugins() {
+        return PLUGINS;
+    }
+    static getActions() {
+        return ACTIONS;
     }
 }
 
-PluginManager.set('AUDIO', audio);
-PluginManager.set('KALTURA', kaltura);
-PluginManager.set('VIDEO', video);
-PluginManager.set('EMBED', embed);
-PluginManager.set('BOLD', bold);
-PluginManager.set('H1', headerOne);
-PluginManager.set('SUBTITLE', subtitle);
-PluginManager.set('ITALIC', italic);
-PluginManager.set('OL', ol);
-PluginManager.set('UNDERLINE', underline);
 
+PluginManager.set('action', 'BOLD', actions.bold);
+PluginManager.set('action', 'ITALIC', actions.italic);
+PluginManager.set('action', 'LINK', actions.link);
+PluginManager.set('action', 'SUBTITLE', actions.subtitle);
+PluginManager.set('action', 'BLOCKQUOTE', actions.blockquote);
+PluginManager.set('plugin', 'TWITTER', plugins.twitter);

@@ -7,7 +7,7 @@ export default class TwitterButton extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShowingModal: false
+            showModal: false
         }
 
     }
@@ -15,17 +15,26 @@ export default class TwitterButton extends Component {
     openModal = (e) => {
         e.preventDefault()
         this.setState({
-            isShowingModal: true
+            showModal: true
+        });
+    }
+    
+    closeModal = (e) => {
+        e.preventDefault()
+        this.setState({
+            showModal: false
         });
     }
 
     render() {
+        console.log(this.state);
+
         return (
                 <div>
                     <button className={this.props.className} type="button" onClick={this.openModal} >
                         <icons.TwitterIcon className="sidemenu__button__icon"/>
                     </button>
-                    <Modal isShowingModal={this.state.isShowingModal} editorState={this.props.editorState} onChange={this.props.onChange} />
+                    <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState} onChange={this.props.onChange} closeModal={this.closeModal} />
                 </div>
         );
     }

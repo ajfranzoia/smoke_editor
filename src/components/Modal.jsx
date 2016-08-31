@@ -22,14 +22,15 @@ export default class View extends React.Component {
 
     }
 
-    handleClick = () => {
+    handleClick = (e) => {
         this.addData(this.textarea.value);
-        this.handleClose();
+        this.handleClose(e);
 
     }
 
-    handleClose = () => {
+    handleClose = (e) => {
         this.setState({isShowingModal: false})
+        this.props.closeModal(e);
     }
 
     render() {
