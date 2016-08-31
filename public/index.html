@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Smoke Editor Example</title>
-    <link type="text/css" rel="stylesheet" href="dist/css/RichEditor.css" media="all" />
-    <link type="text/css" rel="stylesheet" href="dist/css/typography.css" media="all" />
     <link type="text/css" rel="stylesheet" href="dist/css/megadraft.css" media="all" />
     <style>
         body {
@@ -18,14 +16,15 @@
 <div id="edit-body">
     <textarea name="body" data-draft-json='' data-field-name="body"></textarea>
 </div>
+<div id="modal"></div>
 
 <script src="/dist/SmokeEditorFactory.js"></script>
 <script>
     var config = {
-        plugins: ['AUDIO', 'KALTURA', 'EMBED', 'BOLD', 'H1', 'SUBTITLE', 'ITALIC', 'UNDERLINE'],
+        plugins: ['TWITTER'],
+        actions: ['BOLD', 'ITALIC', 'LINK', 'SUBTITLE', 'BLOCKQUOTE'],
         debug: true
     }
-    //SmokeEditorRender(document.getElementById('edit-body'), config);
     SmokeEditorFactory.make(document.getElementById('edit-body'), config);
 </script>
 

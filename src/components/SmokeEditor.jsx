@@ -1,9 +1,9 @@
 import {MegadraftEditor} from "megadraft";
 
+
 export default class SmokeEditor extends MegadraftEditor {
     constructor(props) {
         super(props);
-        console.log(props)
     }
 
     blockStyleFn = (contentBlock) => {

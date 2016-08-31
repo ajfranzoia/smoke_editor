@@ -15,15 +15,22 @@ export default class SmokeEditorFactory {
             const id = DOMValidator.getAttributeOrThrow(textarea, 'id');
 
             let plugins = [];
-
             config.plugins.forEach(function (pluginName) {
-                plugins.push(PluginManager.get(pluginName));
+                plugins.push(PluginManager.get('plugin', pluginName));
             });
+
+
+            let actions = [];
+            config.actions.forEach(function (actionName) {
+                actions.push(PluginManager.get('action', actionName));
+            });
+
 
             ReactDOM.render(
                 <Smoke
                     debug={config.debug}
                     plugins={plugins}
+                    actions={actions}
                     targetElement={element}
                     fieldName={fieldName}
                     name={name}

@@ -5,9 +5,18 @@
   "description": "",
   "dependencies": {
     "axios": "0.12.0",
+    "babel-runtime": "^6.11.6",
+    "immutable": "^3.8.1",
     "megadraft": "^0.3.0",
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "^15.3.1",
+    "react-addons-transition-group": "^15.3.1",
+    "react-bootstrap": "^0.30.3",
+    "react-bootstrap-prompt": "^1.0.1",
+    "react-confirm-bootstrap": "^3.1.2",
+    "react-modal": "^1.4.0",
+    "react-modal-dialog": "^3.0.2",
+    "react-tweet-embed": "^1.0.1",
+    "xmldom": "^0.1.22"
   },
   "browserify": {
     "transform": [
@@ -51,7 +60,6 @@
     "gulp-util": "^3.0.7",
     "immutable": "^3.8.1",
     "megadraft": "^0.1.1",
-    "prompt": "^1.0.0",
     "setimmediate": "^1.0.4"
   },
   "scripts": {
