@@ -19,11 +19,14 @@ export default class SmokeEditorFactory {
                 plugins.push(PluginManager.get('plugin', pluginName));
             });
 
+            console.log('plugins -> ', plugins);
 
             let actions = [];
             config.actions.forEach(function (actionName) {
                 actions.push(PluginManager.get('action', actionName));
             });
+
+            console.log('actions -> ', actions);
 
 
             ReactDOM.render(
