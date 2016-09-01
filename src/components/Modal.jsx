@@ -42,7 +42,7 @@ export default class View extends React.Component {
                         <h3 className="modal-title">Embeber Twitter</h3>
                         <textarea placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
                         <div className="form-actions">
-                            <button className="btn btn-primary form-submit" onClick={this.handleClick}>Aceptar</button>
+                            <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>
                         </div>
                     </ModalDialog>
                 </ModalContainer>

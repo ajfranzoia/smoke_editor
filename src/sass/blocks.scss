@@ -1,0 +1,19 @@
+.smoke-twitter-block{
+  background: #e1e8ed;
+  margin: 0 1% 1%;
+  padding: (10em/16);
+
+  a {
+    color: #1b95e0;
+    text-decoration: none;
+
+    &:hover, &:active, &:focus{
+      color: #1b95e0;
+    }
+  }
+
+  blockquote {
+    border-left: 2px solid #999 !important;
+    color: #292f33 !important;
+  }
+}
