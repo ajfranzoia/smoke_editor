@@ -18,8 +18,9 @@ export default class Smoke extends React.Component {
         this.state = {
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
-            name: name,
-            id: this.props.targetElement.id
+            fieldName: this.props.fieldName,
+            name: this.props.name,
+            id: this.props.id,
         };
 
 
@@ -30,14 +31,13 @@ export default class Smoke extends React.Component {
         this.setState({
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
-            //smokeHtml: stateToHTML(editorState.getCurrentContent())
         });
     }
 
     render() {
 
         const inputType = (this.props.debug === true) ? 'text' : 'hidden';
-
+        
         return (
             <div>
                 <SmokeEditor
@@ -45,8 +45,8 @@ export default class Smoke extends React.Component {
                     actions={this.props.actions}
                     plugins={this.props.plugins}
                     onChange={this.onChange}/>
-                <input type={inputType} name={"smoke-" + this.state.id + "-json"} value={this.state.smokeJson}/>
-                <input type={inputType} name={this.state.name} id={this.state.id} value={this.state.smokeHtml}/>
+                <input type={inputType} readOnly name={"smoke-" + this.state.fieldName + "-json"} value={this.state.smokeJson}/>
+                <input type={inputType} readOnly name={this.state.name} id={this.state.id} value=" - "/>
             </div>
         )
     }

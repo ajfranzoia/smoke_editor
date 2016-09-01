@@ -33,7 +33,7 @@ export default class TwitterButton extends Component {
                     <button className={this.props.className} type="button" onClick={this.openModal} >
                         <icons.TwitterIcon className="sidemenu__button__icon"/>
                     </button>
-                    <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState} onChange={this.props.onChange} closeModal={this.closeModal} />
+                    <Modal className="react-modal" isShowingModal={this.state.showModal} editorState={this.props.editorState} onChange={this.props.onChange} closeModal={this.closeModal} />
                 </div>
         );
     }
