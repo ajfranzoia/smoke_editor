@@ -1,7 +1,9 @@
 .smoke-twitter-block{
-  background: #e1e8ed;
   margin: 0 1% 1%;
   padding: (10em/16);
+  background: url("../placeholders/twitter-bird.svg") no-repeat #f2f9fc;
+  background-position: center;
+  background-size:25%;
 
   a {
     color: #1b95e0;

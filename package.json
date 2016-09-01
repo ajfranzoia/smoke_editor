@@ -57,7 +57,7 @@
   },
   "scripts": {
     "watch": "gulp watch",
-    "build": "gulp build",
+    "build": "gulp build-all",
     "dev": "gulp dev"
   }
 }

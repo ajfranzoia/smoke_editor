@@ -30,6 +30,11 @@ gulp.task('server', function(){
 
 });
 
+gulp.task('copy', function () {
+    gulp.src(['src/placeholders/*.*'])
+        .pipe(gulp.dest('public/dist/placeholders/'));
+});
+
 gulp.task('sass', function(){
     return gulp.src('src/sass/*.scss')
         .pipe(plumber({errorHandler: onError}))
@@ -65,9 +70,11 @@ gulp.task('build', ['sass','buildJsx'], function () {
 });
 
 gulp.task('watch', function() {
-    refresh.listen()
+    refresh.listen();
+    gulp.watch('src/placeholders/*.*', ['copy']);
     gulp.watch('src/sass/*.scss', ['sass']);
     gulp.watch('src/**/*.jsx', ['build']);
 });
 
-gulp.task('dev',['server','build','watch']);
+gulp.task('dev',['server','build','copy','watch']);
+gulp.task('build-all',['build','copy']);
