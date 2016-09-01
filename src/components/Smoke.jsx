@@ -46,7 +46,7 @@ export default class Smoke extends React.Component {
                     plugins={this.props.plugins}
                     onChange={this.onChange}/>
                 <input type={inputType} readOnly name={"smoke-" + this.state.fieldName + "-json"} value={this.state.smokeJson}/>
-                <input type="hidden" readOnly name={this.state.name} id={this.state.id} value=" - "/>
+                <input type={inputType} readOnly name={this.state.name} id={this.state.id} value=" - "/>
             </div>
         )
     }
