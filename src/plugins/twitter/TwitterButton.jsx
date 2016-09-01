@@ -9,7 +9,6 @@ export default class TwitterButton extends Component {
         this.state = {
             showModal: false
         }
-
     }
 
     openModal = (e) => {
@@ -20,7 +19,7 @@ export default class TwitterButton extends Component {
     }
     
     closeModal = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         this.setState({
             showModal: false
         });

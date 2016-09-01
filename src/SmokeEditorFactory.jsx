@@ -9,20 +9,17 @@ export default class SmokeEditorFactory {
 
         try {
             const textarea = DOMValidator.getFirstChildOrThrow(element, 'textarea');
-
-            const defaultValue = DOMValidator.getAttributeOrThrow(textarea, 'data-draft-json') ;
+            const defaultValue = DOMValidator.getAttributeOrThrow(textarea, 'data-draft-json');
 
             let plugins = [];
             config.plugins.forEach(function (pluginName) {
                 plugins.push(PluginManager.get('plugin', pluginName));
             });
 
-
             let actions = [];
             config.actions.forEach(function (actionName) {
                 actions.push(PluginManager.get('action', actionName));
             });
-
 
             ReactDOM.render(
                 <Smoke

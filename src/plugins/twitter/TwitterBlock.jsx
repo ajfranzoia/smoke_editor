@@ -12,6 +12,7 @@ export default class TwitterBlock extends Component {
     }
 
     _handleEdit() {
+
     }
 
     _handleCaptionChange = (event) => {
@@ -21,7 +22,7 @@ export default class TwitterBlock extends Component {
     render() {
         return (
             <MegadraftPlugin.CommonBlock {...this.props} actions={this.actions}>
-                {this.props.data.content}
+                <div className="{block__content}" dangerouslySetInnerHTML={{__html: this.props.data.content}}></div>
             </MegadraftPlugin.CommonBlock>
         );
     }

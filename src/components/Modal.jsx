@@ -22,10 +22,9 @@ export default class View extends React.Component {
 
     }
 
-    handleClick = (e) => {
+    saveData = (e) => {
         this.addData(this.textarea.value);
         this.handleClose(e);
-
     }
 
     handleClose = (e) => {
@@ -34,7 +33,7 @@ export default class View extends React.Component {
     }
 
     render() {
-        return <div onClick={this.handleClick}>
+        return <div className="modal-wrapper">
             {
                 this.state.isShowingModal &&
                 <ModalContainer onClose={this.handleClose}>
@@ -42,7 +41,7 @@ export default class View extends React.Component {
                         <h3>Embed</h3>
                         <textarea ref={(ref) => this.textarea = ref} rows="15" cols="75" />
                         <div>
-                            <button onClick={this.handleClick}>Aceptar</button>
+                            <button onClick={this.saveData}>Aceptar</button>
                         </div>
                     </ModalDialog>
                 </ModalContainer>
