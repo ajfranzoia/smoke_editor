@@ -9,14 +9,7 @@
     "immutable": "^3.8.1",
     "megadraft": "^0.3.0",
     "react": "^15.3.1",
-    "react-addons-transition-group": "^15.3.1",
-    "react-bootstrap": "^0.30.3",
-    "react-bootstrap-prompt": "^1.0.1",
-    "react-confirm-bootstrap": "^3.1.2",
-    "react-modal": "^1.4.0",
-    "react-modal-dialog": "^3.0.2",
-    "react-tweet-embed": "^1.0.1",
-    "xmldom": "^0.1.22"
+    "react-modal-dialog": "^3.0.2"
   },
   "browserify": {
     "transform": [
@@ -64,7 +57,7 @@
   },
   "scripts": {
     "watch": "gulp watch",
-    "build": "gulp build",
+    "build": "gulp build-all",
     "dev": "gulp dev"
   }
 }

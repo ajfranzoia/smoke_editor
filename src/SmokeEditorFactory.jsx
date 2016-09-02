@@ -14,20 +14,16 @@ export default class SmokeEditorFactory {
             const name = DOMValidator.getAttributeOrThrow(textarea, 'name');
             const id = DOMValidator.getAttributeOrThrow(textarea, 'id');
 
+
             let plugins = [];
             config.plugins.forEach(function (pluginName) {
                 plugins.push(PluginManager.get('plugin', pluginName));
             });
 
-            console.log('plugins -> ', plugins);
-
             let actions = [];
             config.actions.forEach(function (actionName) {
                 actions.push(PluginManager.get('action', actionName));
             });
-
-            console.log('actions -> ', actions);
-
 
             ReactDOM.render(
                 <Smoke

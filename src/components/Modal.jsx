@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
-import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import {ModalDialog} from 'react-modal-dialog';
+import ModalContainer from './SmokeModalContainer';
 
 export default class View extends React.Component {
     constructor(props) {
@@ -22,10 +23,9 @@ export default class View extends React.Component {
 
     }
 
-    handleClick = (e) => {
+    saveData = (e) => {
         this.addData(this.textarea.value);
         this.handleClose(e);
-
     }
 
     handleClose = (e) => {
@@ -34,15 +34,15 @@ export default class View extends React.Component {
     }
 
     render() {
-        return <div onClick={this.handleClick}>
+        return <div className="modal-wrapper">
             {
                 this.state.isShowingModal &&
                 <ModalContainer onClose={this.handleClose}>
                     <ModalDialog onClose={this.handleClose}>
-                        <h3>Embed</h3>
-                        <textarea ref={(ref) => this.textarea = ref} rows="15" cols="75" />
-                        <div>
-                            <button onClick={this.handleClick}>Aceptar</button>
+                        <h3 className="modal-title">Embeber Twitter</h3>
+                        <textarea placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
+                        <div className="form-actions">
+                            <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>
                         </div>
                     </ModalDialog>
                 </ModalContainer>
