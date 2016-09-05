@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
-import {ModalDialog} from 'react-modal-dialog';
-import ModalContainer from './SmokeModalContainer';
+import {ModalDialog, ModalContainer} from 'react-modal-dialog';
 
 export default class View extends React.Component {
     constructor(props) {
@@ -9,7 +8,7 @@ export default class View extends React.Component {
         this.state = {
             isShowingModal: this.props.isShowingModal
         };
-    }
+    } 
 
     componentWillReceiveProps(nextProps) {
         this.setState({
@@ -37,8 +36,8 @@ export default class View extends React.Component {
         return <div className="modal-wrapper">
             {
                 this.state.isShowingModal &&
-                <ModalContainer onClose={this.handleClose}>
-                    <ModalDialog onClose={this.handleClose}>
+                <ModalContainer zIndex={100} onClose={this.handleClose}>
+                    <ModalDialog className="smoke-modal-dialog" onClose={this.handleClose}>
                         <h3 className="modal-title">Embeber Twitter</h3>
                         <textarea placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
                         <div className="form-actions">
