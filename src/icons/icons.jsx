@@ -5,11 +5,13 @@
  */
 
 import TwitterIcon from "./twitter";
+import FacebookIcon from "./facebook";
 
 
 
 const icons = {
-  TwitterIcon
+  TwitterIcon,
+  FacebookIcon
 };
 
 export default icons;
