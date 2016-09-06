@@ -38,7 +38,7 @@ export default class View extends React.Component {
                 this.state.isShowingModal &&
                 <ModalContainer zIndex={100} onClose={this.handleClose}>
                     <ModalDialog className="smoke-modal-dialog" onClose={this.handleClose}>
-                        <h3 className="modal-title">Embeber Twitter</h3>
+                        <h3 className="modal-title">{this.props.title}</h3>
                         <textarea placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
                         <div className="form-actions">
                             <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>

@@ -45,3 +45,4 @@ PluginManager.set('action', 'LINK', actions.link);
 PluginManager.set('action', 'SUBTITLE', actions.subtitle);
 PluginManager.set('action', 'BLOCKQUOTE', actions.blockquote);
 PluginManager.set('plugin', 'TWITTER', plugins.twitter);
+PluginManager.set('plugin', 'RELATEDCONTENT', plugins.relatedcontent);
