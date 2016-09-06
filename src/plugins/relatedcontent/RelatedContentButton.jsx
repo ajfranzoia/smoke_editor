@@ -11,34 +11,13 @@ export default class RelatedContentButton extends Component {
         this.onClick = ::this.onClick;
     }
 
-    /*openModal = (e) => {
-        e.preventDefault()
-        this.setState({
-            showModal: true
-        });
-    }
-    
-    closeModal = (e) => {
-        e.preventDefault();
-        this.setState({
-            showModal: false
-        });
-    }*/
-
     onClick(e) {
         e.preventDefault();
-        /*const src = window.prompt("Enter a URL");
-        if (!src) {
-            return;
-        }*/
-
         const data = { type: "relatedcontent",  title: "", href: ""};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
     }
-
-
+    
     render() {
-        console.log(this.state);
 
         return (
                 <div>

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Autosuggest from 'react-autosuggest';
 
-// Imagine you have a list of languages that you'd like to autosuggest.
+// @todo: remove when implemented ajax to get the suggested contents
 const contents = [
     {
         href: 'http://tn.com.ar/politica/piden-imputar-por-lavado-al-sindicalista-omar-caballo-suarez_710932',
@@ -18,24 +18,22 @@ const contents = [
 ];
 
 
-
-export default class RelatedContentBlock extends Component {
+export default class RelisEditingatedContentBlock extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            isEditing: true,
             href: '',
             title: '',
             suggestions: []
         };
-
 
     }
 
     getSuggestions = (value) => {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
-
 
         // @todo: ajax to get contents
 
@@ -44,25 +42,22 @@ export default class RelatedContentBlock extends Component {
         );
     }
 
-
     renderSuggestion = (suggestion) => {
         return (
             <span>{suggestion.title}</span>
         );
     }
 
-
     getSuggestionValue = (suggestion) => {
 
         this.setState({
             title: suggestion.title,
             href: suggestion.href,
+            isEditing: false
         });
 
         return suggestion.title;
     }
-
-
 
 
     handleChange = (event, { newValue }) => {
@@ -74,16 +69,19 @@ export default class RelatedContentBlock extends Component {
     handleLinkClick = (e) => {
         e.preventDefault();
     }
+    handleEdit = (e) => {
+        e.preventDefault();
+        this.setState({
+            isEditing: true
+        });
+    }
 
-    // Autosuggest will call this function every time you need to update suggestions.
-    // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
         this.setState({
             suggestions: this.getSuggestions(value)
         });
     };
 
-    // Autosuggest will call this function every time you need to clear suggestions.
     onSuggestionsClearRequested = () => {
         this.setState({
             suggestions: []
@@ -92,45 +90,34 @@ export default class RelatedContentBlock extends Component {
 
     render() {
 
-
-        // Autosuggest will pass through all these props to the input field.
         const inputProps = {
             placeholder: 'Tipeá para buscar la nota...',
             value: this.state.title,
             onChange: this.handleChange
         };
 
-
-        /*if(this.state.title.length != 0){
-
-            var title = this.state.title;
+        if(this.state.isEditing == true){
+            var autosuggest = <Autosuggest
+                suggestions={this.state.suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion}
+                inputProps={inputProps} />;
         } else {
-
-            var title =
-                <Autosuggest
-                    suggestions={this.state.suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    getSuggestionValue={getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={inputProps} />
-
-        }*/
+            var autosuggest = <a onClick={this.handleEdit}>Editar</a>;
+        }
 
         return (
-            <p className="links-related">
-                <span className="title">Leé también</span>:
-                <a onClick={this.handleLinkClick} href={this.state.href} target="_blank">
-                    <Autosuggest
-                        suggestions={this.state.suggestions}
-                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                        getSuggestionValue={this.getSuggestionValue}
-                        renderSuggestion={this.renderSuggestion}
-                        inputProps={inputProps} />
-                    {this.state.title}
-                </a>
-            </p>
+            <div>
+                <p className="links-related">
+                    <span className="title">Leé también</span>:
+                    <a onClick={this.handleLinkClick} href={this.state.href} target="_blank">
+                        {this.state.title}
+                    </a>
+                </p>
+                {autosuggest}
+            </div>
         );
     }
 }

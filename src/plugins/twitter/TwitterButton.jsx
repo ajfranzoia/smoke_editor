@@ -26,7 +26,6 @@ export default class TwitterButton extends Component {
     }
 
     render() {
-        console.log(this.state);
 
         return (
                 <div>
