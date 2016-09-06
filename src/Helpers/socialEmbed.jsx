@@ -1,8 +1,8 @@
 export default class socialEmbed {
     static matchSocialEmbed(value) {
+
+        //@todo: iterar cada embed para ver con cual matchea
         var res = this.testTwitter(value);
-        var res = this.testFacebook(value);
-        var res = this.testInstagram(value);
         console.log('res ->', res);
     }
     static testTwitter(value){

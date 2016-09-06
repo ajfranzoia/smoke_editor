@@ -34,9 +34,10 @@ export default class View extends React.Component {
         this.props.closeModal(e);
     }
 
-    onChange = (e) =>{
+    handleChange = (e) =>{
         //console.log('this ->', this.textarea.value);
         socialEmbed.matchSocialEmbed(this.textarea.value);
+        // @todo: set the "type" with the matched embed
     }
 
     render() {
@@ -46,7 +47,7 @@ export default class View extends React.Component {
                 <ModalContainer onClose={this.handleClose}>
                     <ModalDialog onClose={this.handleClose}>
                         <h3 className="modal-title">{this.props.title}</h3>
-                        <textarea onChange={this.onChange} placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
+                        <textarea onChange={this.handleChange} placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
                         <div className="form-actions">
                             <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>
                         </div>
