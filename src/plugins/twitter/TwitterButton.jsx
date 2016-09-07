@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import icons from "../../icons/icons";
-import Modal from "../../components/Modal"
+import Modal from "../../components/SmokeModal"
 
 export default class TwitterButton extends Component {
 
@@ -33,7 +33,7 @@ export default class TwitterButton extends Component {
                     <button className={this.props.className} type="button" onClick={this.openModal} >
                         <icons.TwitterIcon className="sidemenu__button__icon"/>
                     </button>
-                    <Modal className="react-modal" isShowingModal={this.state.showModal} editorState={this.props.editorState} onChange={this.props.onChange} closeModal={this.closeModal} title="Embed Twitter" />
+                    <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState} onChange={this.props.onChange} closeModal={this.closeModal} />
                 </div>
         );
     }
