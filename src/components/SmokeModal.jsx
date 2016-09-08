@@ -19,14 +19,15 @@ export default class View extends React.Component {
         });
     }
 
-    addData = (content) => {
-        const data = {content: content, type: "twitter", display: "small"};
+    addData = (dataObj) => {
+        console.log('dataObj --> ',dataObj);
+        const data = {data: dataObj.data, type: dataObj.type};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
 
     }
 
     saveData = (e) => {
-        this.addData(socialEmbed.cleanHtml(this.textarea.value));
+        this.addData(socialEmbed.createDataObject(this.textarea.value));
         this.handleClose(e);
     }
 
@@ -35,7 +36,7 @@ export default class View extends React.Component {
         this.props.closeModal(e);
     }
 
-    handleChange = (e) =>{
+    handleChange = (e) => {
         //console.log('this ->', this.textarea.value);
         socialEmbed.matchSocialEmbed(this.textarea.value);
         // @todo: set the "type" with the matched embed
@@ -48,7 +49,9 @@ export default class View extends React.Component {
                 <ModalContainer onClose={this.handleClose}>
                     <ModalDialog onClose={this.handleClose}>
                         <h3 className="modal-title">{this.state.embed}</h3>
-                        <textarea onChange={this.handleChange} placeholder="Pegá acá el código del embed" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
+                        <textarea onChange={this.handleChange} placeholder="Pegá acá el código del embed"
+                                  className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15"
+                                  cols="75"/>
                         <div className="form-actions">
                             <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>
                         </div>

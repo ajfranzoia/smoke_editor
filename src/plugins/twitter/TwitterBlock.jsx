@@ -22,7 +22,7 @@ export default class TwitterBlock extends Component {
     render() {
         return (
             <MegadraftPlugin.CommonBlock {...this.props} actions={this.actions}>
-                <div className="smoke-twitter-block" dangerouslySetInnerHTML={{__html: this.props.data.content}}></div>
+                <div className="smoke-twitter-block" dangerouslySetInnerHTML={{__html: this.props.data.data.content}}></div>
             </MegadraftPlugin.CommonBlock>
         );
     }
