@@ -3,23 +3,13 @@ import Autosuggest from 'react-autosuggest';
 import {MegadraftIcons as icons} from "megadraft";
 import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
 import Immutable from "immutable";
+import axios from 'axios';
+
+
 const {Map} = Immutable;
 
-// @todo: remove when implemented ajax to get the suggested contents
-const contents = [
-    {
-        href: 'http://tn.com.ar/politica/piden-imputar-por-lavado-al-sindicalista-omar-caballo-suarez_710932',
-        title: 'Imputaron por lavado de dinero al sindicalista Omar "Caballo" Suárez'
-    },
-    {
-        href: 'http://tn.com.ar/politica/imputaron-a-sergio',
-        title: 'Imputaron a sergio'
-    },
-    {
-        href: 'http://tn.com.ar/deportes/esencial/un-jugador-de-la-nba-abandona-su-carrera-para-cuidar-su-esposa-embarazada-que-tiene-cancer_710865',
-        title: 'Un jugador de la NBA abandona su carrera para cuidar a su esposa embarazada que tiene cáncer'
-    }
-];
+// @todo: add config to set this url, it should not be hardcoded here
+const contentUrl = "http://local.next.tn.com.ar:8080/smoke-editor/autocomplete/related-content/";
 
 
 export default class RelatedContentBlock extends Component {
@@ -37,13 +27,8 @@ export default class RelatedContentBlock extends Component {
 
     getSuggestions = (value) => {
         const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
+        return axios.get( contentUrl + inputValue);
 
-        // @todo: ajax to get contents
-
-        return inputLength === 0 ? [] : contents.filter(content =>
-            content.title.toLowerCase().slice(0, inputLength) === inputValue
-        );
     }
 
     renderSuggestion = (suggestion) => {
@@ -70,9 +55,15 @@ export default class RelatedContentBlock extends Component {
         });
     }
     onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: this.getSuggestions(value)
-        });
+        this.getSuggestions(value)
+            .then(function (response) {
+                this.setState({
+                    suggestions: response.data
+                });
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
     onSuggestionsClearRequested = () => {
@@ -97,6 +88,8 @@ export default class RelatedContentBlock extends Component {
         ));
 
         this.setState({
+            href: suggestion.href,
+            title: suggestion.title,
             isEditing: false
         });
 
@@ -109,34 +102,34 @@ export default class RelatedContentBlock extends Component {
             placeholder: 'Tipeá para buscar la nota...',
             value: this.state.title,
             onChange: this.handleChange,
-            style: (this.state.isEditing) ? {display:"block"} : {display:"none"}
+            style: {display:"inline"}
         };
 
 
-        const iconStyles = {
-            display: (this.state.isEditing) ? "none" : "inline",
+        if(this.state.isEditing){
+            var linkEditable = <Autosuggest
+                suggestions={this.state.suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                onSuggestionSelected={this.onSuggestionSelected}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion}
+                focusInputOnSuggestionClick={false}
+                focusFirstSuggestion={true}
+                inputProps={inputProps}
+            />
+        } else {
+            var linkEditable = <span><a href={this.state.href} target="_blank">{this.state.title}</a> <icons.EditIcon onClick={this.handleEdit}/></span>
         }
 
+
+
         return (
-            <div onClick={this.handleClick} style={{position: 'relative'}}>
-                <p className="links-related">
-                    <span className="title">Leé también</span>:
-                    <a href={this.state.href} target="_blank">
-                        {this.state.title}
-                    </a>
-                    <icons.EditIcon onClick={this.handleEdit} style={iconStyles}/>
-                </p>
-                <Autosuggest
-                    suggestions={this.state.suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestionSelected}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={this.renderSuggestion}
-                    focusInputOnSuggestionClick={false}
-                    focusFirstSuggestion={true}
-                    inputProps={inputProps}
-                />
+            <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
+                <div className="links-related">
+                    <span className="title">Leé también: </span>
+                    {linkEditable}
+                </div>
             </div>
         );
     }

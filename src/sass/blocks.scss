@@ -19,3 +19,20 @@
     color: #292f33 !important;
   }
 }
+
+
+.related-content-block {
+
+  .react-autosuggest__container {
+    display: inline;
+
+    .react-autosuggest__input {
+      font: inherit;
+      border:none;
+      color: #999;
+    }
+    .react-autosuggest__input:focus {
+      outline: none;
+    }
+  }
+}
