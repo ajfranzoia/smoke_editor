@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import icons from "../../icons/icons";
 import Modal from "../../components/Modal"
 import {insertDataBlock} from "megadraft";
+import {Modifier, EditorState} from "draft-js";
+import Immutable from "immutable";
+const {Map} = Immutable;
 
 export default class RelatedContentButton extends Component {
 
@@ -13,10 +16,12 @@ export default class RelatedContentButton extends Component {
 
     onClick(e) {
         e.preventDefault();
-        const data = { type: "relatedcontent",  title: "", href: ""};
-        this.props.onChange(insertDataBlock(this.props.editorState, data));
+        const data = { type: "relatedcontent", data: { title: "", href: ""}};
+        this.props.onChange(insertDataBlock(this.props.editorState, data)); 
+
     }
-    
+
+
     render() {
 
         return (
