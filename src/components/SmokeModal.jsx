@@ -20,27 +20,23 @@ export default class View extends React.Component {
     }
 
     addData = (dataObj) => {
-        console.log('dataObj --> ',dataObj);
-        const data = {data: dataObj.data, type: dataObj.type};
+        const data = {data: dataObj.data, type: 'embed', dataType: dataObj.type};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
-
-    }
+    };
 
     saveData = (e) => {
         this.addData(socialEmbed.createDataObject(this.textarea.value));
         this.handleClose(e);
-    }
+    };
 
     handleClose = (e) => {
         this.setState({isShowingModal: false})
         this.props.closeModal(e);
-    }
+    };
 
     handleChange = (e) => {
-        //console.log('this ->', this.textarea.value);
         socialEmbed.matchSocialEmbed(this.textarea.value);
-        // @todo: set the "type" with the matched embed
-    }
+    };
 
     render() {
         return <div className="modal-wrapper">

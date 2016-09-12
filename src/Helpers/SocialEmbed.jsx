@@ -6,7 +6,7 @@ export default class socialEmbed {
 
     static cleanHtml(string) {
         return S(string).stripTags('script').s
-    };
+    }
 
     static findTagScript(string) {
         const regex = /<script(.*?)<\/script>/gi;
@@ -16,44 +16,61 @@ export default class socialEmbed {
         return [];
     }
 
+    static inspectUrl(url, compare) {
+        if (S(url).startsWith('http://', 'https://')) {
+            if (S(url).contains(compare)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static matchSocialEmbed(string) {
         var element = domify(this.cleanHtml(string));
-        var block = "";
+        const isXMLNode = 1;
+        const isStringNode = 3;
 
-        if (element.nodeType == 1) {
-            for (const key of Object.keys(embedsList)) {
-                const embed = embedsList[key];
-                if (element.nodeName == embed.domObj) {
-                    if (element.getAttribute(embed.compare.attr) == embed.compare.value) {
-                        block = embed.blockName;
+        for (let key of Object.keys(embedsList)) {
+            const embed = embedsList[key];
+
+            if (element.nodeName == embed.domObj) {
+                if (element.nodeType == isXMLNode) {
+                    switch (embed.domObj) {
+                        case 'IFRAME':
+                            if (S(element.getAttribute(embed.compare.attr)).contains(embed.compare.value)) {
+                                this.displayError(embed.blockName + ' es un embed valido');
+                                return embed.blockName;
+                            }
+                            break;
+
+                        default:
+                            if (element.getAttribute(embed.compare.attr) == embed.compare.value) {
+                                this.displayError(embed.blockName + ' es un embed valido');
+                                return embed.blockName;
+                            }
+                            break;
+                    }
+
+                } else if (element.nodeType == isStringNode) {
+                    if (this.inspectUrl(string, embed.compare.value)) {
+                        this.displayError(embed.blockName + ' es un embed valido');
+                        return embed.blockName
                     }
                 }
             }
-
-            return block;
-
-        } else if (element.nodeType == 3) {
-            console.log('quizas es youtube')
         }
-    }
-
-    static createScriptArray(string) {
-        const arrScripts = this.findTagScript(string);
-        let arrSrc = [];
-
-        if(arrScripts.length > 0){
-            arrScripts.forEach(function (value) {
-                arrSrc.push(value);
-            });
-            return arrSrc;
-        }
-        return arrSrc;
+        this.displayError();
     }
 
     static createDataObject(data) {
-        const content = {content: this.cleanHtml(data), script: this.createScriptArray(data)};
+        const content = {content: this.cleanHtml(data), script: this.findTagScript(data)};
         const type = this.matchSocialEmbed(data);
+
         return {data: content, type: type};
+    }
+
+    static displayError (error = 'error'){
+        console.log('Mensaje de error --> ',error);
     }
 }
 

@@ -4,14 +4,10 @@
  * License: MIT
  */
 
-import TwitterIcon from "./twitter";
-import FacebookIcon from "./facebook";
-
-
+import CodeIcon from "./code";
 
 const icons = {
-  TwitterIcon,
-  FacebookIcon
+  CodeIcon
 };
 
 export default icons;

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Smoke from '../public/dist/components/Smoke'
 import PluginManager from "../public/dist/Helpers/pluginManager";
-import DOMValidator from "../public/dist/Helpers/domValidator";
+import DOMValidator from "../public/dist/Helpers/DomValidator";
 
 export default class SmokeEditorFactory {
     static make(element, config) {

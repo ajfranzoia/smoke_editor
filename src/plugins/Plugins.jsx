@@ -1,5 +1,5 @@
-import twitter from "./twitter/plugin"
+import embed from "./embed/plugin"
 
 export default {
-  twitter: twitter
+    embed:embed
 }

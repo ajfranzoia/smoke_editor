@@ -2,9 +2,10 @@ import React, {Component} from "react";
 import {MegadraftPlugin, MegadraftIcons as icons} from "megadraft";
 
 
-export default class TwitterBlock extends Component {
+export default class EmbedBlock extends Component {
     constructor(props) {
         super(props);
+        console.log('props --> ',props);
         this.actions = [
             //{"key": "edit", "icon": icons.EditIcon, "action": this._handleEdit},
             {"key": "delete", "icon": icons.DeleteIcon, "action": this.props.container.remove}
@@ -22,7 +23,7 @@ export default class TwitterBlock extends Component {
     render() {
         return (
             <MegadraftPlugin.CommonBlock {...this.props} actions={this.actions}>
-                <div className="smoke-twitter-block" dangerouslySetInnerHTML={{__html: this.props.data.data.content}}></div>
+                <div className={"smoke-" + this.props.data.dataType + "-block"} dangerouslySetInnerHTML={{__html: this.props.data.data.content}} />
             </MegadraftPlugin.CommonBlock>
         );
     }
