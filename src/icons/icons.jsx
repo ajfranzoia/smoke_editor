@@ -4,12 +4,12 @@
  * License: MIT
  */
 
-import TwitterIcon from "./twitter";
-
-
+import CodeIcon from "./code";
+import RelatedContentIcon from "./relatedcontent";
 
 const icons = {
-  TwitterIcon
+  CodeIcon,
+  RelatedContentIcon
 };
 
 export default icons;

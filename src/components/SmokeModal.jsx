@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
-import {ModalDialog, ModalContainer} from 'react-modal-dialog';
+import {ModalDialog} from 'react-modal-dialog';
+import ModalContainer from './SmokeModalContainer';
+import socialEmbed from '../Helpers/SocialEmbed';
+
 
 export default class View extends React.Component {
     constructor(props) {
@@ -8,7 +11,7 @@ export default class View extends React.Component {
         this.state = {
             isShowingModal: this.props.isShowingModal
         };
-    } 
+    }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
@@ -16,30 +19,35 @@ export default class View extends React.Component {
         });
     }
 
-    addData = (content) => {
-        const data = {content: content, type: "twitter", display: "small"};
+    addData = (dataObj) => {
+        const data = {data: dataObj.data, type: 'embed', dataType: dataObj.type};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
-
     }
 
     saveData = (e) => {
-        this.addData(this.textarea.value);
+        this.addData(socialEmbed.createDataObject(this.textarea.value));
         this.handleClose(e);
-    }
+    };
 
     handleClose = (e) => {
         this.setState({isShowingModal: false})
         this.props.closeModal(e);
     }
 
+    handleChange = (e) => {
+        socialEmbed.matchSocialEmbed(this.textarea.value);
+    }
+
     render() {
         return <div className="modal-wrapper">
             {
                 this.state.isShowingModal &&
-                <ModalContainer zIndex={100} onClose={this.handleClose}>
-                    <ModalDialog className="smoke-modal-dialog" onClose={this.handleClose}>
-                        <h3 className="modal-title">Embeber Twitter</h3>
-                        <textarea placeholder="Pegá acá el código de inserción de Twitter" className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15" cols="75" />
+                <ModalContainer onClose={this.handleClose}>
+                    <ModalDialog className="modal-dialog" onClose={this.handleClose}>
+                        <h3 className="modal-title">{this.state.embed}</h3>
+                        <textarea onChange={this.handleChange} placeholder="Pegá acá el código del embed"
+                                  className="form-control form-text" ref={(ref) => this.textarea = ref} rows="15"
+                                  cols="75"/>
                         <div className="form-actions">
                             <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>
                         </div>
