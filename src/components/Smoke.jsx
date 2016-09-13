@@ -22,8 +22,6 @@ export default class Smoke extends React.Component {
             name: this.props.name,
             id: this.props.id,
         };
-
-
     }
 
     onChange = (editorState) => {
@@ -32,12 +30,11 @@ export default class Smoke extends React.Component {
             editorState: editorState,
             smokeJson: editorStateToJSON(editorState),
         });
-    }
+    };
 
     render() {
 
         const inputType = (this.props.debug === true) ? 'text' : 'hidden';
-        
         return (
             <div>
                 <SmokeEditor
@@ -45,7 +42,8 @@ export default class Smoke extends React.Component {
                     actions={this.props.actions}
                     plugins={this.props.plugins}
                     onChange={this.onChange}/>
-                <input type={inputType} readOnly name={"smoke-" + this.state.fieldName + "-json"} value={this.state.smokeJson}/>
+                <input type={inputType} readOnly name={"smoke-" + this.state.fieldName + "-json"}
+                       value={this.state.smokeJson}/>
                 <input type={inputType} readOnly name={this.state.name} id={this.state.id} value=" - "/>
             </div>
         )

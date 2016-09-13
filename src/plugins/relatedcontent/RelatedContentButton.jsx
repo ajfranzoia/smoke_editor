@@ -1,10 +1,7 @@
 import React, {Component} from "react";
 import icons from "../../icons/icons";
-import Modal from "../../components/Modal"
 import {insertDataBlock} from "megadraft";
 import {Modifier, EditorState} from "draft-js";
-import Immutable from "immutable";
-const {Map} = Immutable;
 
 export default class RelatedContentButton extends Component {
 
@@ -16,7 +13,7 @@ export default class RelatedContentButton extends Component {
 
     onClick(e) {
         e.preventDefault();
-        const data = { type: "relatedcontent", data: { title: "", href: ""}};
+        const data = { type: "relatedcontent", dataType:"relatedcontent", data: { title: "", href: "" }};
         this.props.onChange(insertDataBlock(this.props.editorState, data)); 
 
     }
@@ -27,7 +24,7 @@ export default class RelatedContentButton extends Component {
         return (
                 <div>
                     <button className={this.props.className} type="button" onClick={this.onClick} >
-                        <icons.TwitterIcon className="sidemenu__button__icon"/>
+                        <icons.RelatedContentIcon className="sidemenu__button__icon"/>
                     </button>
                 </div>
         );

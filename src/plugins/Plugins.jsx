@@ -1,7 +1,7 @@
-import twitter from "./twitter/plugin"
+import embed from "./embed/plugin"
 import relatedcontent from "./relatedcontent/plugin"
 
 export default {
-  twitter: twitter,
-  relatedcontent: relatedcontent
+    embed:embed,
+    relatedcontent: relatedcontent
 }
