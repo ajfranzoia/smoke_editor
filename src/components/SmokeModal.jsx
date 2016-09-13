@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
-import {ModalDialog} from 'react-modal-dialog';
-import ModalContainer from './SmokeModalContainer';
+import {ModalDialog, ModalContainer} from 'react-modal-dialog'; 
 import socialEmbed from '../Helpers/SocialEmbed';
 
 
