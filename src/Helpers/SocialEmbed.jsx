@@ -85,8 +85,7 @@ export default class socialEmbed {
                 const domObj = domify(val);
                 const attrValue = domObj.getAttribute('src');
                 const newAttrValue = this.generateValidUrl(attrValue);
-                const newObj = domObj.src = newAttrValue;
-                validScripts.push(newObj);
+                validScripts.push('<script src="'+newAttrValue+'" async ></script>');
             }.bind(this));
             return validScripts
         }
