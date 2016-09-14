@@ -1,3 +1,7 @@
+figure {
+  margin: 2em 0;
+}
+
 .smoke-twitter-block{
   margin: 0 1% 1%;
   padding: (10em/16);
@@ -22,17 +26,59 @@
 
 
 .related-content-block {
+  line-height: 2em;
+
+  .links-related > span{
+    position: absolute;
+  }
+  .links-related .link-container {
+    margin-left:105px;
+  }
 
   .react-autosuggest__container {
-    display: inline;
+    display: block;
+    padding-left: 105px;
 
     .react-autosuggest__input {
       font: inherit;
       border:none;
       color: #999;
+      width: 100%;
     }
     .react-autosuggest__input:focus {
       outline: none;
     }
   }
+
+
+  .react-autosuggest__suggestions-container {
+
+    margin-left: 105px;
+    position: absolute;
+    left: 0;
+    background: #fff;
+
+    ul {
+      /* border:1px solid #eee; */
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      li.react-autosuggest__suggestion {
+        color: #0669de;
+        border-bottom: 1px solid #eee;
+        padding: 0 10px;
+        cursor: pointer;
+        span {
+        }
+      }
+
+      li.react-autosuggest__suggestion--focused {
+        background: #eee;
+      }
+    }
+
+
+  }
+
+
 }

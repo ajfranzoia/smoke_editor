@@ -104,31 +104,30 @@ export default class RelatedContentBlock extends Component {
             onChange: this.handleChange,
             style: {display:"inline"}
         };
-
-
-        if(this.state.isEditing){
-            var linkEditable = <Autosuggest
-                suggestions={this.state.suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                onSuggestionSelected={this.onSuggestionSelected}
-                getSuggestionValue={this.getSuggestionValue}
-                renderSuggestion={this.renderSuggestion}
-                focusInputOnSuggestionClick={false}
-                focusFirstSuggestion={true}
-                inputProps={inputProps}
-            />
-        } else {
-            var linkEditable = <span><a href={this.state.href} target="_blank">{this.state.title}</a> <icons.EditIcon onClick={this.handleEdit}/></span>
-        }
-
-
+        
 
         return (
             <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
                 <div className="links-related">
                     <span className="title">Leé también: </span>
-                    {linkEditable}
+
+                    <div className="link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
+                        <a className="link" href={this.state.href} target="_blank">{this.state.title}</a>
+                        <icons.EditIcon onClick={this.handleEdit}/>
+                    </div>
+                    <div style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
+                        <Autosuggest
+                            suggestions={this.state.suggestions}
+                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                            onSuggestionSelected={this.onSuggestionSelected}
+                            getSuggestionValue={this.getSuggestionValue}
+                            renderSuggestion={this.renderSuggestion}
+                            focusInputOnSuggestionClick={false}
+                            focusFirstSuggestion={true}
+                            inputProps={inputProps}
+                        />
+                    </div>
                 </div>
             </div>
         );
