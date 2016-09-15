@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import {MegadraftPlugin, MegadraftIcons as icons} from "megadraft";
-import sanitizeHtml from 'sanitize-html';
-
 
 export default class EmbedBlock extends Component {
     constructor(props) {
@@ -13,15 +11,6 @@ export default class EmbedBlock extends Component {
         ];
     }
 
-    _cleanHtml(html) {
-        return sanitizeHtml(html, {
-            allowedTags: ['blockquote','a','iframe'],
-            allowedAttributes: {
-                'a': [ 'href' ],
-                'iframe':['src']
-            }
-        });
-    }
 
     _handleCaptionChange = (event) => {
         this.props.container.updateData({caption: event.target.value});
