@@ -9,7 +9,7 @@ import axios from 'axios';
 const {Map} = Immutable;
 
 // @todo: add config to set this url, it should not be hardcoded here
-const contentUrl = "http://local.next.tn.com.ar:8080/smoke-editor/autocomplete/related-content/";
+const contentUrl = "/smoke-editor/autocomplete/related-content/";
 
 
 export default class RelatedContentBlock extends Component {
