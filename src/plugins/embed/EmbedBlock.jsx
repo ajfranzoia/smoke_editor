@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {MegadraftPlugin, MegadraftIcons as icons} from "megadraft";
+import sanitizeHtml from 'sanitize-html';
 
 
 export default class EmbedBlock extends Component {
@@ -12,8 +13,14 @@ export default class EmbedBlock extends Component {
         ];
     }
 
-    _handleEdit() {
-
+    _cleanHtml(html) {
+        return sanitizeHtml(html, {
+            allowedTags: ['blockquote','a','iframe'],
+            allowedAttributes: {
+                'a': [ 'href' ],
+                'iframe':['src']
+            }
+        });
     }
 
     _handleCaptionChange = (event) => {
@@ -23,7 +30,7 @@ export default class EmbedBlock extends Component {
     render() {
         return (
             <MegadraftPlugin.CommonBlock {...this.props} actions={this.actions}>
-                <div className={"smoke-" + this.props.data.dataType + "-block"} dangerouslySetInnerHTML={{__html: this.props.data.data.content}} />
+                <div className={"smoke-block smoke-" + this.props.data.dataType} />
             </MegadraftPlugin.CommonBlock>
         );
     }
