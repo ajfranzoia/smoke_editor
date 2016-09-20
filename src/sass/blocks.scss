@@ -1,27 +1,37 @@
-figure {
-  margin: 2em 0;
-}
-
-.smoke-twitter-block{
+.smoke-block{
   margin: 0 1% 1%;
-  padding: (10em/16);
-  background: url("../placeholders/twitter-bird.svg") no-repeat #f2f9fc;
-  background-position: center;
-  background-size:25%;
+  padding: (30em/16);
+  background-position: center !important;
+  min-height:(70em/16);
+  border: solid 1px #444;
+  border-radius: 10px;
+  opacity: .3;
 
   a {
-    color: #1b95e0;
     text-decoration: none;
-
-    &:hover, &:active, &:focus{
-      color: #1b95e0;
-    }
   }
 
   blockquote {
     border-left: 2px solid #999 !important;
     color: #292f33 !important;
   }
+}
+
+.smoke-twitter{
+  background: url("../placeholders/twitter-bird.svg") no-repeat #f2f9fc;
+  background-size:20%;
+
+}
+
+.smoke-instagram{
+  background: url("../placeholders/Instagram.svg") no-repeat #fafafa;
+  background-size:18%;
+
+}
+
+.smoke-youtube{
+  background: url("../placeholders/youtube.svg") no-repeat #fafafa;
+  background-size:30%;
 }
 
 
