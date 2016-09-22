@@ -1,11 +1,15 @@
 .smoke-block{
   margin: 0 1% 1%;
   padding: (30em/16);
-  background-position: center !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color:#f2f9fc;
+  background-size:12%;
   min-height:(70em/16);
-  border: solid 1px #444;
+  border: solid 1px #ccc;
   border-radius: 10px;
-  opacity: .3;
+  opacity: .5;
+
 
   a {
     text-decoration: none;
@@ -18,21 +22,25 @@
 }
 
 .smoke-twitter{
-  background: url("../placeholders/twitter-bird.svg") no-repeat #f2f9fc;
-  background-size:20%;
-
+  background-image: url("../placeholders/twitter.svg");
 }
 
 .smoke-instagram{
-  background: url("../placeholders/Instagram.svg") no-repeat #fafafa;
-  background-size:18%;
-
+  background-image: url("../placeholders/instagram.svg");
 }
 
 .smoke-youtube{
-  background: url("../placeholders/youtube.svg") no-repeat #fafafa;
-  background-size:30%;
+  background-image: url("../placeholders/youtube.svg");
 }
+
+.smoke-vine{
+  background-image: url("../placeholders/vine.svg");
+}
+.smoke-facebook{
+  background-image: url("../placeholders/facebook.svg");
+}
+
+
 
 
 .related-content-block {

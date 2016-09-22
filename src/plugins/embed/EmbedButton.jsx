@@ -12,12 +12,12 @@ export default class EmbedButton extends Component {
     };
 
     openModal = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         this.setState({
             showModal: true
         });
     };
-    
+
     closeModal = (e) => {
         e.preventDefault();
         this.setState({
@@ -27,12 +27,13 @@ export default class EmbedButton extends Component {
 
     render() {
         return (
-                <div>
-                    <button className={this.props.className} type="button" onClick={this.openModal} >
-                        <icons.CodeIcon className="sidemenu__button__icon"/>
-                    </button>
-                    <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState} onChange={this.props.onChange} closeModal={this.closeModal} />
-                </div>
+            <div>
+                <button className={this.props.className} type="button" onClick={this.openModal}>
+                    <icons.CodeIcon className="sidemenu__button__icon"/>
+                </button>
+                <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState}
+                       onChange={this.props.onChange} closeModal={this.closeModal}/>
+            </div>
         );
     }
 }

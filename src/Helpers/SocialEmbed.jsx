@@ -5,6 +5,7 @@ import embedsList from './EmbedConfig';
 export default class socialEmbed {
 
     static cleanHtml(string) {
+        console.log("S(string).stripTags('script').s --> ",S(string).stripTags('script').s)
         return S(string).stripTags('script').s
     }
 
@@ -43,38 +44,28 @@ export default class socialEmbed {
 
     static matchSocialEmbed(string) {
         var element = domify(this.cleanHtml(string));
-        const isXMLNode = 1;
-        const isStringNode = 3;
 
         for (let key of Object.keys(embedsList)) {
             const embed = embedsList[key];
-
-            if (element.nodeName == embed.domObj && element.nodeType == isXMLNode) {
+            if (element.nodeName == embed.domObj) {
                 switch (embed.domObj) {
                     case 'IFRAME':
                         if (S(element.getAttribute(embed.compare.attr)).contains(embed.compare.value)) {
-                            this.displayError(embed.blockName + ' es un embed valido');
                             return embed.blockName;
                         }
                         break;
 
                     default:
                         if (element.getAttribute(embed.compare.attr) == embed.compare.value) {
-                            this.displayError(embed.blockName + ' es un embed valido');
                             return embed.blockName;
                         }
                         break;
                 }
 
-            } else if (element.nodeType == isStringNode) {
-                console.log('URL --> ',this.generateValidUrl(string));
-                /*if (this.validateUrl(string, embed.compare.value)) {
-                 this.displayError(embed.blockName + ' es un embed valido');
-                 return embed.blockName
-                 }*/
             }
         }
-        //this.displayError();
+
+        return false;
     }
 
     static sanitizeScripsUrl(scriptArr){
@@ -95,7 +86,6 @@ export default class socialEmbed {
 
     static createDataObject(data) {
         const scripts = this.sanitizeScripsUrl(this.findTagScript(data));
-        console.log('scripts --> ',scripts);
 
         const content = {content: this.cleanHtml(data), script:scripts };
         const type = this.matchSocialEmbed(data);
@@ -103,8 +93,14 @@ export default class socialEmbed {
         return {data: content, type: type};
     }
 
-    static displayError(error = 'error') {
-        console.log('Mensaje de error --> ', error);
+    static socialEmbedValidator(string, error = {status:'danger',text:'El embed que intentas agregar no es válido'}) {
+        const embedType = this.matchSocialEmbed(string);
+
+        if(embedType != false){
+            return {status: 'success',text: '<strong>'+embedType + '</strong>' + ' es un embed válido'}
+        }
+
+        return error;
     }
 }
 
