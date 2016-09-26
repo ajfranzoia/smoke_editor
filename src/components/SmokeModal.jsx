@@ -33,6 +33,7 @@ export default class View extends React.Component {
 
     handleClose = (e) => {
         this.setState({isShowingModal: false});
+        this.setState({message: {status: 'info', text: 'Inserte código del embebido'}});
         this.props.closeModal(e);
     };
 

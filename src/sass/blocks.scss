@@ -8,8 +8,7 @@
   min-height:(70em/16);
   border: solid 1px #ccc;
   border-radius: 10px;
-  opacity: .5;
-
+  opacity: 0.5;
 
   a {
     text-decoration: none;
@@ -40,8 +39,17 @@
   background-image: url("../placeholders/facebook.svg");
 }
 
+.smoke-soundcloud{
+  background-image: url("../placeholders/soundcloud.svg");
+}
 
+.smoke-googlemap{
+  background-image: url("../placeholders/new-google-maps-logo.png");
+}
 
+.smoke-scribd{
+  background-image: url("../placeholders/scribd.svg");
+}
 
 .related-content-block {
   line-height: 2em;

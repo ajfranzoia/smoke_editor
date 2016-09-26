@@ -5,8 +5,14 @@ import embedsList from './EmbedConfig';
 export default class socialEmbed {
 
     static cleanHtml(string) {
-        console.log("S(string).stripTags('script').s --> ",S(string).stripTags('script').s)
-        return S(string).stripTags('script').s
+        const regex = /<(\w+)[^>]*>/g;
+        const str =  S(string).stripTags('script','p','a','div','time').s;
+
+        if (regex.test(str)) {
+            return str.match(regex)[0];
+        }else{
+            return "";
+        }
     }
 
     static findTagScript(string) {
@@ -44,6 +50,8 @@ export default class socialEmbed {
 
     static matchSocialEmbed(string) {
         var element = domify(this.cleanHtml(string));
+
+        console.log('element --> ',element);
 
         for (let key of Object.keys(embedsList)) {
             const embed = embedsList[key];
@@ -97,7 +105,7 @@ export default class socialEmbed {
         const embedType = this.matchSocialEmbed(string);
 
         if(embedType != false){
-            return {status: 'success',text: '<strong>'+embedType + '</strong>' + ' es un embed válido'}
+            return {status: 'success',text: '<strong>'+embedType + '</strong>'}
         }
 
         return error;
