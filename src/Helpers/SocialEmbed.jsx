@@ -15,6 +15,10 @@ export default class socialEmbed {
         }
     }
 
+    static cleanScript(string) {
+        return  S(string).stripTags('script').s;
+    }
+
     static findTagScript(string) {
         const regex = /<script(.*?)<\/script>/gi;
         if (regex.test(string)) {
@@ -95,7 +99,7 @@ export default class socialEmbed {
     static createDataObject(data) {
         const scripts = this.sanitizeScripsUrl(this.findTagScript(data));
 
-        const content = {content: this.cleanHtml(data), script:scripts };
+        const content = {content: this.cleanScript(data), script:scripts };
         const type = this.matchSocialEmbed(data);
 
         return {data: content, type: type};
