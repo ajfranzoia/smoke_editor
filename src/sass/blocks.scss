@@ -4,11 +4,12 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color:#f2f9fc;
-  background-size:12%;
+  background-size:10% 90%;
   min-height:(70em/16);
   border: solid 1px #ccc;
   border-radius: 10px;
   opacity: 0.5;
+  box-sizing: content-box;
 
   a {
     text-decoration: none;
