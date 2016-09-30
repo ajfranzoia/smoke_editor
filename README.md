@@ -5,11 +5,7 @@ Smoke keeps track of changes in the draft-editor state and exports it to a form 
 
 It uses Megadraft as core editor. Support for other draftjs based editors will be in the roadmap.
 
-### Install
-`npm install`
-
 ### Usage
-
 
 ```html
 
@@ -28,3 +24,5 @@ It uses Megadraft as core editor. Support for other draftjs based editors will b
 </script>
 
 ```
+
+
