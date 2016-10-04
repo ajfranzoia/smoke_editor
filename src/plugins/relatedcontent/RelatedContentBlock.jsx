@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Autosuggest from 'react-autosuggest';
-import {MegadraftIcons as icons} from "megadraft";
+import icons from "../../icons/icons";
 import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
 import Immutable from "immutable";
 import axios from 'axios';

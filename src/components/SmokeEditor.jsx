@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {MegadraftEditor, Toolbar, Sidebar} from "megadraft";
+import {MegadraftEditor, Sidebar} from "megadraft";
+import Toolbar from "./Toolbar";
 import {DefaultDraftBlockRenderMap, Editor} from 'draft-js';
 import Immutable from "immutable";
 const {Map} = Immutable;

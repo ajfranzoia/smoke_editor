@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {MegadraftPlugin, MegadraftIcons as icons} from "megadraft";
+import {MegadraftPlugin} from "megadraft";
+import icons from "../../icons/icons";
 
 export default class EmbedBlock extends Component {
     constructor(props) {
