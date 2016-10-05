@@ -4,13 +4,9 @@ import icons from "../../icons/icons";
 import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
 import Immutable from "immutable";
 import axios from 'axios';
-
+import config from "./config";
 
 const {Map} = Immutable;
-
-// @todo: add config to set this url, it should not be hardcoded here
-const contentUrl = "/smoke-editor/autocomplete/related-content/";
-
 
 export default class RelatedContentBlock extends Component {
     constructor(props) {
@@ -27,7 +23,7 @@ export default class RelatedContentBlock extends Component {
 
     getSuggestions = (value) => {
         const inputValue = value.trim().toLowerCase();
-        return axios.get( contentUrl + inputValue);
+        return axios.get( config.contentUrl + inputValue);
 
     }
 

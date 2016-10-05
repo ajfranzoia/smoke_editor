@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Modifier, EditorState, Entity} from 'draft-js';
+import config from "./config";
 
 export default class PeopleAction  {
 
@@ -42,7 +43,7 @@ export default class PeopleAction  {
         if(person.length > 0) {
             const entityKey = Entity.create("LINK", "MUTABLE", {
                 "type": "people",
-                url: 'http://tn.com.ar/personajes/' + person
+                url: config.url + person
             });
 
             let newContentState = Modifier.applyEntity(
