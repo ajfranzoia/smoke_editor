@@ -12,7 +12,7 @@ export default class RelatedContentTagPeopleButton extends Component {
 
     onClick(e) {
         e.preventDefault();
-        const data = { type: "relatedcontenttagpeople", dataType:"relatedcontenttagpeople", data: { tid: "", name: "", vacabulary: "" }};
+        const data = { type: "relatedcontenttagpeople", dataType:"relatedcontenttagpeople", data: { tid: "", name: ""}};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
     }
 

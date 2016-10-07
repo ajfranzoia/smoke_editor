@@ -14,11 +14,23 @@ export default class RelatedContentTagPeopleBlock extends Component {
 
         this.state = {
             isEditing:      (this.props.data.data.name) ? false : true,
-            tid:            (this.props.data.data.tid           || ''),
-            name:           (this.props.data.data.name          || ''),
-            vocabulary:     (this.props.data.data.vocabulary    || ''),
+            name:           (this.props.data.data.name || ''),
+            url:            (this.props.data.data.url   || ''),
+            termSelected:   (this.props.data.data.termSelected || null),
+            data:            {tag:{name:'zaraza',url:'http://example.com'}},
             suggestions:    []
         };
+    }
+
+    componentWillUnmount = () => {
+
+        console.log('componentWillUnmount');
+
+    }
+    componentDidMount = () => {
+
+        console.log('componentDidMount');
+
     }
 
     getSuggestions = (value) => {
@@ -68,27 +80,61 @@ export default class RelatedContentTagPeopleBlock extends Component {
         });
     };
 
+    getLatestArticlesPromise = (value) => {
+        return axios.get(config.latestThreeArticlesByTid + value);
+    }
+
     onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
         // @todo: create a function called "updateBlockData" that can be reused for any plugin
         const editorState = this.props.blockProps.editorState;
         const contentState = editorState.getCurrentContent();
-        const newData = { type: 'relatedcontenttagpeople', dataType: 'relatedcontenttagpeople', data: {tid: suggestion.tid, vacabulary: suggestion.vacabulary, } };
-        const targetSelection = SelectionState.createEmpty(this.props.container.props.block.get('key'));
-        const newContentState = Modifier.mergeBlockData(contentState, targetSelection, Map(newData));
 
-        this.props.blockProps.onChange(EditorState.push(
-            editorState,
-            newContentState,
-            'change-block-data'
-        ));
+
+        console.log('voy a setear el termselected a: ', suggestion.tid);
 
         this.setState({
-            tid:        suggestion.tid,
-            name:       suggestion.name,
-            vocabulary: suggestion.vocabulary,
-            isEditing:  false
+            termSelected: suggestion.tid,
         });
+
+        let latestArticlesPromise = this.getLatestArticlesPromise(suggestion.tid);
+
+        latestArticlesPromise
+            .then(function (response) {
+
+                let data = {tag: {name: suggestion.tag, url: suggestion.tagUrl}, articles: response.data};
+
+                const newData = {type: 'relatedtag', dataType: 'relatedtag', data};
+                const targetSelection = SelectionState.createEmpty(this.props.container.props.block.get('key'));
+                const newContentState = Modifier.mergeBlockData(contentState, targetSelection, Map(newData));
+
+
+                this.setState({
+                    data: data,
+                    isEditing: false,
+                    termSelected: null
+                });
+
+
+                console.log('newContentState -> ', newContentState);
+
+                this.props.blockProps.onChange(EditorState.push(
+                    editorState,
+                    newContentState,
+                    'change-block-data'
+                ));
+
+                console.log('latestArticlesPromise - state ->', this.state);
+                console.log('axios success');
+
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
     };
+
+
 
     render() {
         const inputProps = {
@@ -98,13 +144,16 @@ export default class RelatedContentTagPeopleBlock extends Component {
             style: {display:"inline"}
         };
 
+        console.log('state -> ', this.state);
+
+
         return (
             <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
                 <div className="links-related">
                     <span className="title">Leé también: </span>
 
-                    <div className="link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
-                        <a className="link" href={this.state.href} target="_blank">{this.state.title}</a>
+                    <div className="link-container" style={{display:(this.state.isEditing) ? 'block' : 'block'}}>
+                        <a className="link" href={this.state.data.tag.url} target="_blank">{this.state.data.tag.name}</a>
                         <icons.EditIcon onClick={this.handleEdit}/>
                     </div>
                     <div style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
@@ -120,6 +169,9 @@ export default class RelatedContentTagPeopleBlock extends Component {
                             inputProps={inputProps}
                         />
                     </div>
+
+
+
                 </div>
             </div>
         );
