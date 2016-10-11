@@ -12,7 +12,7 @@ export default class RelatedTagButton extends Component {
 
     onClick(e) {
         e.preventDefault();
-        const data = { type: "relatedtag", dataType:"relatedtag", data: { tag: {name: "", url:""}}};
+        const data = { type: "relatedtag", dataType: "relatedtag", data: { tag: {name: "", url:"" }}};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
     }
 
@@ -20,7 +20,7 @@ export default class RelatedTagButton extends Component {
         return (
             <div>
                 <button className={this.props.className} type="button" onClick={this.onClick} >
-                    <icons.RelatedContentTagPeopleIcon className="sidemenu__button__icon"/>
+                    <icons.RelatedTagIcon className="sidemenu__button__icon"/>
                 </button>
             </div>
         );

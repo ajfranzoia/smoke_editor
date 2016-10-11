@@ -76,7 +76,6 @@ export default class RelatedTagBlock extends Component {
         const editorState = this.props.blockProps.editorState;
         const contentState = editorState.getCurrentContent();
 
-
         let latestArticlesPromise = this.getLatestArticlesPromise(suggestion.tid);
 
         latestArticlesPromise
@@ -86,8 +85,7 @@ export default class RelatedTagBlock extends Component {
 
                 this.setState({
                     data: data,
-                    isEditing: false,
-                    termSelected: null
+                    isEditing: false
                 });
 
                 const newData = {type: 'relatedtag', dataType: 'relatedtag', data};
@@ -104,13 +102,12 @@ export default class RelatedTagBlock extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-
-
     };
 
 
 
     render() {
+
         const inputProps = {
             placeholder: 'Tipeá para buscar Tags o Personajes...',
             value: this.state.name,
@@ -118,17 +115,34 @@ export default class RelatedTagBlock extends Component {
             style: {display:"inline"}
         };
 
+        let articles = '';
 
+        if (typeof this.state.data.articles !== 'undefined')
+            {
+            articles = <div className="related-tag-articles grid-spaceAround">
+                            <div className="col-11 grid">
+                                {this.state.data.articles.map(function(article)
+                                    {
+                                    return  <article key={article.url} className="col-4">
+                                                <h3><a href={article.url}>{article.title}</a></h3>
+                                            </article>
+                                    }
+                                )}
+                            </div>
+                        </div>
+            }
 
         return (
             <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
                 <div className="links-related">
-                    <span className="title">Leé también: </span>
 
-                    <div className="link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
+                    <span>Más sobre</span>
+
+                    <div className="related-tag-tag" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
                         <a className="link" href={this.state.data.tag.url} target="_blank">{this.state.data.tag.name}</a>
                         <icons.EditIcon onClick={this.handleEdit}/>
                     </div>
+
                     <div style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
                         <Autosuggest
                             suggestions={this.state.suggestions}
@@ -143,7 +157,13 @@ export default class RelatedTagBlock extends Component {
                         />
                     </div>
 
-
+                    <div className="related-tag-articles grid-spaceAround">
+                        <div className="col-11 grid">
+                            <article className="col-4">
+                                {articles}
+                            </article>
+                        </div>
+                    </div>
 
                 </div>
             </div>
