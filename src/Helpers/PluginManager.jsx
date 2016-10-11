@@ -47,4 +47,4 @@ PluginManager.set('action', 'TAG',          actions.tag);
 
 PluginManager.set('plugin', 'EMBED',                    plugins.embed);
 PluginManager.set('plugin', 'RELATEDCONTENT',           plugins.relatedcontent);
-PluginManager.set('plugin', 'RELATEDCONTENTTAGPEOPLE',  plugins.relatedcontenttagpeople);
+PluginManager.set('plugin', 'RELATEDTAG',               plugins.relatedtag);

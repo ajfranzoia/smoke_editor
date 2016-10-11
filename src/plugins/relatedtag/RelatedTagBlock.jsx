@@ -8,29 +8,17 @@ import icons                from "../../icons/icons";
 
 const {Map} = Immutable;
 
-export default class RelatedContentTagPeopleBlock extends Component {
+export default class RelatedTagBlock extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             isEditing:      (this.props.data.data.name) ? false : true,
-            name:           (this.props.data.data.name || ''),
+            name:           (this.props.data.data.name  || ''),
             url:            (this.props.data.data.url   || ''),
-            termSelected:   (this.props.data.data.termSelected || null),
-            data:            {tag:{name:'zaraza',url:'http://example.com'}},
+            data:           (this.props.data.data       || {tag: {name:'', url:''}}),
             suggestions:    []
         };
-    }
-
-    componentWillUnmount = () => {
-
-        console.log('componentWillUnmount');
-
-    }
-    componentDidMount = () => {
-
-        console.log('componentDidMount');
-
     }
 
     getSuggestions = (value) => {
@@ -81,20 +69,13 @@ export default class RelatedContentTagPeopleBlock extends Component {
     };
 
     getLatestArticlesPromise = (value) => {
-        return axios.get(config.latestThreeArticlesByTid + value);
+        return axios.get(config.latestThreeArticlesByTid + 5799)
     }
 
     onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
-        // @todo: create a function called "updateBlockData" that can be reused for any plugin
         const editorState = this.props.blockProps.editorState;
         const contentState = editorState.getCurrentContent();
 
-
-        console.log('voy a setear el termselected a: ', suggestion.tid);
-
-        this.setState({
-            termSelected: suggestion.tid,
-        });
 
         let latestArticlesPromise = this.getLatestArticlesPromise(suggestion.tid);
 
@@ -103,28 +84,21 @@ export default class RelatedContentTagPeopleBlock extends Component {
 
                 let data = {tag: {name: suggestion.tag, url: suggestion.tagUrl}, articles: response.data};
 
-                const newData = {type: 'relatedtag', dataType: 'relatedtag', data};
-                const targetSelection = SelectionState.createEmpty(this.props.container.props.block.get('key'));
-                const newContentState = Modifier.mergeBlockData(contentState, targetSelection, Map(newData));
-
-
                 this.setState({
                     data: data,
                     isEditing: false,
                     termSelected: null
                 });
 
-
-                console.log('newContentState -> ', newContentState);
+                const newData = {type: 'relatedtag', dataType: 'relatedtag', data};
+                const targetSelection = SelectionState.createEmpty(this.props.container.props.block.get('key'));
+                const newContentState = Modifier.mergeBlockData(contentState, targetSelection, Map(newData));
 
                 this.props.blockProps.onChange(EditorState.push(
                     editorState,
                     newContentState,
                     'change-block-data'
                 ));
-
-                console.log('latestArticlesPromise - state ->', this.state);
-                console.log('axios success');
 
             }.bind(this))
             .catch(function (error) {
@@ -144,7 +118,6 @@ export default class RelatedContentTagPeopleBlock extends Component {
             style: {display:"inline"}
         };
 
-        console.log('state -> ', this.state);
 
 
         return (
@@ -152,7 +125,7 @@ export default class RelatedContentTagPeopleBlock extends Component {
                 <div className="links-related">
                     <span className="title">Leé también: </span>
 
-                    <div className="link-container" style={{display:(this.state.isEditing) ? 'block' : 'block'}}>
+                    <div className="link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
                         <a className="link" href={this.state.data.tag.url} target="_blank">{this.state.data.tag.name}</a>
                         <icons.EditIcon onClick={this.handleEdit}/>
                     </div>

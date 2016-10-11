@@ -3,7 +3,7 @@ import {Modifier, EditorState}  from "draft-js";
 import {insertDataBlock}        from "megadraft";
 import icons                    from "../../icons/icons";
 
-export default class RelatedContentTagPeopleButton extends Component {
+export default class RelatedTagButton extends Component {
 
     constructor(props) {
         super(props);
@@ -12,7 +12,7 @@ export default class RelatedContentTagPeopleButton extends Component {
 
     onClick(e) {
         e.preventDefault();
-        const data = { type: "relatedcontenttagpeople", dataType:"relatedcontenttagpeople", data: { tid: "", name: ""}};
+        const data = { type: "relatedtag", dataType:"relatedtag", data: { tag: {name: "", url:""}}};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
     }
 

@@ -1,9 +1,9 @@
 import embed                    from "./embed/plugin"
 import relatedcontent           from "./relatedcontent/plugin"
-import relatedcontenttagpeople  from "./relatedcontenttagpeople/plugin"
+import relatedtag               from "./relatedtag/plugin"
 
 export default {
     embed:                      embed,
     relatedcontent:             relatedcontent,
-    relatedcontenttagpeople:    relatedcontenttagpeople
+    relatedtag:                 relatedtag
 }
