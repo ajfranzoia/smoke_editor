@@ -16,6 +16,7 @@ export default class RelatedContentBlock extends Component {
             isEditing: (this.props.data.data.href) ? false : true,
             href: (this.props.data.data.href || '') ,
             title: (this.props.data.data.title || ''),
+            nid: (this.props.data.data.nid || ''),
             suggestions: []
         };
 
@@ -73,7 +74,7 @@ export default class RelatedContentBlock extends Component {
         // @todo: create a function called "updateBlockData" that can be reused for any plugin
         const editorState = this.props.blockProps.editorState;
         const contentState = editorState.getCurrentContent();
-        const newData = { type: 'relatedcontent', dataType: 'relatedcontent', data: {title: suggestion.title, href: suggestion.href} };
+        const newData = { type: 'relatedcontent', dataType: 'relatedcontent', data: {title: suggestion.title, href: suggestion.href, nid: suggestion.nid} };
         const targetSelection = SelectionState.createEmpty(this.props.container.props.block.get('key'));
         const newContentState = Modifier.mergeBlockData(contentState, targetSelection, Map(newData));
 
