@@ -17,6 +17,7 @@ export default class RelatedTagBlock extends Component {
             name:           (this.props.data.data.name  || ''),
             url:            (this.props.data.data.url   || ''),
             data:           (this.props.data.data       || {tag: {name:'', url:''}}),
+            loading:        false,
             suggestions:    []
         };
     }
@@ -69,7 +70,12 @@ export default class RelatedTagBlock extends Component {
     };
 
     getLatestArticlesPromise = (value) => {
-        return axios.get(config.latestThreeArticlesByTid + 5799)
+
+        this.setState({
+            loading: true,
+        });
+
+        return axios.get(config.latestThreeArticlesByTid + value)
     }
 
     onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
@@ -85,7 +91,8 @@ export default class RelatedTagBlock extends Component {
 
                 this.setState({
                     data: data,
-                    isEditing: false
+                    isEditing: false,
+                    loading: false
                 });
 
                 const newData = {type: 'relatedtag', dataType: 'relatedtag', data};
@@ -132,13 +139,17 @@ export default class RelatedTagBlock extends Component {
                         </div>
             }
 
+        if(this.state.loading) {
+            articles = 'cargando...';
+        }
+
         return (
             <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
                 <div className="links-related">
 
-                    <span>Más sobre</span>
+                    <span>Más sobre:</span>
 
-                    <div className="related-tag-tag" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
+                    <div className="related-tag-tag link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
                         <a className="link" href={this.state.data.tag.url} target="_blank">{this.state.data.tag.name}</a>
                         <icons.EditIcon onClick={this.handleEdit}/>
                     </div>
@@ -159,9 +170,7 @@ export default class RelatedTagBlock extends Component {
 
                     <div className="related-tag-articles grid-spaceAround">
                         <div className="col-11 grid">
-                            <article className="col-4">
-                                {articles}
-                            </article>
+                            {articles}
                         </div>
                     </div>
 
