@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
 import {ModalDialog, ModalContainer} from 'react-modal-dialog';
-import socialEmbed from '../Helpers/SocialEmbed';
+import socialEmbed from '../../Helpers/SocialEmbed';
 
 
 export default class View extends React.Component {
