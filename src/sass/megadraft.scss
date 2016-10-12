@@ -158,6 +158,10 @@
   position: relative;
   background: none;
 }
+.megadraft-editor .sidemenu__button:focus {
+  outline: none;
+}
+
 
 .megadraft-editor .sidemenu__button:before {
   content: "";
@@ -202,7 +206,7 @@
 }
 
 .megadraft-editor .sidemenu__items--open {
-  max-height: 116px;
+  max-height: 156px;
 }
 
 .megadraft-editor .sidemenu__items .sidemenu__button {
