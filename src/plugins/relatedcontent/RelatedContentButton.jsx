@@ -13,7 +13,7 @@ export default class RelatedContentButton extends Component {
 
     onClick(e) {
         e.preventDefault();
-        const data = { type: "relatedcontent", dataType:"relatedcontent", data: { title: "", href: "" }};
+        const data = { type: "relatedcontent", dataType:"relatedcontent", data: { title: "", href: "", nid: "" }};
         this.props.onChange(insertDataBlock(this.props.editorState, data)); 
 
     }
