@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import icons from "../../icons/icons";
-import Modal from "../../components/SmokeModal"
+import Modal from "./EmbedModal"
 
 export default class EmbedButton extends Component {
 

@@ -4,13 +4,20 @@
  * License: MIT
  */
 
-import  {MegadraftIcons as icons} from "megadraft";
+import icons from "../icons/icons";
+import Bold from "./bold/action";
+import Italic from "./italic/action";
+import Subtitle from "./subtitle/action";
+import Blockquote from "./blockquote/action";
+import People from "./people/action";
+import Tag from "./tag/action";
 
 export default {
-    bold: {type: "inline", label: "B", style: "BOLD", icon: icons.BoldIcon},
-    italic: {type: "inline", label: "I", style: "ITALIC", icon: icons.ItalicIcon},
+    bold: Bold,
+    italic: Italic,
+    subtitle: Subtitle,
+    blockquote: Blockquote,
+    people: People,
+    tag: Tag,
     link: {type: "entity", label: "Link", style: "link", icon: icons.LinkIcon},
-    //{type: "separator"},
-    subtitle: {type: "block", label: "H2", style: "header-two", icon: icons.H2Icon, className:"subtitle"},
-    blockquote: {type: "block", label: "QT", style: "blockquote", icon: icons.BlockQuoteIcon}
 };
