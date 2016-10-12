@@ -1,39 +1,39 @@
-/*
- * Copyright (c) 2016, Globo.com (https://github.com/globocom)
- *
- * License: MIT
- */
-
 import React, {Component} from "react";
-
 import {MegadraftIcons as icons} from "megadraft";
-import {insertDataBlock} from "megadraft";
+import Modal from "./ImageModal"
 
 
 export default class ImageButton extends Component {
     constructor(props) {
         super(props);
-        this.onClick = ::this.onClick;
-    }
-
-
-    onClick(e) {
-        e.preventDefault();
-        const src = window.prompt("Enter a URL");
-        if (!src) {
-            return;
+        this.state = {
+            showModal: false
         }
+    };
 
-        const data = {src: src, type: "image", display: "medium"};
+    openModal = (e) => {
+        e.preventDefault();
+        this.setState({
+            showModal: true
+        });
+    };
 
-        this.props.onChange(insertDataBlock(this.props.editorState, data));
-    }
+    closeModal = (e) => {
+        e.preventDefault();
+        this.setState({
+            showModal: false
+        });
+    };
 
     render() {
         return (
-            <button className={this.props.className} type="button" onClick={this.onClick}>
-                <icons.ImageIcon className="sidemenu__button__icon"/>
-            </button>
+            <div>
+                <button className={this.props.className} type="button" onClick={this.openModal}>
+                    <icons.ImageIcon className="sidemenu__button__icon"/>
+                </button>
+                <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState}
+                       onChange={this.props.onChange} closeModal={this.closeModal}/>
+            </div>
         );
     }
 }

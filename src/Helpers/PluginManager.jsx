@@ -7,7 +7,7 @@ let PLUGINS = {};
 export default class PluginManager {
 
     static set(type, name, value) {
-        switch (type){
+        switch (type) {
             case 'plugin':
                 PLUGINS[name] = value;
                 break;
@@ -18,7 +18,7 @@ export default class PluginManager {
     }
 
     static get(type, name) {
-        switch (type){
+        switch (type) {
             case 'plugin':
                 return PLUGINS[name];
                 break;
@@ -37,15 +37,15 @@ export default class PluginManager {
     }
 }
 
-PluginManager.set('action', 'BOLD',         actions.bold);
-PluginManager.set('action', 'ITALIC',       actions.italic);
-PluginManager.set('action', 'LINK',         actions.link);
-PluginManager.set('action', 'SUBTITLE',     actions.subtitle);
-PluginManager.set('action', 'BLOCKQUOTE',   actions.blockquote);
-PluginManager.set('action', 'PEOPLE',       actions.people);
-PluginManager.set('action', 'TAG',          actions.tag);
+PluginManager.set('action', 'BOLD', actions.bold);
+PluginManager.set('action', 'ITALIC', actions.italic);
+PluginManager.set('action', 'LINK', actions.link);
+PluginManager.set('action', 'SUBTITLE', actions.subtitle);
+PluginManager.set('action', 'BLOCKQUOTE', actions.blockquote);
+PluginManager.set('action', 'PEOPLE', actions.people);
+PluginManager.set('action', 'TAG', actions.tag);
 
-PluginManager.set('plugin', 'EMBED',                    plugins.embed);
-PluginManager.set('plugin', 'RELATEDCONTENT',           plugins.relatedcontent);
-PluginManager.set('plugin', 'RELATEDTAG',               plugins.relatedtag);
+PluginManager.set('plugin', 'EMBED', plugins.embed);
+PluginManager.set('plugin', 'RELATEDCONTENT', plugins.relatedcontent);
+PluginManager.set('plugin', 'RELATEDTAG', plugins.relatedtag);
 PluginManager.set('plugin', 'IMAGE', plugins.image);
