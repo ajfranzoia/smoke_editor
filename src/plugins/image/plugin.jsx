@@ -11,5 +11,6 @@ import ImageBlock from "./ImageBlock";
 export default {
   type: "image",
   buttonComponent: ImageButton,
-  blockComponent: ImageBlock
+  blockComponent: ImageBlock,
+  options:{displayOptions:[]}
 };

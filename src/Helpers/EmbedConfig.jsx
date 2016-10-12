@@ -9,3 +9,4 @@ export default  {
     SCRIBD: {domObj:"IFRAME",compare:{attr:"src",value:"scribd.com/embeds"}, blockName:"scribd"}
 };
 
+

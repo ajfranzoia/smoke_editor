@@ -46,3 +46,4 @@ PluginManager.set('action', 'SUBTITLE', actions.subtitle);
 PluginManager.set('action', 'BLOCKQUOTE', actions.blockquote);
 PluginManager.set('plugin', 'EMBED', plugins.embed);
 PluginManager.set('plugin', 'RELATEDCONTENT', plugins.relatedcontent);
+PluginManager.set('plugin', 'IMAGE', plugins.image);
