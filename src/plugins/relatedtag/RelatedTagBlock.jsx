@@ -1,10 +1,10 @@
-import React, {Component}   from "react";
+import React, {Component} from "react";
 import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
-import Autosuggest          from 'react-autosuggest';
-import Immutable            from "immutable";
-import axios                from 'axios';
-import config               from "./config";
-import icons                from "../../icons/icons";
+import Autosuggest from 'react-autosuggest';
+import Immutable from "immutable";
+import axios from 'axios';
+import config from "./config";
+import icons from "../../icons/icons";
 
 const {Map} = Immutable;
 
@@ -13,12 +13,12 @@ export default class RelatedTagBlock extends Component {
         super(props);
 
         this.state = {
-            isEditing:      (this.props.data.data.name) ? false : true,
-            name:           (this.props.data.data.name  || ''),
-            url:            (this.props.data.data.url   || ''),
-            data:           (this.props.data.data       || {tag: {name:'', url:''}}),
-            loading:        false,
-            suggestions:    []
+            isEditing: (this.props.data.data.name) ? false : true,
+            name: (this.props.data.data.name || ''),
+            url: (this.props.data.data.url || ''),
+            data: (this.props.data.data || {tag: {name:'', url:''}}),
+            loading: false,
+            suggestions: []
         };
     }
 

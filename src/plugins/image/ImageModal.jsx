@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
 import {ModalDialog, ModalContainer} from 'react-modal-dialog';
 import ReactResumableJs from 'react-resumable-js'
+import axios from 'axios';
+import config from "./config";
 
 
 export default class View extends React.Component {
@@ -10,7 +12,8 @@ export default class View extends React.Component {
         this.state = {
             isShowingModal: this.props.isShowingModal,
             message: {status: 'info', text: 'Seleccioná una imágen'},
-            file:{}
+            file:{},
+            resumableHeaders: {}
         };
     }
 
@@ -18,10 +21,15 @@ export default class View extends React.Component {
         this.setState({
             isShowingModal: nextProps.isShowingModal
         });
+
+    }
+
+    componentDidMount(){
+        this.getResumableHeaders();
     }
 
     addData = (dataObj) => {
-        const data = {filename: dataObj.data, type: dataObj.type, dataType: dataObj.type, src:'http://localhost:3000/tmp/' +dataObj.data};
+        const data = {filename: dataObj.data, type: dataObj.type, dataType: dataObj.type, src:config.tmpDir +dataObj.data};
         this.props.onChange(insertDataBlock(this.props.editorState, data));
     };
 
@@ -40,7 +48,24 @@ export default class View extends React.Component {
         this.props.closeModal(e);
     };
 
+    getResumableHeaders = () => {
+        axios.get( config.tokenEndpoint)
+            .then(function (response) {
+                this.setState({
+                    resumableHeaders: {
+                        "X-CSRF-Token": response.data
+                    }
+                });
+
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     render() {
+
+
         return <div className="modal-wrapper">
             {
                 this.state.isShowingModal &&
@@ -49,7 +74,9 @@ export default class View extends React.Component {
                         <div className={'alert alert-' + this.state.message.status} role="alert"
                              dangerouslySetInnerHTML={{__html: this.state.message.text}}>
                         </div>
+
                         <ReactResumableJs
+                            headerObject={this.state.resumableHeaders}
                             uploaderID="image-upload"
                             dropTargetID="myDropTarget"
                             filetypes={["jpg", "JPG", "png", "PNG"]}
@@ -57,7 +84,7 @@ export default class View extends React.Component {
                             fileAccept="*/*"
                             fileAddedMessage="Started!"
                             completedMessage="Complete!"
-                            service="http://localhost:3000/upload"
+                            service={config.resumableService}
                             disableDragAndDrop={true}
                             onFileSuccess={(file, message) => {
                                 this.setState({message: {status: 'success',text: 'Imagen seleccionada: <b>' + file.file.name + '</b>'}});
@@ -74,9 +101,10 @@ export default class View extends React.Component {
                                 console.log('errorCount: ', errorCount);
                             }}
                             fileNameServer="file"
-                            tmpDir="http://localhost:3000/tmp/"
+                            tmpDir={config.tmpDir}
                             maxFiles={1}
                         />
+
                         <div className="form-actions">
                             <button className="btn btn-primary form-submit" onClick={this.saveData}>Aceptar</button>
                         </div>
@@ -84,5 +112,9 @@ export default class View extends React.Component {
                 </ModalContainer>
             }
         </div>;
+
+
+
+
     }
 }
