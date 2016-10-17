@@ -4,7 +4,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color:#f2f9fc;
-  background-size:10% 90%;
+  background-size:contain;
   min-height:(70em/16);
   border: solid 1px #ccc;
   border-radius: 10px;
@@ -51,6 +51,19 @@
 .smoke-scribd{
   background-image: url("../placeholders/scribd.svg");
 }
+
+.smoke-datafactory{
+  background-image: url("../placeholders/datafactory.png");
+}
+
+.smoke-waze{
+  background-image: url("../placeholders/logo_waze.svg");
+}
+
+.smoke-radiocut{
+  background-image: url("../placeholders/radiocut.png");
+}
+
 
 .related-content-block {
   line-height: 2em;

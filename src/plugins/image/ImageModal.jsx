@@ -112,9 +112,5 @@ export default class View extends React.Component {
                 </ModalContainer>
             }
         </div>;
-
-
-
-
     }
 }
