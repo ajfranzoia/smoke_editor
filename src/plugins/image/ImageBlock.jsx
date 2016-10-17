@@ -40,7 +40,7 @@ export default class ImageBlock extends Component {
 
                 <MegadraftPlugin.BlockData>
                     <MegadraftPlugin.BlockInput
-                        placeholder="Caption"
+                        placeholder="Escribí un epígrafe..."
                         value={this.props.data.caption}
                         onChange={this._handleCaptionChange} />
                 </MegadraftPlugin.BlockData>
