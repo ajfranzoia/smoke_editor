@@ -75,7 +75,7 @@ export default class KalturaBlock extends Component {
         // @todo: create a function called "updateBlockData" that can be reused for any plugin
         const editorState       = this.props.blockProps.editorState;
         const contentState      = editorState.getCurrentContent();
-        const newData           = { type: 'kaltura', dataType: 'kaltura', data: {title: suggestion.title, nid: suggestion.nid} };
+        const newData           = { type: 'kaltura', dataType: 'kaltura', data: {title: suggestion.title, nid: suggestion.nid, kalturaid: suggestion.kalturaid } };
         const targetSelection   = SelectionState.createEmpty(this.props.container.props.block.get('key'));
         const newContentState   = Modifier.mergeBlockData(contentState, targetSelection, Map(newData));
 
