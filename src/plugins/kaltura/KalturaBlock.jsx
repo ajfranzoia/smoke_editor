@@ -13,15 +13,20 @@ export default class KalturaBlock extends Component {
         super(props);
 
         this.state = {
-            isEditing:  (this.props.data.data.title)    ? false : true,
-            title:      (this.props.data.data.title     || ''),
-            nid:        (this.props.data.data.nid       || ''),
-            loading:    false,
-            suggestions: []
+            isEditing:      (this.props.data.data.title)    ? false : true,
+            title:          (this.props.data.data.title     || ''),
+            nid:            (this.props.data.data.nid       || ''),
+            loading:        false,
+            suggestions:    []
         };
     }
 
     getSuggestions = (value) => {
+
+        this.setState({
+            loading: true,
+        });
+
         const inputValue = value.trim().toLowerCase();
         return axios.get(config.kalturaVideoSuggest + inputValue);
 
@@ -56,7 +61,8 @@ export default class KalturaBlock extends Component {
         this.getSuggestions(value)
             .then(function (response) {
                 this.setState({
-                    suggestions: response.data
+                    suggestions:    response.data,
+                    loading:        false
                 });
             }.bind(this))
             .catch(function (error) {
@@ -101,15 +107,23 @@ export default class KalturaBlock extends Component {
             style:          {display:"inline"}
         };
 
+        let cargando = '';
+
+        if(this.state.loading) {
+            cargando = 'Cargando...';
+        }
+
         return (
             <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
                 <div className="links-related">
-                    <span className="title">Video Kaltura: </span>
+
+                    <span>Video Kaltura: </span>
 
                     <div className="link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
                         <a className="link" href={this.state.title} target="_blank">{this.state.title}</a>
-                        <icons.KalturaIcon onClick={this.handleEdit}/>
+                        <icons.EditIcon onClick={this.handleEdit}/>
                     </div>
+
                     <div style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
                         <Autosuggest
                             suggestions={this.state.suggestions}
@@ -123,6 +137,13 @@ export default class KalturaBlock extends Component {
                             inputProps={inputProps}
                         />
                     </div>
+
+                    <div className="related-tag-articles grid-spaceAround">
+                        <div className="col-11 grid">
+                            {cargando}
+                        </div>
+                    </div>
+
                 </div>
             </div>
         );
