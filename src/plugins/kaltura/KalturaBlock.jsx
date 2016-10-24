@@ -1,5 +1,6 @@
 import React, {Component}   from "react";
 import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
+import {MegadraftPlugin}    from "megadraft";
 import Autosuggest          from 'react-autosuggest';
 import Immutable            from "immutable";
 import axios                from 'axios';
@@ -12,11 +13,15 @@ export default class KalturaBlock extends Component {
     constructor(props) {
         super(props);
 
+        this.actions = [
+            {"key": "edit", "icon": icons.EditIcon, "action": this.handleEdit},
+            {"key": "delete", "icon": icons.DeleteIcon, "action": this.props.container.remove}
+        ];
+
         this.state = {
             isEditing:      (this.props.data.data.title)    ? false : true,
             title:          (this.props.data.data.title     || ''),
             nid:            (this.props.data.data.nid       || ''),
-            loading:        false,
             suggestions:    []
         };
     }
@@ -46,9 +51,6 @@ export default class KalturaBlock extends Component {
         this.setState({
             title: newValue,
         });
-    }
-    handleClick = (e) => {
-        e.preventDefault();
     }
 
     handleEdit = (e) => {
@@ -107,44 +109,32 @@ export default class KalturaBlock extends Component {
             style:          {display:"inline"}
         };
 
-        let cargando = '';
-
-        if(this.state.loading) {
-            cargando = 'Cargando...';
-        }
-
         return (
-            <div className="related-content-block" onClick={this.handleClick} style={{position: 'relative'}}>
-                <div className="links-related">
+            <div className="kaltura-block" style={{position: 'relative'}}>
 
-                    <span>Video Kaltura: </span>
 
-                    <div className="link-container" style={{display:(this.state.isEditing) ? 'none' : 'block'}}>
-                        <a className="link" href={this.state.title} target="_blank">{this.state.title}</a>
-                        <icons.EditIcon onClick={this.handleEdit}/>
-                    </div>
+                <div>
+                    <MegadraftPlugin.CommonBlock {...this.props} actions={this.actions}>
 
-                    <div style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
-                        <Autosuggest
-                            suggestions={this.state.suggestions}
-                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                            onSuggestionSelected={this.onSuggestionSelected}
-                            getSuggestionValue={this.getSuggestionValue}
-                            renderSuggestion={this.renderSuggestion}
-                            focusInputOnSuggestionClick={false}
-                            focusFirstSuggestion={true}
-                            inputProps={inputProps}
-                        />
-                    </div>
-
-                    <div className="related-tag-articles grid-spaceAround">
-                        <div className="col-11 grid">
-                            {cargando}
+                        <div className="links-related" style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
+                            <Autosuggest
+                                suggestions={this.state.suggestions}
+                                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                onSuggestionSelected={this.onSuggestionSelected}
+                                getSuggestionValue={this.getSuggestionValue}
+                                renderSuggestion={this.renderSuggestion}
+                                focusInputOnSuggestionClick={false}
+                                focusFirstSuggestion={true}
+                                inputProps={inputProps}
+                            />
                         </div>
-                    </div>
 
+                        <div style={{display:(this.state.isEditing) ? 'none' : 'block'}} className={"smoke-block smoke-" + this.props.data.dataType} />
+                    </MegadraftPlugin.CommonBlock>
                 </div>
+
+
             </div>
         );
     }

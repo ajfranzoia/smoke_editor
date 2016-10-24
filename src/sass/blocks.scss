@@ -52,7 +52,12 @@
   background-image: url("../placeholders/scribd.svg");
 }
 
-.related-content-block {
+.smoke-kaltura{
+  background-image: url("../placeholders/kaltura.svg");
+}
+
+.related-content-block,
+.kaltura-block {
   line-height: 2em;
 
   .links-related > span{
@@ -120,5 +125,15 @@
 
   }
 
+}
 
+
+.kaltura-block {
+  .react-autosuggest__container {
+    margin: 0 1% 1%;
+    padding: 0;
+  }
+  .react-autosuggest__suggestions-container {
+    margin: 0;
+  }
 }
