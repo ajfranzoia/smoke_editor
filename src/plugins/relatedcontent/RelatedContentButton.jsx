@@ -23,7 +23,7 @@ export default class RelatedContentButton extends Component {
 
         return (
                 <div>
-                    <button className={this.props.className} type="button" onClick={this.onClick} >
+                    <button title="Agregá un Leé también" className={this.props.className} type="button" onClick={this.onClick} >
                         <icons.RelatedContentIcon className="sidemenu__button__icon"/>
                     </button>
                 </div>

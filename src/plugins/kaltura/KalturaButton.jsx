@@ -19,7 +19,7 @@ export default class KalturaButton extends Component {
     render() {
         return (
             <div>
-                <button className={this.props.className} type="button" onClick={this.onClick} >
+                <button title="Agregá un video al cuerpo de la nota" className={this.props.className} type="button" onClick={this.onClick} >
                     <icons.KalturaIcon className="sidemenu__button__icon"/>
                 </button>
             </div>

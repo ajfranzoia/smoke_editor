@@ -28,7 +28,7 @@ export default class EmbedButton extends Component {
     render() {
         return (
             <div>
-                <button className={this.props.className} type="button" onClick={this.openModal}>
+                <button title="Agregá un embed externo" className={this.props.className} type="button" onClick={this.openModal}>
                     <icons.CodeIcon className="sidemenu__button__icon"/>
                 </button>
                 <Modal isShowingModal={this.state.showModal} editorState={this.props.editorState}
