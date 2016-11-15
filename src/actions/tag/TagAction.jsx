@@ -41,7 +41,7 @@ export default class TagAction  {
         const contentBlock = editorState.getCurrentContent().getBlockForKey(selection.getStartKey());
         const tag = contentBlock.getText().slice(selection.getStartOffset(), selection.getEndOffset()).trim().replace(/\s+/g, '-').toLowerCase();
         if(tag.length > 0) {
-            const entityKey = Entity.create("LINK", "MUTABLE", {"type": "tag", url: config.url + tag});
+            const entityKey = Entity.create("LINK", "INMUTABLE", {"type": "tag", url: config.url + tag});
 
             let newContentState = Modifier.applyEntity(
                 editorState.getCurrentContent(),
