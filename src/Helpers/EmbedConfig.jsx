@@ -9,7 +9,8 @@ export default  {
     SCRIBD: {domObj:"IFRAME",compare:{attr:"src",value:"scribd.com/embeds"}, blockName:"scribd"},
     DATAFACTORY: {domObj:"IFRAME",compare:{attr:"src",value:"http://mam.tn.com.ar/html/v3/"}, blockName:"datafactory"},
     WAZE: {domObj:"IFRAME",compare:{attr:"src",value:"https://embed.waze.com"}, blockName:"waze"},
-    RADIOCUT: {domObj:"IFRAME",compare:{attr:"src",value:"radiocut.fm/audiocut/embed"}, blockName:"radiocut"}
+    RADIOCUT: {domObj:"IFRAME",compare:{attr:"src",value:"radiocut.fm/audiocut/embed"}, blockName:"radiocut"},
+    INFOGRAM: {domObj:"DIV",compare:{attr:"class",value:"infogram-embed"}, blockName:"infogram"}
 };
 
 
