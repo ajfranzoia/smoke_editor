@@ -6,7 +6,7 @@ export default class socialEmbed {
 
     static cleanHtml(string) {
         const regex = /<(\w+)[^>]*>/g;
-        const str =  S(string).stripTags('script','p','a','div','time').s;
+        const str =  S(string).stripTags('p','a','time').s;
 
         if (regex.test(str)) {
             return str.match(regex)[0];
@@ -16,7 +16,16 @@ export default class socialEmbed {
     }
 
     static cleanScript(string) {
-        return  S(string).stripTags('script').s;
+
+        var div = document.createElement('div');
+        div.innerHTML = string;
+        var scripts = div.getElementsByTagName('script');
+        var i = scripts.length;
+        while (i--) {
+            scripts[i].parentNode.removeChild(scripts[i]);
+        }
+        return div.innerHTML;
+
     }
 
     static findTagScript(string) {
@@ -53,9 +62,9 @@ export default class socialEmbed {
 
 
     static matchSocialEmbed(string) {
-        var element = domify(this.cleanHtml(string));
-
-        console.log('element --> ',element);
+        
+        var cleanedHtml = this.cleanHtml(string);
+        var element = domify(cleanedHtml);
 
         for (let key of Object.keys(embedsList)) {
             const embed = embedsList[key];
@@ -87,8 +96,12 @@ export default class socialEmbed {
             scriptArr.forEach(function (val) {
                 const domObj = domify(val);
                 const attrValue = domObj.getAttribute('src');
-                const newAttrValue = this.generateValidUrl(attrValue);
-                validScripts.push('<script src="'+newAttrValue+'" async ></script>');
+                if(attrValue != null) {
+                    const newAttrValue = this.generateValidUrl(attrValue);
+                    validScripts.push('<script src="' + newAttrValue + '" async ></script>');
+                } else {
+                    validScripts.push(val);
+                }
             }.bind(this));
             return validScripts
         }
