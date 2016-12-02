@@ -69,20 +69,35 @@ export default class RelatedTagBlock extends Component {
         });
     };
 
-    getLatestArticlesPromise = (value) => {
+    getCurrentNodeId = () => {
+
+        let url = document.URL;
+        let regex = "^.*/node/(\\d*)/edit.*";
+        let nid_array = url.match(regex);
+
+        let nid = nid_array != null ? nid_array[1] : "";
+
+        return nid;
+    };
+
+    getLatestArticlesPromise = (tid, nid) => {
 
         this.setState({
             loading: true,
         });
 
-        return axios.get(config.latestThreeArticlesByTid + value)
+        let Url = config.latestThreeArticlesByTid + tid + '/' + nid;
+
+        return axios.get(Url);
     }
 
     onSuggestionSelected = (event, { suggestion, suggestionValue, sectionIndex, method }) => {
         const editorState = this.props.blockProps.editorState;
         const contentState = editorState.getCurrentContent();
 
-        let latestArticlesPromise = this.getLatestArticlesPromise(suggestion.tid);
+        let nid = this.getCurrentNodeId();
+
+        let latestArticlesPromise = this.getLatestArticlesPromise(suggestion.tid, nid);
 
         latestArticlesPromise
             .then(function (response) {
