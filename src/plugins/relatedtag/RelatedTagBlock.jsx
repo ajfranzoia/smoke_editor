@@ -5,6 +5,7 @@ import Immutable from "immutable";
 import axios from 'axios';
 import config from "./config";
 import icons from "../../icons/icons";
+import ReactDOM from 'react-dom';
 
 const {Map} = Immutable;
 
@@ -127,6 +128,18 @@ export default class RelatedTagBlock extends Component {
     };
 
 
+    componentDidMount() {
+        setTimeout(function(){
+            this.setFocus()
+        }.bind(this), 0);
+    }
+
+    setFocus = () => {
+        let textInput = ReactDOM.findDOMNode(this.refs.autosuggest).querySelector('input');
+        textInput.focus();
+        textInput.select();
+    }
+
 
     render() {
 
@@ -171,6 +184,7 @@ export default class RelatedTagBlock extends Component {
 
                     <div style={{display:(this.state.isEditing) ? 'block' : 'none'}}>
                         <Autosuggest
+                            ref="autosuggest"
                             suggestions={this.state.suggestions}
                             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                             onSuggestionsClearRequested={this.onSuggestionsClearRequested}

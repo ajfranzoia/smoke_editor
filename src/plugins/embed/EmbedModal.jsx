@@ -9,6 +9,7 @@ export default class View extends React.Component {
         super(props);
         this.state = {
             isShowingModal: this.props.isShowingModal,
+            isFocused: false,
             message: {status: 'info', text: 'Inserte código del embebido'}
         };
     }
@@ -31,10 +32,11 @@ export default class View extends React.Component {
         }
     };
 
-    handleClose = (e) => {
+    handleClose = () => {
         this.setState({isShowingModal: false});
         this.setState({message: {status: 'info', text: 'Inserte código del embebido'}});
-        this.props.closeModal(e);
+        this.props.closeModal();
+        this.setState({isFocused: false});
     };
 
     handleChange = (e) => {
@@ -49,6 +51,21 @@ export default class View extends React.Component {
         }
     }
 
+    componentDidUpdate(){
+        if(this.state.isShowingModal && this.state.isFocused == false) {
+            this.setFocus();
+        }
+    }
+
+    setFocus = () => {
+        this.textarea.focus();
+        this.textarea.select();
+        this.setState({isFocused: true});
+    }
+    handleBlur = (e) => {
+        this.setState({isFocused: true});
+    }
+
     render() {
         return <div className="modal-wrapper">
             {
@@ -58,7 +75,7 @@ export default class View extends React.Component {
                         <div className={'alert alert-' + this.state.message.status} role="alert"
                              dangerouslySetInnerHTML={{__html: this.state.message.text}}>
                         </div>
-                        <textarea onChange={this.handleChange}
+                        <textarea onChange={this.handleChange} onBlur={this.handleBlur}
                                   className="form-control form-text" ref={(ref) => this.textarea = ref} rows="10"
                                   cols="60"/>
                         <div className="form-actions">

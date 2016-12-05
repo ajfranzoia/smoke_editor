@@ -18,8 +18,7 @@ export default class EmbedButton extends Component {
         });
     };
 
-    closeModal = (e) => {
-        e.preventDefault();
+    closeModal = () => {
         this.setState({
             showModal: false
         });
