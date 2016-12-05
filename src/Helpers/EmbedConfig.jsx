@@ -17,8 +17,11 @@ export default  {
     TIMELINE: {domObj:"IFRAME",compare:{attr:"src",value:"cdn.knightlab.com"}, blockName:"timeline"},
     CLARINVIDEO: {domObj:"IFRAME",compare:{attr:"src",value:"vodgc.com/p"}, blockName:"clarinvideo"},
     MIXCLOUD: {domObj:"IFRAME",compare:{attr:"src",value:"mixcloud.com/widget/iframe/"}, blockName:"mixcloud"},
-    THINGLINKSIMG: {domObj:"IFRAME",compare:{attr:"src",value:"www.thinglink.com/card/"}, blockName:"thinglink"}
+    THINGLINKSIMG: {domObj:"IFRAME",compare:{attr:"src",value:"www.thinglink.com/card/"}, blockName:"thinglink"},
+    RICOHTHETA: {domObj:"BLOCKQUOTE",compare:{attr:"class",value:"ricoh-theta-spherical-image"}, blockName:"ricohtheta"}
+
 };
+
 
 
 
