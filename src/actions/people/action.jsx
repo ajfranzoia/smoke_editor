@@ -1,10 +1,10 @@
 import icons from "../../icons/icons";
-import People from "./PeopleAction";
 
 export default {
     type: "entity",
     label: "People",
-    style: "people",
+    style: "link",
     icon: icons.PeopleIcon,
-    action: People
+    entity: 'PEOPLE_LINK'
 };
+

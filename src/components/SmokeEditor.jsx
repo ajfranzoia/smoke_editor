@@ -12,7 +12,7 @@ export default class SmokeEditor extends MegadraftEditor {
         super(props);
     }
 
-    blockStyleFn = (contentBlock) => {
+    /*blockStyleFn = (contentBlock) => {
         const blockType = contentBlock.getType();
         let style = null;
         this.props.actions.forEach(function (action) {
@@ -21,7 +21,7 @@ export default class SmokeEditor extends MegadraftEditor {
             }
         });
         return style;
-    }
+    }*/
 
     BlockRenderingMap = () => {
 
