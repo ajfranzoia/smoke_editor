@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import icons from "../../icons/icons";
 import {insertDataBlock} from "megadraft";
-import {Modifier, EditorState} from "draft-js";
 
 export default class RelatedContentButton extends Component {
 

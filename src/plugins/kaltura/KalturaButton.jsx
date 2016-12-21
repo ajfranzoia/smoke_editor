@@ -1,5 +1,4 @@
 import React, {Component}       from "react";
-import {Modifier, EditorState}  from "draft-js";
 import {insertDataBlock}        from "megadraft";
 import icons                    from "../../icons/icons";
 
