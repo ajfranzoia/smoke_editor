@@ -1,47 +1,19 @@
 import React from 'react';
-import {EditorState, ContentState} from 'draft-js';
 import {DraftJS, MegadraftEditor, editorStateFromRaw, editorStateToJSON, createTypeStrategy} from "megadraft";
-import {DefaultDraftBlockRenderMap, Editor} from 'draft-js';
 import Immutable from "immutable";
+
 const {Map} = Immutable;
-import actions from "../actions/Actions";
-
-import LinkInput from "megadraft/lib/entity_inputs/LinkInput";
-import LinkComponent from "../actions/link/LinkComponent";
-import TagLinkInput from "../actions/tag/TagLinkInput";
-import TagLinkComponent from "../actions/tag/TagLinkComponent";
-import PeopleLinkInput from "../actions/people/PeopleLinkInput";
-import PeopleLinkComponent from "../actions/people/PeopleLinkComponent";
-
-const entityInputs = {
-    LINK: LinkInput,
-    TAG_LINK: TagLinkInput,
-    PEOPLE_LINK: PeopleLinkInput
-}
-
-const myDecorator = new DraftJS.CompositeDecorator([
-    {
-        strategy: createTypeStrategy("TAG_LINK"),
-        component: TagLinkComponent,
-    },
-    {
-        strategy: createTypeStrategy("PEOPLE_LINK"),
-        component: PeopleLinkComponent,
-    },
-    {
-        strategy: createTypeStrategy("LINK"),
-        component: LinkComponent,
-    }
-])
-
+const {DefaultDraftBlockRenderMap} = DraftJS;
 
 export default class Smoke extends React.Component {
     constructor(props) {
         super(props);
 
+        this.decorator = this.getDecorator();
+
         if (props.defaultValue.length > 0) {
             const contentState = JSON.parse(props.defaultValue);
-            var editorState = editorStateFromRaw(contentState, myDecorator);
+            var editorState = editorStateFromRaw(contentState, this.decorator);
         } else {
             var editorState = editorStateFromRaw(null, myDecorator);
         }
@@ -52,6 +24,33 @@ export default class Smoke extends React.Component {
             name: this.props.name,
             id: this.props.id,
         };
+
+        this.entityInputs = this.getEntityInputs();
+
+    }
+    
+    getEntityInputs = () => {
+        const entityInputs = {};
+        this.props.actions.forEach(function (action) {
+            if(action.entity && action.entityInput) {
+                entityInputs[action.entity] = action.entityInput;
+            }
+        });
+
+        return entityInputs;
+    }
+
+    getDecorator = () => {
+        let decorators = [];
+        this.props.actions.forEach(function (action) {
+            if(action.entity && action.component) {
+                decorators.push({
+                    strategy: createTypeStrategy(action.entity),
+                    component: action.component,
+                })
+            }
+        });
+        return new DraftJS.CompositeDecorator(decorators);
     }
 
     onChange = (editorState) => {
@@ -87,7 +86,7 @@ export default class Smoke extends React.Component {
                     plugins={this.props.plugins}
                     onChange={this.onChange}
                     blockRenderMap={this.blockRenderMap()}
-                    entityInputs={entityInputs}
+                    entityInputs={this.entityInputs}
                     />
                 <input type={inputType} readOnly name={this.state.name} id={this.state.id} value={this.state.smokeJson}/>
             </div>
