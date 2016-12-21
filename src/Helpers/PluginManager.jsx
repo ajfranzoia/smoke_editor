@@ -40,7 +40,7 @@ export default class PluginManager {
 PluginManager.set('action', 'BOLD',         actions.bold);
 PluginManager.set('action', 'ITALIC',       actions.italic);
 PluginManager.set('action', 'LINK',         actions.link);
-//PluginManager.set('action', 'SUBTITLE',     actions.subtitle); 
+PluginManager.set('action', 'SUBTITLE',     actions.subtitle);
 PluginManager.set('action', 'BLOCKQUOTE',   actions.blockquote);
 PluginManager.set('action', 'PEOPLE',       actions.people);
 PluginManager.set('action', 'TAG',          actions.tag);
