@@ -1,5 +1,11 @@
 import React from 'react';
-import {DraftJS, MegadraftEditor, editorStateFromRaw, editorStateToJSON, createTypeStrategy} from "megadraft";
+import {
+    DraftJS,
+    MegadraftEditor,
+    editorStateFromRaw,
+    editorStateToJSON,
+    createTypeStrategy
+} from "megadraft";
 import Immutable from "immutable";
 
 const {Map} = Immutable;
