@@ -18,7 +18,10 @@ export default  {
     CLARINVIDEO: {domObj:"IFRAME",compare:{attr:"src",value:"vodgc.com/p"}, blockName:"clarinvideo"},
     MIXCLOUD: {domObj:"IFRAME",compare:{attr:"src",value:"mixcloud.com/widget/iframe/"}, blockName:"mixcloud"},
     THINGLINKSIMG: {domObj:"IFRAME",compare:{attr:"src",value:"www.thinglink.com/card/"}, blockName:"thinglink"},
-    RICOHTHETA: {domObj:"BLOCKQUOTE",compare:{attr:"class",value:"ricoh-theta-spherical-image"}, blockName:"ricohtheta"}
+    RICOHTHETA: { domObj: "BLOCKQUOTE", compare: { attr: "class", value: "ricoh-theta-spherical-image" }, blockName: "ricohtheta" },
+    GIPKY: { domObj: "IFRAME", compare: { attr: "src", value: "giphy.com/embed/" }, blockName: "giphy" },
+    PREZI: { domObj: "IFRAME", compare: { attr: "src", value: "prezi.com/embed/" }, blockName: "prezi" },
+    PLAYBUZZ: { domObj: "DIV", compare: { attr: "class", value: "pb_feed" }, blockName: "playbuzz" }
 
 };
 
