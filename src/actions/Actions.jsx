@@ -4,13 +4,13 @@
  * License: MIT
  */
 
-import icons from "../icons/icons";
 import Bold from "./bold/action";
 import Italic from "./italic/action";
 import Subtitle from "./subtitle/action";
 import Blockquote from "./blockquote/action";
 import People from "./people/action";
 import Tag from "./tag/action";
+import Link from "./link/action";
 
 export default {
     bold: Bold,
@@ -19,5 +19,5 @@ export default {
     blockquote: Blockquote,
     people: People,
     tag: Tag,
-    link: {type: "entity", label: "Link", style: "link", icon: icons.LinkIcon},
+    link: Link
 };
