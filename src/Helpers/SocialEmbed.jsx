@@ -9,12 +9,7 @@ export default class socialEmbed {
         const str =  S(string).stripTags('p','a','time').s;
 
         if (regex.test(str)) {
-            const elements = str.match(regex);
-            let cleanedHtml = [];
-            elements.forEach(function (element) {
-                cleanedHtml.push(element)
-            }.bind(this));
-            return cleanedHtml;
+            return str.match(regex);
         } else {
             return "";
         }
