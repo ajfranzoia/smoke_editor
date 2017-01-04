@@ -16,7 +16,7 @@ export default class socialEmbed {
     }
 
     static cleanScript(string) {
-        
+
         var div = document.createElement('div');
         div.innerHTML = string;
         var scripts = div.getElementsByTagName('script');

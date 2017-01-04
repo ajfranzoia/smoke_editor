@@ -12,40 +12,15 @@
     </style>
 </head>
 <body>
-
 <div id="edit-body">
-    <textarea id="edit-body-text" name="body">{
-  &quot;entityMap&quot;: {},
-  &quot;blocks&quot;: [
-    {
-      &quot;key&quot;: &quot;29ug8&quot;,
-      &quot;text&quot;: &quot;Texto para pruebas&quot;,
-      &quot;type&quot;: &quot;unstyled&quot;,
-      &quot;depth&quot;: 0,
-      &quot;inlineStyleRanges&quot;: [
-        {
-          &quot;offset&quot;: 0,
-          &quot;length&quot;: 5,
-          &quot;style&quot;: &quot;BOLD&quot;
-        },
-        {
-          &quot;offset&quot;: 11,
-          &quot;length&quot;: 7,
-          &quot;style&quot;: &quot;ITALIC&quot;
-        }
-      ],
-      &quot;entityRanges&quot;: [],
-      &quot;data&quot;: {}
-    }
-  ]
-}</textarea>
+    <textarea id="edit-body-text" name="body" data-draft-json="" data-field-name="body"></textarea>
 </div>
 
 <script src="/dist/SmokeEditorFactory.js"></script>
 <script>
-    var config = { 
-        plugins: ['EMBED', 'RELATEDCONTENT','IMAGE', 'RELATEDTAG', 'KALTURA'],
-        actions: ['BOLD', 'ITALIC', 'LINK', 'BLOCKQUOTE', 'TAG', 'PEOPLE', 'SUBTITLE'],
+    var config = {
+        plugins: ['EMBED', 'RELATEDCONTENT'],
+        actions: ['BOLD', 'ITALIC', 'LINK', 'SUBTITLE', 'BLOCKQUOTE', 'PEOPLE', 'TAG'],
         debug: true
     }
     SmokeEditorFactory.make(document.getElementById('edit-body'), config);
