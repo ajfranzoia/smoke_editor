@@ -16,8 +16,7 @@ export default class socialEmbed {
     }
 
     static cleanScript(string) {
-
-
+        
         var div = document.createElement('div');
         div.innerHTML = string;
         var scripts = div.getElementsByTagName('script');
@@ -91,7 +90,7 @@ export default class socialEmbed {
             }
         }.bind(embedType));
 
-        return (embedType) || false;
+        return embedType;
     }
 
     static sanitizeScripsUrl(scriptArr){
