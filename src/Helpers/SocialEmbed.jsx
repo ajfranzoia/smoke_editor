@@ -5,18 +5,18 @@ import embedsList from './EmbedConfig';
 export default class socialEmbed {
 
     static cleanHtml(string) {
-        const regex = /<(\w+)[^>]*>/g;
+        const regex = /<(\w+)[^>]*>.*<\/(\w+)>/g;
         const str =  S(string).stripTags('p','a','time').s;
 
         if (regex.test(str)) {
-            return str.match(regex)[0];
-        }else{
+            return str.match(regex);
+        } else {
             return "";
         }
     }
 
     static cleanScript(string) {
-
+        
         var div = document.createElement('div');
         div.innerHTML = string;
         var scripts = div.getElementsByTagName('script');
@@ -64,29 +64,33 @@ export default class socialEmbed {
     static matchSocialEmbed(string) {
         
         var cleanedHtml = this.cleanHtml(string);
-        var element = domify(cleanedHtml);
 
-        for (let key of Object.keys(embedsList)) {
-            const embed = embedsList[key];
-            if (element.nodeName == embed.domObj) {
-                switch (embed.domObj) {
-                    case 'IFRAME':
-                        if (S(element.getAttribute(embed.compare.attr)).contains(embed.compare.value)) {
-                            return embed.blockName;
-                        }
-                        break;
+        let embedType = false;
+        cleanedHtml.forEach(function (cleanedElement) {
+            var element = domify(cleanedElement);
 
-                    default:
-                        if (element.getAttribute(embed.compare.attr) == embed.compare.value) {
-                            return embed.blockName;
-                        }
-                        break;
+            for (let key of Object.keys(embedsList)) {
+                const embed = embedsList[key];
+                if (element.nodeName == embed.domObj) {
+                    switch (embed.domObj) {
+                        case 'IFRAME':
+                            if (S(element.getAttribute(embed.compare.attr)).contains(embed.compare.value)) {
+                                embedType = embed.blockName;
+                            }
+                            break;
+
+                        default:
+                            if (element.getAttribute(embed.compare.attr) == embed.compare.value) {
+                                embedType = embed.blockName;
+                            }
+                            break;
+                    }
+
                 }
-
             }
-        }
+        }.bind(embedType));
 
-        return false;
+        return embedType;
     }
 
     static sanitizeScripsUrl(scriptArr){
