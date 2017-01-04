@@ -34,7 +34,7 @@ export default class TagLinkInput extends React.Component {
     const selection = editorState.getSelection();
     const contentBlock = editorState.getCurrentContent().getBlockForKey(selection.getStartKey());
     const tag = contentBlock.getText().slice(selection.getStartOffset(), selection.getEndOffset()).trim().replace(/\s+/g, '-').toLowerCase();
-    this.props.setEntity({"type": "tag", url: config.url + tag});
+    this.props.setEntity({"type": "tag", url: config.url + tag}, "INMUTABLE");
     this.props.cancelEntity();
   }
 

@@ -34,7 +34,7 @@ export default class PeopleLinkInput extends React.Component {
     const selection = editorState.getSelection();
     const contentBlock = editorState.getCurrentContent().getBlockForKey(selection.getStartKey());
     const person = contentBlock.getText().slice(selection.getStartOffset(), selection.getEndOffset()).trim().replace(/\s+/g, '-').toLowerCase();
-    this.props.setEntity({"type": "people", url: config.url + person});
+    this.props.setEntity({"type": "people", url: config.url + person}, "INMUTABLE");
     this.props.cancelEntity();
   }
 
