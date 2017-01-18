@@ -22,7 +22,6 @@ export default  {
     GIPKY: { domObj: "IFRAME", compare: { attr: "src", value: "giphy.com/embed/" }, blockName: "giphy" },
     PREZI: { domObj: "IFRAME", compare: { attr: "src", value: "prezi.com/embed/" }, blockName: "prezi" },
     PLAYBUZZ: { domObj: "DIV", compare: { attr: "class", value: "pb_feed" }, blockName: "playbuzz" }
-
 };
 
 
