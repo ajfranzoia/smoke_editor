@@ -10,5 +10,4 @@ export default {
     relatedtag:     relatedtag,
     kaltura:        kaltura,
     image:          image
-
 }
