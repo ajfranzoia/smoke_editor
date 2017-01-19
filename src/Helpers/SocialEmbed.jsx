@@ -5,7 +5,7 @@ import embedsList from './EmbedConfig';
 export default class socialEmbed {
 
     static cleanHtml(string) {
-        const regex = /<(\w+)[^>]*>.*<\/(\w+)>/g;
+        const regex = /<(\w+)[^>]*>*<\/(\w+)>/g;
         const str =  S(string).stripTags('p','a','time').s;
 
         if (regex.test(str)) {
