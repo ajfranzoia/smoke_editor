@@ -62,7 +62,7 @@ export default class socialEmbed {
 
 
     static matchSocialEmbed(string) {
-        
+
         var cleanedHtml = this.cleanHtml(string);
 
         let embedType = false;
@@ -132,4 +132,3 @@ export default class socialEmbed {
         return error;
     }
 }
-
