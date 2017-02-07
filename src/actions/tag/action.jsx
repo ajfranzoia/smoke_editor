@@ -1,10 +1,14 @@
 import icons from "../../icons/icons";
-import Tag from "./TagAction";
+import TagLinkInput from "./TagLinkInput";
+import TagLinkComponent from "./TagLinkComponent";
 
 export default {
     type: "entity",
     label: "Tag",
-    style: "tag",
+    style: "link",
     icon: icons.TagIcon,
-    action: Tag
+    entity: 'TAG_LINK',
+    entityInput: TagLinkInput,
+    component: TagLinkComponent
 };
+

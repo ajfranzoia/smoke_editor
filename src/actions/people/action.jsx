@@ -1,10 +1,15 @@
 import icons from "../../icons/icons";
-import People from "./PeopleAction";
+import PeopleLinkInput from "./PeopleLinkInput";
+import PeopleLinkComponent from "./PeopleLinkComponent";
+
 
 export default {
     type: "entity",
     label: "People",
-    style: "people",
+    style: "link",
     icon: icons.PeopleIcon,
-    action: People
+    entity: 'PEOPLE_LINK',
+    entityInput: PeopleLinkInput,
+    component: PeopleLinkComponent
 };
+

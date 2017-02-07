@@ -9,15 +9,16 @@ It uses Megadraft as core editor. Support for other draftjs based editors will b
 
 ```html
 
+
 <div id="edit-body">
-    <textarea id="edit-body-text" name="body" data-draft-json="" data-field-name="body"></textarea>
+    <textarea id="edit-body-text" name="body"></textarea>
 </div>
 
 <script src="/dist/SmokeEditorFactory.js"></script>
 <script>
     var config = {
-        plugins: ['EMBED', 'RELATEDCONTENT'],
-        actions: ['BOLD', 'ITALIC', 'LINK', 'SUBTITLE', 'BLOCKQUOTE'],
+        plugins: ['EMBED', 'RELATEDCONTENT','IMAGE', 'RELATEDTAG', 'KALTURA'],
+        actions: ['BOLD', 'ITALIC', 'LINK', 'BLOCKQUOTE', 'TAG', 'PEOPLE', 'SUBTITLE'],
         debug: true
     }
     SmokeEditorFactory.make(document.getElementById('edit-body'), config);

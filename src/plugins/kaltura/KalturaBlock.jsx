@@ -1,5 +1,5 @@
 import React, {Component}   from "react";
-import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
+import {DraftJS} from "megadraft";
 import {MegadraftPlugin}    from "megadraft";
 import Autosuggest          from 'react-autosuggest';
 import Immutable            from "immutable";
@@ -8,6 +8,7 @@ import config               from "./config";
 import icons                from "../../icons/icons";
 
 const {Map} = Immutable;
+const {Modifier, EditorState, SelectionState} = DraftJS;
 
 export default class KalturaBlock extends Component {
     constructor(props) {

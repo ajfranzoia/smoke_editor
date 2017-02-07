@@ -1,12 +1,13 @@
 import React, {Component} from "react";
+import {DraftJS} from "megadraft";
 import Autosuggest from 'react-autosuggest';
-import icons from "../../icons/icons";
-import {Modifier, EditorState, convertToRaw, RichUtils, SelectionState} from "draft-js";
 import Immutable from "immutable";
 import axios from 'axios';
 import config from "./config";
+import icons from "../../icons/icons";
 import ReactDOM from 'react-dom';
 
+const {Modifier, EditorState, SelectionState} = DraftJS;
 const {Map} = Immutable;
 
 export default class RelatedContentBlock extends Component {

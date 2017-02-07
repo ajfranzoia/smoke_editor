@@ -1,7 +1,7 @@
-import React, {Component}       from "react";
-import {Modifier, EditorState}  from "draft-js";
-import {insertDataBlock}        from "megadraft";
-import icons                    from "../../icons/icons";
+import React, {Component} from "react";
+import {insertDataBlock} from "megadraft";
+import icons from "../../icons/icons";
+
 
 export default class RelatedTagButton extends Component {
 

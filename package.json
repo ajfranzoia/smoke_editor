@@ -1,16 +1,15 @@
 {
-  "name": "SMOKE-EDITOR",
-  "version": "0.0.1",
-  "author": "DEV's TN",
+  "name": "smoke-editor",
+  "version": "0.2.0",
+  "author": "artear",
   "description": "",
   "dependencies": {
     "axios": "0.12.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "domify": "^1.4.0",
-    "draft-js": "0.8.1",
     "immutable": "^3.8.1",
-    "megadraft": "0.3.0",
+    "megadraft": "0.4.11",
     "react": "^15.3.1",
     "react-autosuggest": "^7.0.1",
     "react-modal-dialog": "^3.0.2",
@@ -58,13 +57,13 @@
     "gulp-uglify": "^1.5.4",
     "gulp-using": "^0.1.1",
     "gulp-util": "^3.0.7",
-    "immutable": "^3.8.1",
-    "megadraft": "^0.1.1",
     "setimmediate": "^1.0.4"
   },
   "scripts": {
+    "start": "npm run dev",
     "watch": "gulp watch",
     "build": "gulp build-all",
+    "prepublish": "npm run build",
     "dev": "gulp dev"
   }
 }

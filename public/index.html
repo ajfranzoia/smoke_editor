@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Smoke Editor Example</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link type="text/css" rel="stylesheet" href="dist/css/megadraft.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="dist/css/smoke.css" media="all" />
     <style>
         body {
             margin: 100px !important;
@@ -12,33 +12,8 @@
     </style>
 </head>
 <body>
-
 <div id="edit-body">
-    <textarea id="edit-body-text" name="body">{
-  &quot;entityMap&quot;: {},
-  &quot;blocks&quot;: [
-    {
-      &quot;key&quot;: &quot;29ug8&quot;,
-      &quot;text&quot;: &quot;Texto para pruebas&quot;,
-      &quot;type&quot;: &quot;unstyled&quot;,
-      &quot;depth&quot;: 0,
-      &quot;inlineStyleRanges&quot;: [
-        {
-          &quot;offset&quot;: 0,
-          &quot;length&quot;: 5,
-          &quot;style&quot;: &quot;BOLD&quot;
-        },
-        {
-          &quot;offset&quot;: 11,
-          &quot;length&quot;: 7,
-          &quot;style&quot;: &quot;ITALIC&quot;
-        }
-      ],
-      &quot;entityRanges&quot;: [],
-      &quot;data&quot;: {}
-    }
-  ]
-}</textarea>
+    <textarea id="edit-body-text" name="body" data-draft-json="" data-field-name="body"></textarea>
 </div>
 
 <script src="/dist/SmokeEditorFactory.js"></script>
