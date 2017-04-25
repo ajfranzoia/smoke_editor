@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
 import {insertDataBlock} from "megadraft";
 import {ModalDialog, ModalContainer} from 'react-modal-dialog';
-import socialEmbed from '../../Helpers/SocialEmbed';
+import SocialEmbed from '../../Helpers/SocialEmbed';
+import Errors from '../../Helpers/ErrorMessages';
 
 
 export default class View extends React.Component {
@@ -10,7 +11,7 @@ export default class View extends React.Component {
         this.state = {
             isShowingModal: this.props.isShowingModal,
             isFocused: false,
-            message: {status: 'info', text: 'Inserte código del embebido'}
+            message: {status: 'info', text: Errors.message.embed.info}
         };
     }
 
@@ -26,15 +27,15 @@ export default class View extends React.Component {
     };
 
     saveData = (e) => {
-        if (this.state.message.status == 'success') {
-            this.addData(socialEmbed.createDataObject(this.textarea.value));
+        if (this.state.message.status === 'success' || 'warning' ) {
+            this.addData(SocialEmbed.createDataObject(this.textarea.value));
             this.handleClose(e);
         }
     };
 
     handleClose = () => {
         this.setState({isShowingModal: false});
-        this.setState({message: {status: 'info', text: 'Inserte código del embebido'}});
+        this.setState({message: {status: 'info', text: Errors.message.embed.info}});
         this.props.closeModal();
         this.setState({isFocused: false});
     };
@@ -44,15 +45,15 @@ export default class View extends React.Component {
     };
 
     validate = () => {
-        if (this.textarea.value != '') {
-            this.setState({message: socialEmbed.socialEmbedValidator(this.textarea.value)})
+        if (this.textarea.value !== '') {
+            this.setState({message: SocialEmbed.socialEmbedValidator(this.textarea.value)})
         } else {
-            this.setState({message:{status: 'info', text: 'Inserte código del embebido'}})
+            this.setState({message:{status: 'info', text: Errors.message.embed.info}})
         }
-    }
+    };
 
     componentDidUpdate(){
-        if(this.state.isShowingModal && this.state.isFocused == false) {
+        if(this.state.isShowingModal && this.state.isFocused === false) {
             this.setFocus();
         }
     }
@@ -61,10 +62,11 @@ export default class View extends React.Component {
         this.textarea.focus();
         this.textarea.select();
         this.setState({isFocused: true});
-    }
+    };
+
     handleBlur = (e) => {
         this.setState({isFocused: true});
-    }
+    };
 
     render() {
         return <div className="modal-wrapper">

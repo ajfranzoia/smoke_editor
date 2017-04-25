@@ -7,12 +7,13 @@ import  SmokeEditor from "./SmokeEditor"
 export default class Smoke extends React.Component {
     constructor(props) {
         super(props);
+        let editorState = null;
 
         if (props.defaultValue.length > 0) {
             const contentState = JSON.parse(props.defaultValue);
-            var editorState = editorStateFromRaw(contentState);
+            editorState = editorStateFromRaw(contentState);
         } else {
-            var editorState = editorStateFromRaw(null);
+            editorState = editorStateFromRaw(null);
         }
 
         this.state = {

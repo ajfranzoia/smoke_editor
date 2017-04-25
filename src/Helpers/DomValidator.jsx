@@ -11,7 +11,7 @@ export default class DomValidator {
 
     static getElementByIdOrThrow(elementId) {
         const HTMLElement = document.getElementById(elementId);
-        if (HTMLElement != null) {
+        if (HTMLElement !== null) {
             return HTMLElement;
         } else {
             throw new Error('HTMLElement does not exist')
@@ -31,7 +31,7 @@ export default class DomValidator {
         const HTMLElement = this.nodeExistOrThrow(element);
         const attributeValue = HTMLElement.getAttribute(attr);
 
-        if (attributeValue != null) {
+        if (attributeValue !== null) {
             return attributeValue;
         } else {
             throw new Error('Attribute ' + attr + ' is null')
@@ -43,7 +43,7 @@ export default class DomValidator {
         const HTMLElement = this.nodeExistOrThrow(element);
         const child = HTMLElement.querySelector(tag);
 
-        if (child != null) {
+        if (child !== null) {
             return child;
         } else {
             throw new Error('Child ' + tag + ' is null')
