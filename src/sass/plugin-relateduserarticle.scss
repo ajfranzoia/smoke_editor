@@ -1,0 +1,19 @@
+.modal-dialog-plugin-relateduserarticle {
+
+  .form-inline {
+    display: flex;
+
+    input {
+      flex: 1;
+    }
+  }
+
+}
+
+.related-userarticle-block-indicator {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+  font-weight: bold;
+  color: #999;
+}

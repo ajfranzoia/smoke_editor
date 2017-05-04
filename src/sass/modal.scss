@@ -1,10 +1,17 @@
+.alert {
+  strong{
+    text-transform: capitalize;
+  }
+}
+
 .modal-dialog {
   position: fixed !important;
   top: 25% !important;
 }
 
-.alert{
-  strong{
-    text-transform: capitalize;
-  }
+.modal-dialog-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
